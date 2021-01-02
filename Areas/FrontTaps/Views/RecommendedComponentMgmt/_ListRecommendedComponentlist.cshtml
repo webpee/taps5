@@ -1,0 +1,40 @@
+﻿<table class="table table-striped table-bordered table-condensed bootstrap-datatable datatable">
+    <thead>
+        <tr>
+            <th style="width:5%">No</th>
+            <th style="width:20%">Vender Name</th>
+            <th style="width:20%">Component Name</th>
+            <th style="width:20%">Remark</th>
+            <th style="width:10%">Status</th>           
+            <th style="width:12%">Action</th>
+        </tr>
+    </thead>
+    <tbody>
+        <tr ng-repeat="o in list1 | filter:SearchText | startFrom:(currentPage-1)*entryLimit | limitTo:entryLimit">
+            <td>{{$index+1}}</td>
+            <td>
+                {{o.VendorName}}
+            </td>
+            <td>
+                {{o.ComponentName}}
+            </td>
+            <td>
+                {{o.Remark}}
+            </td>
+            <td>
+                <span ng-show="o.Flag==false">Not Approved</span><span ng-show="o.Flag==true">Approved</span>
+            </td>           
+            <td class="center" >
+                <a href="#" class="btn btn-primary" ng-click="Approve(o)" ng-show="o.Flag==false" title="Approve" data-rel="tooltip">
+                    Approve
+                </a>               
+            </td>
+        </tr>
+    </tbody>
+</table>
+<div class="row show-hide-animation">
+    <div class="col-md-12">
+        <pagination page="currentPage" class="pull-right" max-size="noOfPages" total-items="totalItems" items-per-page="entryLimit" data-boundary-links="true"></pagination>
+    </div>
+</div>
+

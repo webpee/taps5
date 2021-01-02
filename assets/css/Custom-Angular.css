@@ -1,0 +1,45 @@
+﻿body {
+}
+
+
+    .error small.error {
+        background: none repeat scroll 0 0 #C60F13;
+        color: #FFFFFF;
+        display: block;
+        font-size: 0.75em;
+        font-weight: bold;
+        margin-bottom: 1em;
+        margin-top: 0em;
+        padding: 0.75em 1.5em;
+        position: absolute;
+    }
+
+    small {
+        font-size: 60%;
+        line-height: inherit;
+    }
+
+    input.ng-dirty.ng-invalid {
+        border: 1px solid #FF0000;
+    }
+
+    input.error, textarea.error {
+        background-color: rgba(198, 15, 19, 0.1);
+        border-color: #C60F13;
+    }
+
+    .css-form input.ng-invalid.ng-dirty {
+        /*background-color: #FA787E;*/
+        border: 1px solid red !important;
+    }
+
+    .css-form input.ng-valid.ng-dirty {
+        /*background-color: #78FA89;*/
+        border: 1px solid green !important;
+    }
+
+    div {
+        direction: ltr;
+        margin: 0;
+        padding: 0;
+    }

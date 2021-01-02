@@ -1,0 +1,97 @@
+﻿@{
+    ViewBag.Title = "User";
+    Layout = "~/Areas/FrontTaps/Views/Shared/_Layout.cshtml";
+}
+
+<div ng-controller="SampleCtrl">
+    <div class="row">
+        <div class="col-lg-12">
+            <div class="box">
+                <div class="box-header">
+                    <h2><i class="fa fa-edit"></i>Manage User</h2>
+                    <div class="box-icon">
+                        <a href="form-elements.html#" class="btn-minimize"><i class="fa fa-chevron-up"></i></a>
+                    </div>
+                </div>
+                <div class="box-content">
+                    <form role="form"
+                          id="form"
+                          name="form"
+                          class="form-horizontal"
+                          novalidate
+                          ng-submit="formSubmit()">
+                        <div class="form-group">
+                            <label class="control-label">User Name *</label>
+                            <div class="row">
+                                <div class="col-lg-4 col-sm-6">
+                                    <select id="User" name="User" ng-model="model.User" class="form-control" ng-required="true">
+                                        <option value="">---Select UserName---</option>
+                                        <option ng-repeat="o in Users" value="{{o.UserName}}">{{o.UserName}}</option>
+                                    </select>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label class="control-label">User Role *</label>
+                            <div class="row">
+                                <div class="col-lg-4 col-sm-6">
+                                    <select id="Roles" name="Roles" ng-model="model.Role" class="form-control" ng-required="true">
+                                        <option value="">---Select Role---</option>
+                                        <option ng-repeat="o in Roles" value="{{o.RoleName}}">{{o.RoleName}}</option>
+                                    </select>
+                                </div>
+
+                            </div>
+                        </div>
+                        <div ng-if="model.Role == 'Vendor'">
+                            @*<div class="form-group">
+                                <label class="control-label">Password *</label>
+                                <div class="row">
+                                    <div class="col-lg-4 col-sm-6">
+                                        <input id="Password" type="password" name="Password" ng-pattern="/(?=.*[a-z])(?=.*[A-Z])(?=.*[^a-zA-Z])/" ng-minlength="6" class="form-control" ng-required="true" ng-model="model.Password">
+                                        <span style="color:red" ng-show="form.Password.$dirty && form.Password.$invalid">
+                                            <span ng-show="form.Password.$error.required">Please Enter Password</span>
+                                            <span ng-show="form.Password.$error.pattern">Must contain one lower & uppercase letter, and one non-alpha character (a number or a symbol.) </span>
+                                            <span ng-show="form.Password.$error.minlength">Password must be 6 characters Long</span>
+                                        </span>
+                                    </div>
+
+                                </div>
+                            </div>*@
+                            <div class="form-group">
+                                <label class="control-label">Vendor Code *</label>
+                                <div class="row">
+                                    <div class="col-lg-4 col-sm-6">
+                                        <input id="VendorCode" type="text" maxlength="50" class="form-control" ng-model="model.VendorCode">
+                                    </div>
+
+                                </div>
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <div class="col-lg-3 col-sm-3">
+                                <button type="button" class="btn btn-primary" ng-disabled="!form.$valid" ng-click="Create()">Create</button>
+                            </div>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+        <div class="col-lg-12">
+            <div class="box">
+                <div class="box-header" data-original-title>
+                    <h2><i class="fa fa-user"></i><span class="break"></span>Users</h2>
+                    <div class="box-icon">
+                        <a href="table.html#" class="btn-minimize"><i class="fa fa-chevron-up"></i></a>
+                    </div>
+                </div>
+                <div class="box-content">
+                    @{ Html.RenderPartial("_ListUserList"); }
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script src="~/app/controllers/Roles/AssignRoles.js"></script>
+

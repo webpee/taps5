@@ -1,0 +1,85 @@
+﻿<table class="table table-striped table-bordered table-condensed bootstrap-datatable datatable">
+    @*<thead>
+            <tr>
+                <th style="width:4%; text-align:center">No</th>
+                <th style="width: 25%; text-align: center">Parts Info</th>
+                <th style="width: 25%; text-align: center">Condition</th>
+                <th style="width: 8%; text-align: center">Warranty Period</th>
+                <th style="width: 10%; text-align: center">Responsible for Warranty</th>
+                <th style="width: 4%; text-align: center">Quantity</th>
+                <th style="width: 10%; text-align: center">Each Unit Price(RM)</th>
+                <th style="width: 10%; text-align: center">Price(RM)</th>
+                <th style="width: 4%; text-align: center">Remove</th>
+            </tr>
+        </thead>*@
+    <tbody>
+        <tr ng-repeat="o in lstCartDetail">
+            @*<td style="width:4%; text-align:center">{{o.RowNum}}</td>*@
+            <td>
+                {{o.ProductName}}
+            </td>
+            <table>
+                <tr>
+                    <td><b>Condition:</b></td>
+                    <td>
+                        {{o.Condition}}
+                    </td>
+                </tr>
+                <tr>
+                    <td><b>Warranty Period:</b></td>
+                    <td ng-if="o.Warranty == null">
+                        Nil
+                    </td>
+                    <td ng-if="o.Warranty != null">
+                        {{o.Warranty}} month(s))
+                    </td>
+                </tr>
+                <tr>
+                    <td><b>Price:</b></td>
+                    <td>
+                        @*{{}}*@
+                    </td>
+                </tr>
+                <tr>
+                    <td><b>Qauntity:</b></td>
+                    <td>
+                        <input type="number" min="1" max="20" step="1" value="{{o.Qauntity}}" ng-model="o.Qauntity" />
+                        <a href="#" title="Save" ng-click="SaveItem(o,o.id)" style="color:blue;">Save</a>
+                    </td>
+                    <td>
+                        {{o.RegularPrice | number:2}}
+                    </td>
+                    <td>
+                        {{o.Qauntity * o.RegularPrice | number:2}}
+                    </td>
+                </tr>
+                <tr>
+                    <td class="center">
+                        <a href="#" class="btn btn-danger" ng-really-message="Are you sure you want to Remove this Item ?" ng-really-click="RemoveItem(o.id)" title="Remove" data-rel="tooltip">
+                            <i class="fa fa-trash-o"></i>
+                        </a>
+                    </td>
+                </tr>
+            </table>
+     </tr>
+    </tbody>
+    <tfoot>
+        <tr>           
+            <th colspan="3">TOTAL PRICE(RM) :</th>
+            <th>{{model.Total | number:2}}</th>
+            <th></th>
+        </tr>
+    </tfoot>
+</table>
+<br />
+<b>
+    <span>QUP - Quality Used Parts</span><br />
+    <span>UP - Used Parts</span><br />
+    <span>OEM - Original Equipment Manufacturer</span>
+</b>
+<nav>
+    <ul class="pager">
+        <li class="previous"><a href="#"><span aria-hidden="true">&larr;</span> Back</a></li>
+        <li class="next"><a href="#">Next <span aria-hidden="true">&rarr;</span></a></li>
+    </ul>
+</nav>

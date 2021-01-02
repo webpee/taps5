@@ -1,0 +1,195 @@
+﻿@{
+    ViewBag.Title = "Faq & Help";
+    Layout = "~/Views/Shared/_OnlyLayout.cshtml";
+}
+<script type="text/javascript">
+    $(document).ready(function () {
+        $(document).on('click', '.col-exp.close', function () {
+            $(this).attr('src', '/Areas/FrontTaps/Img/left.png');
+            sval = $('.form').serialize();
+            $(this).addClass('open');
+            $(this).removeClass('close');
+            $(this).parent('li').find('ul:first').show();
+        })
+
+        $(document).on('click', '.col-exp.open', function () {
+            sval = $('.form').serialize();
+            $(this).attr('src', '/Areas/FrontTaps/Img/left.png');
+            $(this).addClass('close');
+            $(this).removeClass('open');
+            $(this).parent('li').find('ul:first').hide();
+        })
+    });
+</script>
+<style type="text/css">
+    #nav a.active {
+        background-color: #ee1c25;
+        color: #fff;
+    }
+
+    .open {
+        background: none;
+        -webkit-transform: rotate(90deg);
+    }
+
+    li {
+        list-style: none;
+    }
+
+    .part-right-padding {
+        padding: 1px 15px 1px 15px;
+    }
+</style>
+<div>
+    <div class="body-part">
+        <div class="part-right-padding">
+            <div class="part-right">
+                <div class="sub-menu" style="margin-bottom: -35px">
+                    <ul>
+                        <li><a href="/Parts/Parts">Select Parts</a></li>
+                        <li id="nav"><a href="/Cart/ShoppingCart" class="active">Shopping Cart</a></li>
+                        <li><a href="/Address/DeliveryAddress">Delivery option</a></li>
+                        <li><a href="/OrderSummary/Index">Summary</a></li>
+                        <li><a href="#">Payment</a></li>
+                    </ul>
+                </div>
+            </div>
+            <div class="clear"></div>
+            <div ng-controller="ShoppingCartCtrl">
+                <div class="condition">
+                    <table class="tableCart" align="center">
+                        <tr>
+                            <th style="width:5%">
+                                No.
+                                @if (User.Identity.Name != string.Empty)
+                                {
+                                    <input type="checkbox" id="CheckDB" ng-click="toggleSeleted()">
+                                }
+                                else
+                                {
+                                    <input type="checkbox" id="CheckLocal" ng-click="toggleCartSeleted()">
+                                }
+                            </th>
+                            <th style="width:30%"> Parts Info. </th>
+                            <th style="width:9%"> Quality </th>
+                            <th style="width:12%"> Warranty Period </th>
+                            <th style="width:10%"> Responsible for Warranty </th>
+                            <th style="width:9%"> Quantity </th>
+                            <th style="width:12%"> Each Unit Price(RM) </th>
+                            <th style="width:13%"> Price(RM) </th>
+                        </tr>
+                        @if (User.Identity.Name != string.Empty)
+                        {
+                            <tr ng-show="model.CartFlag">
+                                <td colspan="8">
+                                    <label id="n2"><h3>You Do Not Have Any Item(s) in Your Cart</h3></label><br>
+                                </td>
+                            </tr>
+                            <tr ng-repeat="o in lstCartDetail" ng-show="!model.CartFlag">
+                                <td>
+                                    <label id="n2">{{$index + 1}}</label><br>
+                                    <input type="checkbox" value="{{o.id}}" ng-checked="o.checked" ng-model="o.checked">
+                                </td>
+                                <td> {{o.ProductName}} </td>
+                                <td style="text-align:center"> {{o.Condition}} </td>
+                                <td ng-if="o.Warranty == null">
+                                    Nil
+                                </td>
+                                <td ng-if="o.Warranty != null">
+                                    {{o.Warranty}} month(s)
+                                </td>
+                                <td> Nil </td>
+                                <td>
+                                    <input type="button" class="btnQty" value="-" ng-model="o.Qauntity" ng-click="MinusQuantity(o)">
+                                    {{o.Qauntity}}
+                                    <input type="button" class="btnQty" value="+" ng-model="o.Qauntity" ng-click="PlusQuantity(o)">
+                                </td>
+                                <td style="text-align:right"> {{o.SalePrice | number:2}} </td>
+                                <td style="text-align:right"> {{o.Qauntity * o.SalePrice | number:2}} </td>
+                            </tr>
+                        }
+                        else
+                        {
+                            <tr ng-show="model.CartCookieFlag">
+                                <td colspan="8">
+                                    <label id="n2"><h3>You Do Not Have Any Item(s) in Your Cart</h3></label><br>
+                                </td>
+                            </tr>
+                            <tr ng-repeat="o in lstCartItems" ng-show="!model.CartCookieFlag">
+                                <td>
+                                    <label id="n2">{{$index + 1}}</label><br>
+                                    <input type="checkbox" id="chkFirst" class="case" ng-checked="o.checked" ng-model="o.checked">
+                                </td>
+                                <td> {{o.ProductName}} </td>
+                                <td style="text-align:center"> {{o.Condition}} </td>
+                                <td ng-if="o.Warranty == null">
+                                    Nil
+                                </td>
+                                <td ng-if="o.Warranty != null">
+                                    {{o.Warranty}} month(s)
+                                </td>
+                                <td> Nil </td>
+                                <td>
+                                    <input type="button" class="btnQty" value="-" ng-model="o.Qauntity" ng-click="DecrementQauntity(o)">
+                                    {{o.Qauntity}}
+                                    <input type="button" class="btnQty" value="+" ng-model="o.Qauntity" ng-click="IncrementQauntity(o)">
+                                </td>
+                                <td style="text-align:right"> {{o.SalePrice | number:2}} </td>
+                                <td style="text-align:right"> {{o.Qauntity * o.SalePrice | number:2}} </td>
+                            </tr>
+                        }
+                    </table>
+                    <div class="inside_main_Cart">
+                        <div style="width:65%;float:left;">
+                            @if (User.Identity.Name != string.Empty)
+                            {
+                                <input type="button" class="btnRed" value="REMOVE" ng-click="RemoveItemDb()">
+                            }
+                            else
+                            {
+                                <input type="button" class="btnRed" value="REMOVE" ng-click="RemoveItemCookie()">
+                            }
+                            <small>(Tick the check box and press the REMOVE button to remove a product.)</small> <br>
+                            <br>
+                            <small>
+                                <b>
+                                    REMAN: Remanufactured Parts<br />
+                                    GQUP: Good Quality Used Parts<br />
+                                    NP-Ori: New Parts - Original<br />
+                                    NP-Non-Ori: New Parts - Non-Original<br />
+                                    SP-Ori: Service Parts - Original<br />
+                                    SP-Non-Ori: Service Parts - Non-Original<br />
+                                    BTR: Batteries<br />
+                                    O&L: Oils and Lubricants<br />
+                                </b>
+                            </small>
+                        </div>
+                        <div style="width:30%; float:right;">
+                            <label id="total"><b>TOTAL PRICE(RM):</b></label>
+                            &nbsp;&nbsp;&nbsp;
+                            @if (User.Identity.Name != string.Empty)
+                            {
+                                <label id="total"><b>{{model.Total | number:2}}</b></label>
+                            }
+                            else
+                            {
+                                <label id="total"><b>{{model.TotalinCookie | number:2}}</b></label>
+                            }
+                            <br>
+                        </div>
+                        <div style="clear:both;"> </div>
+                        <br>
+                    </div>
+                </div>
+                <div class="price-tag">
+                    <input type="button" class="btn btnBlack" value="BACK" ng-click="Back()">
+                    <input type="button" class="btn btnBlack right" value="NEXT" ng-click="Next()">
+                    <br>
+                </div>
+            </div>
+        </div>
+        <div class="clear"></div>
+    </div>
+</div>
+
+<script src="~/Areas/FrontTaps/app/controllers/Cart/ShoppingCart.js"></script>

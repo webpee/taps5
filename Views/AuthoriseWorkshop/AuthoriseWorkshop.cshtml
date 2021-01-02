@@ -1,0 +1,325 @@
+﻿@{
+    ViewBag.Title = "AuthoriseWorkshop";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+@*<script src="http://maps.googleapis.com/maps/api/js?key=&sensor=false&extension=.js"></script>
+    <style>
+        #map {
+            height: 400px;
+            width: 100%;
+        }
+
+        .infoWindowContent {
+            font-size: 14px !important;
+            border-top: 1px solid #ccc;
+            padding-top: 10px;
+        }
+
+        h2 {
+            margin-bottom: 0;
+            margin-top: 0;
+        }
+    </style>*@
+
+<style>
+    #map-canvas {
+        height: 98%;
+        margin: 0px;
+        margin-left: -10px;
+        padding: 4px;
+        width: 101%;
+    }
+
+    .content {
+        padding: 0 !important;
+        position: absolute !important;
+        top: 40px !important;
+        right: 0 !important;
+        left: 0 !important;
+        height: 200px !important;
+    }
+
+    .controls {
+        margin-top: 16px;
+        border: 1px solid transparent;
+        border-radius: 2px 0 0 2px;
+        box-sizing: border-box;
+        -moz-box-sizing: border-box;
+        height: 32px;
+        outline: none;
+        box-shadow: 0 2px 6px rgba(0, 0, 0, 0.3);
+    }
+
+    #pac-input {
+        background-color: #fff;
+        padding: 0 11px 0 13px;
+        width: 400px;
+        font-family: Roboto;
+        font-size: 15px;
+        font-weight: 300;
+        text-overflow: ellipsis;
+    }
+
+        #pac-input:focus {
+            border-color: #4d90fe;
+            margin-left: -1px;
+            padding-left: 14px; /* Regular padding-left + 1. */
+            width: 401px;
+        }
+
+    .pac-container {
+        font-family: Roboto;
+    }
+
+    #type-selector {
+        color: #fff;
+        background-color: #4d90fe;
+        padding: 5px 11px 0px 11px;
+    }
+
+        #type-selector label {
+            font-family: Roboto;
+            font-size: 13px;
+            font-weight: 300;
+        }
+</style>
+
+<div ng-controller="AuthorisedWorkshopCtrl">
+    <div class="part-right" style="float:none;width:100%">
+        @*<div class="part-one">
+                <div class="list"><img src="~/Areas/FrontTaps/Img/list.png" /> </div>
+                <div class="search">
+                    <form id="tfnewsearch" method="get" action="http://www.google.com">
+                        <input type="text" class="tftextinput" name="q" size="21" maxlength="120">
+                        <input type="submit" value="SEARCH!" class="tfbutton">
+                    </form>
+                </div>
+                <div class="clear"></div>
+            </div>*@
+        @*<div ng-controller="FilterCtrl">
+                <div class="filter" ng-show="model.IdFilter==false">
+                    <div class="filter-left">
+                        <div class="btn-group">
+                            <select id="make" ng-model="model.Make" ng-change="FillModelData()">
+                                <option value="">-Make-</option>
+                                <option ng-repeat="o in lstGetAllMake" value="{{o.id}}">{{o.Make}}</option>
+                            </select>
+                            <select id="Model" ng-model="model.Model" ng-change="GetVehicles()" ng-disabled="model.Make==0">
+                                <option value="">-Model-</option>
+                                <option ng-repeat="o in lstGetModel" value="{{o.id}}">{{o.Name}}</option>
+                            </select>
+                            <span class="lorem"><a href="#" ng-click="Reset()">Clear Filter</a></span>
+                        </div>
+                    </div>
+                    <div class="filter-right">
+                        <div class="filt">
+                            <a href="#" ng-click="showFilter()">FILTER</a>
+                            <div class="your">
+                                <div class="styled-select4 slate4">
+                                    <select id="VehicleDetails" ng-model="model.VehicleDetails" ng-disabled="model.Model==0">
+                                        <option value="">YourVehicle(s)</option>
+                                        <option ng-repeat="vl in lstVehicle" value="{{vl.id}}">{{vl.Make}}{{" "}}{{" "}}({{vl.ModelName}}){{" "}}{{vl.TrimName}}{{" "}}{{vl.EngineName}}(cc){{" "}}{{vl.TransmissionName}}</option>
+                                    </select>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="filter" ng-show="model.IdFilter==true">
+                    <div class="filter-left">
+                        <div class="btn-group">
+                            <select id="year" ng-model="model.Year" ng-change="GetAllTrimByYearId(model.Year)">
+                                <option value="">-AnyYear-</option>
+                                <option ng-repeat="o in lstYearData" value="{{o.idYear}}">{{o.Year}}</option>
+                            </select>
+                            <select id="trim" ng-model="model.Trim" data-toggle="dropdown" ng-disabled="model.Year==0">
+                                <option value="">-AnyTrim-</option>
+                                <option ng-repeat="o in lstTrimData" value="{{o.idTrim}}">{{o.TrimName}}</option>
+                            </select>
+                            <span class="lorem"><a href="#" ng-click="ClearData()">Clear Filter</a></span>
+                        </div>
+                        <div style="margin-left:5px; margin-top:20px;">
+                            <span style="font-size:12px;float:left;margin-top:5px;">Selected Vehicle :</span>
+                            <div class="full-attribute city">
+                                <div class="attribute">
+                                    <div class="attribute-name">
+                                        <p ng-repeat="vl in lstVehicle" ng-show="model.VehicleDetails=={{vl.id}}">{{vl.Make}}{{" "}}{{" "}}({{vl.ModelName}}){{" "}}{{vl.TrimName}}{{" "}}{{vl.EngineName}}(cc){{" "}}{{vl.TransmissionName}}</p>
+                                    </div>
+                                    <div class="close-attribute">
+                                        <div class="img" ng-click="Reset()"></div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="filter-right">
+                        <div class="filt">
+                            <a href="#">filter</a>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="select">
+                    <div class="lorem1"> <span>Enter your vehicle registration number to select your vehicle model, year, cc.</span> </div>
+                    <div class="ex">
+                        <div class="exampale">
+                            <form id="tfnewsearch" method="get" action="">
+                                <input type="text" class="sel-search" name="q" size="21" maxlength="120" placeholder="Example:BJR9022">
+                            </form>
+                        </div>
+                        <div class="sel"> <a href="#">SELECT</a> </div>
+                    </div>
+                </div>
+                <div class="clear"></div>
+            </div>*@
+        <div class="condition">
+            <span>TAPS AUTHORISED WORKSHOP</span>
+            <div class="condition-chec" style="height: 400px;">
+                <div class="map" style="height: 400px; padding-left: 10px; width: 98.15%; " id="map">
+                    <input id="pac-input" class="controls" type="text" placeholder="Search Box">
+                    <div id="map-canvas"></div>
+                </div>
+            </div>
+            <span class="spanHead">TAPS AUTHORISED WORKSHOP</span>
+            <div class="condition-chec">
+                <div class="inside_main">
+                    <b><small>Use the search bar  or select from dropdown:</small></b><br>
+                    <div class="form-input">
+                        <div>
+                            <input type="text" name="name" id="Selection" ng-model="model.SearchWorkshope" placeholder="Search TAPS Authorised Workshop" class="search-text" style="width:300px;" />
+                            <a class="btn" href="#" ng-click="GetAllWorkshopsByName()">SEARCH</a>
+                        </div>
+
+                    </div>
+                    <div class="form-input">
+                        <div class="form-input">
+                            <div class="styled-select1 slate1">
+                                <select id="idCountry" ng-model="model.idCountry" class="form-control" disabled>
+                                    <option value="">-Select Country-</option>
+                                    <option ng-repeat="o in lstCountry | orderBy:'Country'" ng-selected="o.id==10" value="{{o.id}}">{{o.Country}}</option>
+                                </select>
+                            </div>
+                            <div class="styled-select1 slate1">
+                                <select id="idState" ng-model="model.State" class="form-control" ng-required="true" ng-change="GetCityByStateId(model.State)">
+                                    <option value="">State/Province</option>
+                                    <option ng-repeat="o in Statelst | orderBy:'Name'" ng-selected="o.id == model.State" ng-show="o.idCountry==10" value="{{o.id}}">{{o.Name}}</option>
+                                </select>
+                            </div>
+                            <div class="styled-select2 slate2">
+                                <select id="idCity" ng-model="model.City" class="form-control" ng-required="true" ng-disabled="model.State ==''" ng-change="FilterWorkshopeList(model.State,model.City)">
+                                    <option value="">City/Town</option>
+                                    <option ng-repeat="o in lstCity | orderBy:'Name'" ng-selected="o.id == model.City" value="{{o.id}}">{{o.Name}}</option>
+                                </select>
+                            </div>
+                        </div>
+                        <div class="styled-select3 slate3">
+                            <select id="idWorkshope" ng-model="model.idWorkshope">
+                                <option value="">TAPS Authorised Workshop</option>
+                                <option ng-repeat="o in workshopeList | orderBy:'Name'" ng-selected="model.SearchWorkshope==o.Name" value="{{o.id}}">{{o.Name}}</option>
+                            </select>
+
+                        </div>
+                        <div class="styled slate3">
+                            <a href="#" ng-click="Reset()">Clear</a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div ng-show="ListOfWorkshopForDropDown.length>0">
+                <span class="spanHead">Search Result(s) For TAPS AUTHORISED WORKSHOP</span>
+                <div class="condition-chec">
+                    <div class="inside_main">
+                        <div class="col-lg-12 col-md-12 col-sm-12">
+                            <table class="wishlist-table" style="width:100%;margin-bottom:0px;">
+                                <tr align="center">
+                                    <td>No</td>
+                                    <td>WorkShop Name</td>
+                                    <td>Address</td>
+                                    <td>Action</td>
+                                </tr>
+                                <tr align="center" ng-repeat="o in ListOfWorkshopForDropDown | startFrom:(currentPage-1)*entryLimit | limitTo:entryLimit">
+                                    <td>{{$index+1}}</td>
+                                    <td>{{o.Name}}</td>
+                                    <td>{{o.Address}}</td>
+                                    <td><a class="btn btn-warning" title="Select TAPS AUTHORISED WORKSHOP" style="color:white;" ng-click="SelectTapsAuthWorkshop(o)">Select</a></td>
+                                </tr>
+                            </table>
+                            <div class="pagenation" id="pagenation">
+                                <pagination page="currentPage" style="cursor:pointer" class="pull-right" max-size="noOfPages" total-items="totalItems" items-per-page="entryLimit" data-boundary-links="false"></pagination>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div ng-show="ViewNoData==1">
+                <span class="spanHead">No Result Found.</span>
+            </div>
+
+            <span class="spanHead" style="margin-top:30px;">RECOMMEND WORKSHOP TO BE TAPS AUTHORISED WORKSHOP</span>
+            <div class="condition-chec">
+                <div class="inside_main">
+                    <form role="form"
+                          id="form"
+                          name="form"
+                          class="form-horizontal"
+                          novalidate
+                          ng-submit="formSubmit()">
+                        <input type="hidden" value="{{model.id}}" ng-model="model.id" />
+                        <div class="form-input" style="width:60%;">
+
+                            <div>
+                                <div class="form-input">
+                                    <b><small>*WORKSHOP NAME</small></b><br>
+                                    <input id="wname" ng-model="model.Name" maxlength="255" required class="wname border" type="text">
+                                </div>
+                                <div class="form-input">
+                                    <b><small>*TELEPHONE NO.</small></b><br>
+                                    <input id="search" ng-model="model.ContactNumber" numbers-only required class="border" type="text">
+                                </div>
+                            </div>
+                            <div>
+                                <div class="form-input">
+                                    <b><small>NAME OF PERSON TO CONTACT</small></b><br>
+                                    <input id="pname" ng-model="model.PersonInCharge" required maxlength="50" class="pdetail border" type="text">
+                                </div>
+                                <div class="form-input">
+                                    <b><small>EMAIL</small></b><br>
+                                    <input id="email" ng-model="model.Email" required class="pdetail border" type="email">
+                                </div>
+                            </div>
+                            <div class="form-input">
+                                <b><small>STATE/PROVINCE</small></b><br>
+                                <div class="styled-select1 slate1">
+                                    <select id="state" ng-model="model.idState" required ng-change="GetCityByStateId(model.idState)">
+                                        <option value="">State/Province</option>
+                                        <option ng-repeat="o in Statelst" ng-show="o.idCountry==10" value="{{o.id}}">{{o.Name}}</option>
+                                    </select>
+                                </div>
+                            </div>
+                            <div class="form-input">
+                                <b><small>CITY/TOWN</small></b><br>
+                                <div class="styled-select2 slate2">
+                                    <select id="city" ng-model="model.idCity" required>
+                                        <option value="">City/Town</option>
+                                        <option ng-repeat="o in lstCity" value="{{o.id}}">{{o.Name}}</option>
+                                    </select>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="form-input" style="width:38%;">
+                            <div>
+                                <p class="note">***Please note: The application of TAPS Authorised Workshop may be completed in a matters of hours, or take up to a couple of days depending on the response of the workshop.</p>
+                                <button id="btnSubmit" class="btn btnsubmit" ng-disabled="!form.$valid" value="SUBMIT WORKSHOP" ng-click="SubmitWorkshope(model)">SUBMIT WORKSHOP</button><br><br>
+                            </div>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<script src="~/Areas/FrontTaps/app/controllers/AuthorisedWorkshop/AuthorisedWorkshop.js"></script>
+<script src="~/Areas/FrontTaps/app/controllers/Filter/Filter.js"></script>
+
+<script src="https://maps.googleapis.com/maps/api/js?v=3.exp&signed_in=true&libraries=places"></script>

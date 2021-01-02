@@ -1,0 +1,80 @@
+﻿@{
+    ViewBag.Title = "Index";
+    Layout = "~/Areas/TapsAdmin/Views/Shared/_OrderLayout.cshtml";
+}
+
+<div id="tab-container" class='tab-container yellow' ng-controller="LogisticCtrl">
+    <ul class='etabs'>
+        <li class='tab'><a href="#order">ORDER (10)</a></li>
+    </ul>
+    <div class='panel-container'>
+        <div id="order">
+            <div class="body-part_order">
+                <div class="orderDetail">
+                    <div class="left-action">
+                        <ul>
+                            <li><input type="checkbox" id="chkFirst" ng-click="toggleSeleted()"></li>
+                            <li><a href="#" class="pick" ng-click="UpdateOrderStatus(3)">Picking-up<br />Order</a></li>
+                            <li><a href="#" class="deliver" ng-click="UpdateOrderStatus(2)">Delivering<br />Order</a></li>
+                            <li><a href="#" class="complete" ng-click="UpdateOrderStatus(5)">Complete<br />Delivery</a></li>
+                            <li><a href="#" class="on-hold" ng-click="UpdateOrderStatus(1)">Mark<br />On-hold</a></li>
+                        </ul>
+                    </div>
+                    <div class="right-action">
+                        <ul>
+                            <li><a href="#" class="export">Export<br />Orders</a></li>
+                            <li><a href="#" class="print">Print<br />Orders</a></li>
+                        </ul>
+                    </div>
+                    <div class="clear"></div>
+                </div>
+                <table class="tableOrder yellow order-act" align="center">
+                    <tr>
+                        <th> No.</th>
+                        <th>Status</th>
+                        <th> Date & Time </th>
+                        <th> Order ID </th>
+                        <th> Parcel Value </th>
+                        <th> Pick-up Address </th>
+                        <th> Delivery Address </th>
+                        <th></th>
+                    </tr>
+                    <tr ng-repeat="o in lstLogistic">
+                        <td>
+                            <label id="n2">{{$index + 1}}</label>
+                            <br>
+                            <input type="checkbox" id="chkFirst" ng-checked="o.checked" ng-model="o.checked" value="{{o.id}}">
+                        </td>
+                        <td> {{o.Status}} </td>
+                        <td>
+                            {{o.CreatedOnUtc}}
+                        </td>
+                        <td> {{o.id}} </td>
+                        <td> RM {{o.PriceInclTax | number:2}} </td>
+                        <td>{{o.PickupAddress}}</td>
+                        <td>{{o.ShippingAddress}}</td>
+                        <td></td>
+                    </tr>
+                </table>
+                <div class="pagenation">
+                    <ul>
+                        <li><a href="#">&lt;&lt;</a></li>
+                        <li><a href="#">&lt;</a></li>
+                        <li><a href="#">1</a></li>
+                        <li><a href="#">2</a></li>
+                        <li><a href="#">3</a></li>
+                        <li><a href="#">4</a></li>
+                        <li><a href="#">&gt;</a></li>
+                        <li><a href="#">&gt;&gt;</a></li>
+                    </ul>
+                </div>
+                <div class="clear"></div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script src="~/Areas/TapsAdmin/app/controllers/Logistic/Logistic.js"></script>
+
+
+

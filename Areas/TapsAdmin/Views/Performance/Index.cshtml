@@ -1,0 +1,118 @@
+﻿
+<!doctype html>
+<html>
+<head>
+    <meta charset="utf-8">
+    <title>Supplier's Performance</title>
+    <link href="~/Areas/TapsAdmin/Css/style.css" rel="stylesheet" />
+
+</head>
+<body>
+    <div class="main-body">
+        <div class="padding">
+            <div class="logo">
+                <a href="#" class="sup-logo">Supplier's Performance</a>
+                <ul class="sup-sort">
+                    <li><a href="#">All (2)</a></li>
+                    <li><a href="#">Sort Supplier Performance</a></li>
+                </ul>
+                <div class="sup-filter">
+                    <select>
+                        <option>Supplier Name</option>
+                        <option>Supplier Name 2</option>
+                        <option>Supplier Name 3</option>
+                    </select>
+                    <input type="submit" value="Filter" />
+                </div>
+            </div>
+            <div class="history">
+                <div class="sup-search">
+                    <input type="text" />
+                    <input type="submit" value="Search" />
+                </div>
+                <ul class="time-filter">
+                    <li><a href="#" class="active">All Time</a></li>
+                    <li><a href="#">Current year</a></li>
+                    <li><a href="#">Current Month</a></li>
+                    <li><a href="#">Last 30 Days</a></li>
+                    <li><a href="#">Last 7 Days</a></li>
+                    <li>Custom : <a href="#">dd-mm-yy dd-mm-yy</a></li>
+                    <li><a href="#" class="go">Go</a></li>
+                </ul>
+            </div>
+            <div class="clear"></div>
+        </div>
+        <div class="header_bottom"> </div>
+        <div class="body-padding">
+            <div class="sup-table">
+                <div class="orderDetail">
+                    <div class="left-action">
+                        <ul>
+                            <li><input type="checkbox" id="chkFirst"></li>
+                            <li><a href="#" class="view-sup">View<br />Supplier</a></li>
+                        </ul>
+                    </div>
+                    <div class="right-action">
+                        <div class="pagenation">
+                            <ul>
+                                <li><a href="#">&lt;&lt;</a></li>
+                                <li><a href="#">&lt;</a></li>
+                                <li><input type="text" value="1" /></li>
+                                <li style="padding-top: 6px;">of 1</li>
+                                <li><a href="#">&gt;</a></li>
+                                <li><a href="#">&gt;&gt;</a></li>
+                            </ul>
+                        </div>
+                    </div>
+                    <div class="clear"></div>
+                </div>
+                <table class="supplier" align="center">
+                    <tr>
+                        <th> No.</th>
+                        <th>Supplier Name</th>
+                        <th>Supply Success Rate</th>
+                        <th>Average Response Time</th>
+                        <th>No-Stock</th>
+                        <th>Total Supplied</th>
+                        <th>QUP Supplied</th>
+                        <th>UP Supplied</th>
+                        <th>OEM Supplied</th>
+                    </tr>
+                    <tr>
+                        <td>
+                            <label id="n2">1</label>
+                            <br>
+                            <input type="checkbox" id="chkFirst">
+                        </td>
+                        <td>Wanli Auto Parts</td>
+                        <td>90.90%</td>
+                        <td>10 Hours 15 Minite(s)</td>
+                        <td>2 item(s)</td>
+                        <td>20 item(s)</td>
+                        <td>5 item(s)</td>
+                        <td>10 item(s)</td>
+                        <td>5 item(s)</td>
+                    </tr>
+                    <tr>
+                        <td>
+                            <label id="n2">2</label>
+                            <br>
+                            <input type="checkbox" id="chkSecond">
+                        </td>
+                        <td>Chang Hang Car Parts Supply</td>
+                        <td>73.68%</td>
+                        <td>10 Hours 15 Minite(s)</td>
+                        <td>5 item(s)</td>
+                        <td>14 item(s)</td>
+                        <td>10 item(s)</td>
+                        <td>4 item(s)</td>
+                        <td>0 item(s)</td>
+                    </tr>
+                </table>
+
+            </div>
+        </div>
+    </div>
+</body>
+</html>
+

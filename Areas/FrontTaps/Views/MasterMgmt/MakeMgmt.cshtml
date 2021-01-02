@@ -1,0 +1,63 @@
+﻿@{
+    ViewBag.Title = "MakeMgmt";
+    Layout = "~/Areas/FrontTaps/Views/Shared/_Layout.cshtml";
+}
+
+<div ng-controller="MakeCtrl">
+    <div class="row">
+        <div class="col-lg-12">
+            <div class="box">
+                <div class="box-header">
+                    <h2><i class="fa fa-edit"></i>Make Management</h2>
+                    <div class="box-icon">
+                        <a href="form-elements.html#" class="btn-minimize"><i class="fa fa-chevron-up"></i></a>
+                    </div>
+                </div>
+                <div class="box-content">
+                    <form role="form"
+                          id="form"
+                          name="form"
+                          class="form-horizontal"
+                          novalidate
+                          ng-submit="formSubmit()">
+                        <input type="hidden" value="{{model.id}}" ng-model="model.id" />
+                        <div class="form-group">
+                            <label class="control-label">Make :-</label>
+                            <div class="input-group col-sm-4">
+                                <input id="Make" type="text" maxlength="50" class="form-control" ng-required="true" ng-model="model.Make">
+                            </div>
+                        </div>
+                        <br />
+                        <div class="form-actions">
+                            <button type="button" class="btn btn-primary" ng-disabled="!form.$valid" ng-click="Create(model)">Save</button>
+                            <button type="reset" class="btn" ng-click="Reset()">Cancel</button>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+        <div class="col-lg-12">
+            <div class="box">
+                <div class="box-header" data-original-title>
+                    <h2><i class="fa fa-user"></i><span class="break"></span>Make Management List</h2>
+                    <div class="box-icon">
+                        <a href="table.html#" class="btn-minimize"><i class="fa fa-chevron-up"></i></a>
+                    </div>
+                </div>
+                <div class="box-content">
+                    <div class="col-lg-8">
+                    </div>
+                    <div class="col-lg-1">
+                        <h4>Search :</h4>
+                    </div>
+                    <div class="col-lg-3">
+                        <input id="Search" type="text" maxlength="50" class="form-control" ng-model="model.SearchText5" ng-change="BlankSearch(model.SearchText5)" ng-enter="filter(model.SearchText5)" ng-focus="filter(SearchText5)" ng-blur="filter(model.SearchText5)">
+                    </div>
+                    <br /><br />
+                    @{ Html.RenderPartial("_ListMakeMgmtList"); }
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<script src="~/app/controllers/MasterMgmt/MakeMgmt.js"></script>

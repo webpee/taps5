@@ -1,0 +1,263 @@
+﻿@{
+    ViewBag.Title = "Order";
+    Layout = "~/Views/Shared/_OrderLayout.cshtml";
+}
+<style type="text/css">
+    body {
+        font-size: 14px;
+    }
+
+    .body-part_order {
+        background-color: #f5e6a1;
+        border: 1px solid #46422F;
+        border-radius: 0;
+    }
+
+    .logo {
+        margin-top: 0;
+    }
+
+        .logo img {
+            height: 70px;
+            margin-left: 50px;
+        }
+
+    .padding {
+        padding: 10px 20px 5px;
+    }
+
+    .welcome {
+        margin-left: 5px;
+        padding: 15px;
+        float: left;
+        font-weight: bold;
+    }
+
+    .searchbar {
+        float: right;
+        padding: 15px;
+    }
+
+    .welcome .welcomeMsg {
+        margin-bottom: 5px;
+    }
+
+    .back {
+        margin-right: 15px;
+        color: #005FC1;
+    }
+
+    .textinput {
+        border: 1px solid #46422f;
+        border-radius: 3px;
+        float: left;
+        margin-right: 10px;
+        padding: 3px;
+    }
+
+    .styled-select {
+        float: left;
+        border: 1px solid;
+        border-radius: 3px;
+        margin-right: 10px;
+    }
+
+        .styled-select.slate select {
+            border: 0px;
+        }
+
+    .btnSearch {
+        float: left;
+        border: 1px solid #000;
+        border-radius: 3px;
+        padding: 3px 15px;
+        font-weight: bold;
+        font-size: 12px;
+        cursor: pointer;
+        margin-right: 10px;
+    }
+
+    .tableOrder {
+        border-collapse: collapse;
+        font-size: 13px;
+        font-weight: bold;
+        padding: 0;
+        width: 100%;
+        border-top: none;
+        border-left: none;
+        border-right: none;
+    }
+
+    th, td {
+        padding: 10px;
+        border: 1px solid #000;
+    }
+
+    .tableOrder tr td:first-child, .tableOrder tr th:first-child {
+        text-align: center;
+        width: 20px;
+        border-left: none;
+    }
+
+    .tableOrder tr td:last-child, .tableOrder tr th:last-child {
+        width: 150px;
+        border-right: none;
+    }
+
+    .tableOrder tr td:nth-child(2) {
+        text-align: center;
+        width: 80px;
+    }
+
+    .tableOrder tr td:nth-child(3) {
+        width: 100px;
+    }
+
+    .tableOrder tr td:nth-child(4) {
+        width: 50px;
+    }
+
+    .tableOrder tr td:nth-child(5) {
+        width: 120px;
+    }
+
+    td small {
+        color: #57565B;
+    }
+
+    .tabs {
+        padding: 10px 10px 5px;
+    }
+
+    .orderDetail {
+        padding: 10px;
+    }
+
+    .btnOrder {
+        border: 1px solid #000;
+        margin: 0 10px;
+    }
+
+    .tabs ul li {
+        margin: 3px;
+        border-bottom: 1px solid #595758;
+        font-weight: bold;
+    }
+
+    ul li {
+        margin: 3px;
+        cursor: pointer;
+    }
+
+    ul {
+        display: inline-flex;
+        list-style: outside none none;
+        margin: 0;
+        padding-left: 5px;
+    }
+
+    .pagenation {
+        padding: 15px;
+        color: #067D47;
+        font-weight: bold;
+    }
+
+    .btnPagination {
+        background: none;
+        border: none;
+        padding:;
+    }
+</style>
+<div ng-controller="OrderCtrl">
+    <div class="padding">
+        <div class="logo">
+            <img src="~/Areas/FrontTaps/Img/logo.jpg" />
+        </div>
+        <div class="welcome">
+            <div class="welcomeMsg">
+                <label>Welcome, GDEX.</label>
+            </div>
+            <a class="back" href="">Back to TAPS site</a><a class="back" href="">Logout</a>
+        </div>
+        <div class="searchbar">
+            <input type="text" class="textinput" ng-model="SearchText" />
+            <div class="styled-select slate">
+                <select>
+                    <option>Crieteria</option>
+                    <option>Crieteria1</option>
+                    <option>Crieteria2</option>
+                </select>
+            </div>
+            <button class="btnSearch">SEARCH</button>
+            <img src="~/Areas/FrontTaps/Img/remark.png" style="float: left;height:25px;" />
+            <label style="float: left;padding-top: 3px;">&nbsp;Remarks&nbsp;&nbsp;&nbsp;</label>
+            <img src="~/Areas/FrontTaps/Img/remark.png" style="float: left;height:25px;" />
+            <label style="float: left;padding-top: 3px;">&nbsp;Help</label>
+        </div>
+        <div class="clear"></div>
+    </div>
+    <div class="header_bottom"> </div>
+    <div class="body-padding">
+        <div class="tabs">
+            <div style="float: left;">ORDER (10)</div>
+            <div style="float: right;padding-right:15px;">
+                <i>Display per page</i>
+                <ul>
+                    <li> 20 </li>
+                    <li> 50 </li>
+                    <li> 100 </li>
+                </ul>
+            </div>
+            <div class="clear"></div>
+        </div>
+        <div class="body-part_order">
+            <div class="orderDetail">
+                <input type="checkbox" id="chkFirst">
+                <button id="pickupOrder" class="pickupOrder btnOrder"></button>
+                <button id="deliverOrder" class="deliverOrder btnOrder"></button>
+                <button id="completeOrder" class="completeOrder btnOrder"></button>
+                <button id="holdOrder" class="holdOrder btnOrder"></button>
+                <div style="float: right;padding-right:15px;">
+                    <button id="holdOrder" class="holdOrder btnOrder"></button>
+                    <button id="holdOrder" class="holdOrder btnOrder"></button>
+                </div>
+            </div>
+            <table class="tableOrder" align="center">
+                <tr>
+                    <th> No.</th>
+                    <th>Status</th>
+                    <th> Date & Time </th>
+                    <th> Order ID </th>
+                    <th> Parcel Value </th>
+                    <th> Pick-up Address </th>
+                    <th> Delivery Address </th>
+                    <th></th>
+                </tr>
+                <tr ng-repeat="o in OrderList | filter:SearchText | startFrom:(currentPage-1)*entryLimit | limitTo:entryLimit">
+                    <td>{{$index + 1}}<input type="checkbox" id="chkFirst" class="case" checklist-model="CheckListModel" checklist-value="o.id"></td>
+                    <td>{{o.Status}}</td>
+                    <td>{{o.PaidDateUtc}}</td>
+                    <td>{{o.OrderGuid}}</td>
+                    <td>RM {{o.OrderTotal}}</td>
+                    <td>{{o.BillingAddressId}}</td>
+                    <td>{{o.CustomerName}}  <br /> {{o.ShippingAddressName}}</td>
+                    <td></td>
+                </tr>
+            </table>
+            <div class="pagenation">
+                <ul style="cursor:pointer">
+                    <pagination page="currentPage" class="pull-right btnPagination" max-size="noOfPages" total-items="totalItems" items-per-page="entryLimit" data-boundary-links="true"></pagination>
+                </ul>
+            </div>
+            <div class="clear"></div>
+        </div>
+    </div>
+        
+</div>
+
+<script src="~/Areas/FrontTaps/app/controllers/Order/OrderList.js"></script>
+@*<script language="javascript">
+        $(function () {
+            $("#selectall").click(function () { $('.case').attr('checked', this.checked); }); $(".case").click(function () { if ($(".case").length == $(".case:checked").length) { $("#selectall").attr("checked", "checked"); } else { $("#selectall").removeAttr("checked"); } });
+        });
+    </script>*@

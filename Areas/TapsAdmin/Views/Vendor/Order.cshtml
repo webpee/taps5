@@ -1,0 +1,130 @@
+﻿@{
+    ViewBag.Title = "Index";
+    Layout = "~/Areas/TapsAdmin/Views/Shared/_AddItemLayout.cshtml";
+}
+
+<div class="content_inner" ng-controller="OrderCtrl">
+    <div class="content_inner_main">
+        <div class="product-slecetion-part">
+
+            <div class="product-status-left">
+                <div class="pro-checkbox"><input type="checkbox" id="chkFirst" ng-click="toggleSeleted()"></div>
+                <a class="pro-status-part process" ng-click="UpdateVendorOrderStatus(6)">Mark <br>Processing</a>
+                <a class="pro-status-part pickup" ng-click="UpdateVendorOrderStatus(4)">Ready For <br>Pick-up</a>
+                <a class="pro-status-part nostock" ng-click="UpdateVendorOrderStatus(7)">Mark <br>No-stock</a>
+                <div class="clear"></div>
+            </div>
+
+            <div class="product-status-right">
+                <a class="pro-status-part export" ng-click="ExportExcel()">Export <br>Orders</a>
+                <a class="pro-status-part van">Print Delivery <br>Instruction</a>
+                <a class="pro-status-part print">Print<br>Orders</a>
+                <div class="clear"></div>
+            </div>
+
+            <div class="clear"></div>
+        </div>
+        <div class="product-table-outter" id="exportable">
+            <table width="100%" cellpadding="0" cellspacing="0" border="0">
+                <tr>
+                    <th style="width:52px; height:30px; border-right:1px solid #000; border-bottom:1px solid #000; font-size:13px;">No.</th>
+                    <th style="background: url(/Areas/TapsAdmin/Img/icon-tringlebg.png) no-repeat 88% 50%; width: 112px; height: 30px; border-right: 1px solid #000; border-bottom: 1px solid #000; font-size: 13px;" ng-click="predicate = 'Status'; reverse=!reverse">Status</th>
+                    <th style="background:url(/Areas/TapsAdmin/Img/icon-tringleup.png) no-repeat 88% 50%; width:112px; height:30px; border-right:1px solid #000; border-bottom:1px solid #000; font-size:13px;" ng-click="predicate = 'CreatedOnUtc'; reverse=!reverse">Date &amp;<br> Time</th>
+                    <th style="background:url(/Areas/TapsAdmin/Img/icon-tringlebg.png) no-repeat 88% 50%; width:214px; height:30px; border-right:1px solid #000; border-bottom:1px solid #000; font-size:13px;" ng-click="predicate = 'ProductName'; reverse=!reverse">Product Name</th>
+                    <th style="background:url(/Areas/TapsAdmin/Img/icon-tringlebg.png) no-repeat 92% 50%; width:125px; height:30px; border-right:1px solid #000; border-bottom:1px solid #000; font-size:13px;" ng-click="predicate = 'Condition'; reverse=!reverse"><span class="con-sapn">Condition</span></th>
+                    <th style="background:url(/Areas/TapsAdmin/Img/icon-tringlebg.png) no-repeat 88% 50%; width:278px; height:30px; border-right:1px solid #000; border-bottom:1px solid #000; font-size:13px;" ng-click="predicate = 'CustomerName'; reverse=!reverse">Customer Name &amp; Address</th>
+                    <th style="background:url(/Areas/TapsAdmin/Img/icon-tringlebg.png) no-repeat 92% 50%; width:156px; height:30px; border-right:1px solid #000; border-bottom:1px solid #000; font-size:13px;" ng-click="predicate = 'SerialNumber'; reverse=!reverse">Product Number</th>
+                    <th style="background:url(/Areas/TapsAdmin/Img/icon-tringlebg.png) no-repeat 88% 50%;  width:92px; height:30px; border-right:1px solid #000; border-bottom:1px solid #000; font-size:13px; text-align:left; padding-left:10px;" ng-click="predicate = 'Quantity'; reverse=!reverse">Quantity</th>
+                    <th style="background:url(/Areas/TapsAdmin/Img/icon-tringlebg.png) no-repeat 88% 50%; width:115px; height:30px; border-right:1px solid #000; border-bottom:1px solid #000; font-size:13px;" ng-click="predicate = 'PriceInclTax'; reverse=!reverse">Price</th>
+                    <th style="background:url(/Areas/TapsAdmin/Img/icon-tringlebg.png) no-repeat 88% 50%; width:102px; height:30px; border-bottom:1px solid #000; font-size:12px; text-align:left; padding-left:10px;" ng-click="predicate = 'OrderId'; reverse=!reverse">Order ID</th>
+                </tr>
+                <tr ng-repeat="o in lstVendorOrder | orderBy:predicate:reverse | startFrom:(currentPage-1)*entryLimit | limitTo:entryLimit" ng-init="loading=[]">
+                    <td style="border-right:1px solid #000; border-bottom:1px solid #000; text-align:center; vertical-align:text-top;">
+                        <p>{{$index + 1}}</p>
+                        <div class="table-checkbox"><input name="" type="checkbox" ng-checked="o.checked" ng-model="o.checked" value="{{o.id}}"></div>
+                    </td>
+                    <td style="border-right:1px solid #000; border-bottom:1px solid #000; font-size:13px; text-align:center; vertical-align:text-top;">
+                        <p>{{o.Status}}</p>
+                    </td>
+                    <td style="border-right:1px solid #000; border-bottom:1px solid #000; font-size:13px; vertical-align:text-top;">
+                        <p style="line-height:130%;">{{o.CreatedOnUtc}}</p>
+                    </td>
+                    <td style="border-right:1px solid #000; border-bottom:1px solid #000; font-size:13px; vertical-align:text-top;">
+                        <p style="line-height:130%;">{{o.ProductName}}<br></p>
+                    </td>
+                    <td style="border-right:1px solid #000; border-bottom:1px solid #000; font-size:13px; text-align:center; vertical-align:text-top;">
+                        <p style="line-height:130%;">{{o.Condition}} <br /><br /> {{o.Warranty}} month(s)</p>
+                    </td>
+                    <td style="border-right:1px solid #000; border-bottom:1px solid #000; font-size:13px; vertical-align:text-top;">
+                        <p style="line-height:130%;">{{o.CustomerName}} <br />{{o.ShippingAddress}}</p>
+                    </td>
+                    <td style="border-right:1px solid #000; border-bottom:1px solid #000; font-size:13px; text-align:center; vertical-align:text-top;">
+                        <div class="serial-number-space" ng-show="o.SerialNumber != null">
+                            <p class="added-serial-link">Serial Number:</p>
+                            <div class="edit-serail-part">
+                                <p class="serial-number-display">{{o.SerialNumber}}</p>
+                                <a id="serial-num-edit-{{$index}}" class="serial-num-edit" ng-click="openComponent($index)"></a>
+                                <div class="clear"></div>
+                                <div class="serail-edit-btn-space">
+                                    <a class="edit-btn" ng-click="loading[$index] = true">Edit</a>
+                                    <a class="edit-btn" ng-click="DeleteVendorOrderSerialNumber(o.id)">Delete</a>
+                                </div>
+                            </div>
+                            <span ng-show="loading[$index]">
+                                <input type="text" ng-model="model.SerialNumber" class="add-serial-input" value="{{o.SerialNumber}}">
+                                <button class="add-serial-btn" ng-disabled="model.SerialNumber == ''" ng-click="AddSerialNumber(o.id,model.SerialNumber)" type="button">ADD</button>
+                            </span>
+                        </div>
+
+                        <div class="serial-number-space" ng-show="o.SerialNumber == null">
+                            <a class="add-serial-link" ng-click="loading[$index]=true">Add Serial Number</a>
+                            <span ng-show="loading[$index]">
+                                <input type="text" ng-model="model.SerialNumber" class="add-serial-input" value="{{o.SerialNumber}}">
+                                <button class="add-serial-btn" ng-disabled="model.SerialNumber == ''" ng-click="AddSerialNumber(o.id,model.SerialNumber)" type="button">ADD</button>
+                            </span>
+                        </div>
+                    </td>
+                    <td style="border-right:1px solid #000; border-bottom:1px solid #000; font-size:13px; text-align:center; vertical-align:text-top;">
+                        <p style="line-height:130%;">{{o.Quantity}}</p>
+                    </td>
+                    <td style="border-right:1px solid #000; border-bottom:1px solid #000; font-size:13px;text-align:center; vertical-align:text-top;">
+                        <p style="line-height:130%;">RM {{o.PriceInclTax | number:2}}</p>
+                    </td>
+                    <td style="border-right:1px solid #000; border-bottom:1px solid #000; font-size:13px; text-align:center; vertical-align:text-top;">
+                        <p style="line-height:130%;">{{o.OrderId}}</p>
+                    </td>
+                </tr>
+                <tr>
+                    <td colspan="10" style="border-bottom:1px solid #000; background:#09743c; height:10px; padding:0px;"></td>
+                </tr>
+            </table>
+            <pagination style="padding: 25px; float: right; " page="currentPage" class="pull-right" max-size="noOfPages" total-items="totalItems" items-per-page="entryLimit" boundary-links="true" previous-text="&lsaquo;" next-text="&rsaquo;" first-text="&laquo;" last-text="&raquo;"></pagination>
+        </div>
+    </div>
+</div>
+<div class="clear"></div>
+
+
+<script src="~/Areas/TapsAdmin/app/controllers/Vendor/Orders.js"></script>
+
+<style>
+    .pagination li {
+        display: inline;
+        list-style: none;
+        padding: 5px;
+    }
+
+        .pagination li:hover {
+            color: white;
+        }
+
+        .pagination li a:active {
+            background-color: #09743C;
+        }
+
+    .active {
+        background-color: #09743C;
+        color: white;
+        text-decoration: underline;
+    }
+</style>

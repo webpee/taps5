@@ -1,0 +1,45 @@
+﻿<div class="alert alert-info" ng-show="list != null && list.length < 1">
+   <strong>No records found.</strong>
+</div>
+<table class="table table-striped table-bordered table-condensed bootstrap-datatable datatable" ng-show="list != null && list.length > 0">
+   <thead>
+      <tr>
+         <th>No</th>
+         <th>Student Name</th>
+         <th>Matriculation No</th>
+         <th>IC No/Passport No</th>
+         <th>Action</th>
+      </tr>
+   </thead>
+   <tbody>
+      <tr ng-repeat="o in list">
+         <td>{{o.ClassificationCode}}</td>
+         <td>{{o.ClassificationCode}}</td>
+         <td>{{o.ClassificationCode}}</td>
+         <td>{{o.Name}}</td>
+         <td class="center">
+            @{ Html.RenderPartial("_ListAction"); }
+         </td>
+      </tr>
+   </tbody>
+   <tfoot>
+      <tr>
+         <td colspan="5">
+            <div class="pull-left">
+               <pagination boundary-links="true" previous-text="&lsaquo;" next-text="&rsaquo;" first-text="&laquo;" last-text="&raquo;"
+                           page="pager.PageNum"
+                           total-items="pager.Total"
+                           items-per-page="pager.PageSize"
+                           max-size="10"
+                           on-select-page="gotoPage(page)">
+               </pagination>
+            </div>
+            <div class="pull-right">
+               <ul class="pagination">
+                  <li>{{pager.ItemMessage}}</li>
+               </ul>
+            </div>
+         </td>
+      </tr>
+   </tfoot>
+</table>

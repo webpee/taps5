@@ -1,0 +1,278 @@
+﻿<!DOCTYPE html>
+<html ng-app="FrontTaps">
+
+<head>
+    <meta charset="utf-8">
+    <title>Taps</title>
+    <link href="~/Areas/FrontTaps/Css/style.css" rel="stylesheet" />
+    <link href="~/assets/css/toastr.min.css" rel="stylesheet" />
+
+    <script src="~/assets/js/jquery-2.1.0.min.js"></script>
+    <script src="~/assets/js/jquery-migrate-1.2.1.min.js"></script>
+
+    @* custom angular *@
+    <script src="~/assets/angular-1.2.9/angular.min.js"></script>
+    <script src="~/assets/angular-1.2.9/angular-cookies.js"></script>
+    <script src="~/assets/angular-1.2.9/ngDraggable.js"></script>
+    <script src="~/Scripts/angular-file-upload-shim.min.js"></script>
+    <script src="~/Scripts/angular-file-upload.min.js"></script>
+    <script src="~/assets/angular-1.2.9/angular-route.min.js"></script>
+    <script src="~/assets/angular-1.2.9/angular-sanitize.min.js"></script>
+    <script src="~/assets/js/bootstrap.min.js"></script>
+    <script src="~/assets/js/ui-bootstrap-tpls-0.10.0.min.js"></script>
+    <script src="~/assets/js/jquery-ui-1.10.3.min.js"></script>
+
+    @* custom 3rd party *@
+    <script src="~/assets/js/toastr.min.js"></script>
+    <script src="~/assets/js/bootbox.min.js"></script>
+    <script src="~/assets/js/jquery.blockUI.js"></script>
+    <script src="~/assets/js/underscore-min.js"></script>
+    <script src="~/assets/js/jquery.ui.widget.js"></script>
+
+    @* custom simplitheme *@
+    <script src="~/assets/js/jquery.ui.touch-punch.min.js"></script>
+    <script src="~/assets/js/jquery.sparkline.min.js"></script>
+    <script src="~/assets/js/dropzone.min.js"></script>
+    <script src="~/assets/js/fullcalendar.min.js"></script>
+    <script src="~/assets/js/jquery.flot.min.js"></script>
+    <script src="~/assets/js/jquery.flot.pie.min.js"></script>
+    <script src="~/assets/js/jquery.flot.stack.min.js"></script>
+    <script src="~/assets/js/jquery.flot.resize.min.js"></script>
+    <script src="~/assets/js/jquery.flot.time.min.js"></script>
+    <script src="~/assets/js/jquery.autosize.min.js"></script>
+    <script src="~/assets/js/jquery.placeholder.min.js"></script>
+
+    <script src="~/assets/js/custom.min.js"></script>
+    <script src="~/assets/js/core.min.js"></script>
+    @*<script src="~/js/pages/index.js"></script>*@
+    <script src="~/Areas/FrontTaps/app/app.js"></script>
+    <script src="~/Areas/FrontTaps/app/utils.js"></script>
+    <script src="~/Areas/FrontTaps/app/route.js"></script>
+    <script src="~/Areas/FrontTaps/app/services.js"></script>
+
+    <script src="~/Areas/FrontTaps/app/createDialog.js"></script>
+    <script src="~/Areas/FrontTaps/app/appInterceptor.js"></script>
+    <script src="~/Areas/FrontTaps/app/directives/ng-really.js"></script>
+
+    <!-- page scripts -->
+    <script src="~/assets/js/jquery-ui-1.10.3.custom.min.js"></script>
+    <script src="~/assets/js/jquery.sparkline.min.js"></script>
+    @*<script src="~/assets/js/jquery.chosen.min.js"></script>*@
+    <script src="~/assets/js/jquery.chosen.min.js"></script>
+    <script src="~/assets/js/jquery.cleditor.min.js"></script>
+    <script src="~/assets/js/jquery.autosize.min.js"></script>
+    <script src="~/assets/js/jquery.placeholder.min.js"></script>
+    <script src="~/assets/js/jquery.maskedinput.min.js"></script>
+    <script src="~/assets/js/jquery.inputlimiter.1.3.1.min.js"></script>
+    <script src="~/assets/js/bootstrap-datepicker.min.js"></script>
+    <script src="~/assets/js/bootstrap-timepicker.min.js"></script>
+    <script src="~/assets/js/moment.min.js"></script>
+    <script src="~/assets/js/daterangepicker.min.js"></script>
+    <script src="~/assets/js/jquery.hotkeys.min.js"></script>
+    <script src="~/assets/js/bootstrap-wysiwyg.min.js"></script>
+    <script src="~/assets/js/bootstrap-colorpicker.min.js"></script>
+
+    <!-- theme scripts -->
+    <!-- inline scripts related to this page -->
+    <script src="~/assets/js/pages/form-elements.js"></script>
+    <script src="~/assets/js/pages/form-dropzone.js"></script>
+    <script src="~/assets/js/jquery.mjs.nestedSortable.js"></script>
+    <script src="~/Areas/FrontTaps/app/angular-local-storage.min.js"></script>
+    <script src="~/Areas/FrontTaps/app/sha1.js"></script>
+    <script src="~/Areas/FrontTaps/app/controllers/Account/Login.js"></script>
+    <style type="text/css">
+        .chklabel {
+            text-indent: -32px;
+            display: block;
+            padding-left: 32px;
+        }
+
+        .toast-top-center {
+            top: 12px;
+            margin: 0 auto;
+            left: 50%;
+            margin-left: -150px;
+        }
+    </style>
+    <script>
+
+        toastr.options = {
+            "closeButton": true,
+            "debug": false,
+            "newestOnTop": false,
+            "progressBar": false,
+            "positionClass": "toast-top-center",
+            "preventDuplicates": false,
+            "onclick": null,
+            "showDuration": "300",
+            "hideDuration": "1000",
+            "timeOut": 0,
+            "extendedTimeOut": 0,
+            "showEasing": "swing",
+            "hideEasing": "linear",
+            "showMethod": "fadeIn",
+            "hideMethod": "fadeOut",
+            "tapToDismiss": true
+
+        }
+    </script>
+</head>
+
+<body>
+    <div class="main-body">
+        <div class="padding">
+            <div class="logo">
+                <img src="~/Areas/FrontTaps/img/logo.jpg" />
+            </div>
+
+            <div class="baner" id="TopBanner" ng-controller="PointsCtrl">
+                <div class="baner-in">
+                    <div class="logout-first">
+                        <span>
+                            Welcome,@if (User.Identity.Name != string.Empty)
+                            { <span><a style="color: #70c3e5;" href="/Account/Profile">@User.Identity.Name</a></span>}
+                            else
+                            {
+                                <span style="color: #70c3e5;">Guest</span>
+                            }, you have {{Points}} pts.
+                        </span>
+                    </div>
+                    <div class="logout-second">
+                        <div class="in">
+                            @if (User.Identity.Name != string.Empty)
+                            {
+                                <a style="cursor:pointer" ng-click="Logout()">Logout</a>
+                            }
+                            else
+                            {
+                                <a href="/Account/Login">Login</a>
+
+                            }
+                        </div>
+                        <div style="float:left; margin-left:60px; margin-top:5px; color:#fff;">|</div>
+                        <div class="cart"> <a href="/Cart/ShoppingCart">CART &#8744;</a> </div>
+                    </div>
+                </div>
+            </div>
+            <div class="clear"></div>
+        </div>
+        <div class="clear"></div>
+        <div class="header_bottom">
+            @{ Html.RenderPartial("_Navigation"); }
+        </div>
+        <div class="body-padding">
+            <div class="body-part">
+                @{ var url = HttpContext.Current.Request.Url.AbsolutePath;
+
+                 if (url != "/AuthoriseWorkshop/AuthoriseWorkshop" || url != "/AuthoriseWorkshop/AuthoriseWorkshop")
+                 {
+                    <div class="part-left" ng-controller="Ctrl">
+                        <div class="reset">
+                            <a href="#" ng-click="Reset()">RESET ALL</a>
+                        </div>
+                        @*<div class="taps">
+                                <ul>
+                                    <li ng-repeat="item in items">
+                                        <label class="checkbox">
+                                            <input type="checkbox" name="checkbox" checked="" class="input-cheq" ng-checked="item.value == true" ng-change="saveItems()" ng-model="item.value">
+                                            Items Sold by <br /><span>TAPS</span> only
+                                        </label>
+                                    </li>
+                                </ul>
+                            </div>*@
+                        <div class="condition">
+                            <span>1. Select Quality</span>
+                        </div>
+                        <div class="condition-chec">
+                            <ul>
+                                <li ng-repeat="condition in conditions">
+                                    <label class="chklabel" ng-show="condition.parent != -1">
+                                        <input ng-disabled="condition.disabled" type="checkbox" name="condition.name" class="input-cheq" ng-checked="condition.value == true" ng-change="saveSetting()" ng-model="condition.value">{{condition.name}}
+                                    </label>
+                                    <label class="chklabel" ng-show="condition.parent == -1">
+                                        <input ng-disabled="condition.disabled" style="margin-left: 33px; padding-top: 10px" type="checkbox" name="condition.name" class="input-cheq" ng-checked="condition.value == true" ng-change="saveSetting()" ng-model="condition.value">{{condition.name}}
+                                    </label>
+                                </li>
+                            </ul>
+                        </div>
+                        <div class="condition">
+                            <span>Price Range</span>
+                        </div>
+                        <div class="condition-chec">
+                            <div class="price-tag">
+                                RM
+                                <input id="price-tag-input-from" class="price-tag-input" type="text" money name="" ng-model="RM" placeholder="Min Price">
+                                to
+                                <input id="price-tag-input-to" class="price-tag-input" type="text" name="" money ng-model="To" placeholder="Max Price"><br />
+                                <br />
+                                <div align="center">
+                                    <button id="input-to" type="button" style="cursor: pointer; border: 1px solid transparent; border-radius: 4px; padding: 6px 12px; color: #fff; background-color: #EE1C25; border-color: #EE1C25; " name="Go" ng-click="SavePrice()">
+                                        Apply
+                                    </button>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="condition">
+                            <span>Others</span>
+                        </div>
+                        <div class="other">
+                            <ul>
+                                <li ng-repeat="other in others">
+                                    <label class="checkbox" ng-if="other.parent != -1">
+                                        <input ng-disabled="other.disabled" type="checkbox" name="other.name" class="input-cheq" ng-checked="other.value == true" ng-change="saveOthers()" ng-model="other.value">{{other.name}}
+                                    </label>
+                                    <label class="checkbox" ng-if="other.parent == -1">
+                                        <input ng-disabled="other.disabled" style="margin-left:33px; padding-top:10px" type="checkbox" name="other.name" class="input-cheq" ng-checked="other.value == true" ng-change="saveOthers()" ng-model="other.value">{{other.name}}
+                                    </label>
+                                </li>
+                            </ul>
+                        </div>
+                    </div>
+                 }
+                }
+                @RenderBody()
+            </div>
+        </div>
+    </div>
+    <a href="#" class="scrollup">Scroll</a>
+</body>
+</html>
+
+<script>
+    $(document).ready(function () {
+        $(window).scroll(function () {
+            if ($(this).scrollTop() > 100) {
+                $('.scrollup').fadeIn();
+            } else {
+                $('.scrollup').fadeOut();
+            }
+        });
+
+        $('.scrollup').click(function () {
+            $("html, body").animate({
+                scrollTop: 0
+            }, 600);
+            return false;
+        });
+
+    });
+</script>
+<style>
+    .scrollup {
+        width: 40px;
+        height: 40px;
+        position: fixed;
+        bottom: 50px;
+        right: 100px;
+        display: none;
+        text-indent: -9999px;
+        background: url('/Areas/FrontTaps/img/Icon-arrow-top.png') no-repeat;
+        background-size: contain;
+        background-color: #000;
+    }
+
+        .scrollup:hover {
+            background-color: #A0CE4E;
+        }
+</style>
+<script src="~/Areas/FrontTaps/app/controllers/BannerMgmt/BannerMgmt.js"></script>

@@ -1,0 +1,3 @@
+﻿Hi {UserName} ,
+Moving Price Has been Change For {Product}. Please Update your Product Price. 
+Thanks!

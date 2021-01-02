@@ -1,0 +1,44 @@
+﻿@model Taps5.Models.AccountModel
+@{
+    ViewBag.Title = "Index";
+    Layout = "~/Areas/FrontTaps/Views/Shared/_LayoutLogin.cshtml";
+}
+
+@using (Html.BeginForm(new { ReturnUrl = ViewBag.ReturnUrl }))
+{
+    <div class="row" ng-controller="SampleCtrl">
+        <div class="login-box">
+            <h2>Login to your account</h2>
+            <form class="form-horizontal" role="form" name="LoginForm" id="LoginForm" novalidate>
+                <fieldset>
+                    <input class="input-large col-xs-12" name="UserName" id="UserName" ng-model="model.Username" type="text" placeholder="type UserName here" />
+                    <span style="color:red;"> @Html.ValidationMessageFor(model => model.UserName)</span>
+                    <input class="input-large col-xs-12" name="Password" id="Password" type="password" ng-model="model.Password" placeholder="type password here" />
+
+                    <div class="clearfix"><span style="color:red;"> @Html.ValidationMessageFor(model => model.Password)</span></div>
+
+                    @{
+                        if (ViewData["error"] != null && ViewData["error"].ToString().Equals("1"))
+                        {
+                            <div class="alert alert-danger">
+                                @ViewData["message"]
+                            </div>
+                        }
+                    }
+                    <label class="remember" for="remember"><input type="checkbox" id="RememberMe" />Remember me</label>
+                    <div class="clearfix"></div>
+
+                    <label class="input-large col-xs-12"><a href="~/FrontTaps/Account/Register" id="Register">New User</a></label>
+                    <div class="clearfix"></div>
+
+                    <label class="input-large col-xs-12"><a href="~/FrontTaps/Account/ForgotPassword" id="Register">Forgot Password</a></label>
+                    <div class="clearfix"></div>
+
+                </fieldset>
+                <button type="submit" class="btn btn-primary col-xs-12">Login</button>
+            </form>
+            <hr>
+        </div>
+    </div>
+}
+<script src="~/app/controllers/Account/Login.js"></script>

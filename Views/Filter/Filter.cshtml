@@ -1,0 +1,95 @@
+﻿@{
+    ViewBag.Title = "Filter";
+}
+<div ng-controller="FilterCtrl">
+    <div class="part-right">
+        <div class="part-one">
+            <div class="list">
+                <img src="~/Areas/FrontTaps/Img/list.png" />
+            </div>
+            <div class="search">
+                <form id="tfnewsearch" method="get" action="http://www.google.com">
+                    <input type="text" class="tftextinput" name="q" size="21" maxlength="120">
+                    <input type="submit" value="SEARCH" class="tfbutton">
+                </form>
+            </div>
+            <div class="clear"></div>
+            <div class="filter" ng-show="model.IdFilter==false">
+                <div class="filter-left">
+                    <div class="btn-group">
+                        <select id="make" ng-model="model.Make" ng-change="FillModelData(model.Make)">
+                            <option value="">-Make-</option>
+                            <option ng-repeat="o in lstGetAllMake" value="{{o.id}}">{{o.Make}}</option>
+                        </select>
+                        <select id="Model" ng-model="model.Model" ng-change="GetVehicles(model.Model)" ng-disabled="model.Make==0">
+                            <option value="">-Model-</option>
+                            <option ng-repeat="o in lstGetModel" value="{{o.id}}">{{o.Name}}</option>
+                        </select>
+                        <span class="lorem"><a href="#" ng-click="Reset()">Clear Filter</a></span>
+                    </div>
+                </div>
+                <div class="filter-right">
+                    <div class="filt">
+                        <a href="#" ng-click="showFilter(model.VehicleDetails)">FILTER</a>
+                        <div class="your">
+                            <div class="styled-select4 slate4">
+                                <select id="VehicleDetails" ng-model="model.VehicleDetails" ng-disabled="model.Model==0">
+                                    <option value="">YourVehicle(s)</option>
+                                    <option ng-repeat="vl in lstVehicle" value="{{vl.id}}">{{vl.Make}}{{" "}}{{" "}}({{vl.ModelName}}){{" "}}{{vl.TrimName}}{{" "}}{{vl.EngineName}}(cc){{" "}}{{vl.TransmissionName}}</option>
+                                </select>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>                        
+            <div class="filter" ng-show="model.IdFilter==true">
+                <div class="filter-left">
+                    <div class="btn-group">
+                        <select id="year" ng-model="model.Year" ng-change="GetAllTrimByYearId(model.Year)">
+                            <option value="">-AnyYear-</option>
+                            <option ng-repeat="o in lstYearData" value="{{o.idYear}}">{{o.Year}}</option>
+                        </select>
+                        <select id="trim" ng-model="model.Trim" data-toggle="dropdown" ng-disabled="model.Year==0">
+                            <option value="">-AnyTrim-</option>
+                            <option ng-repeat="o in lstTrimData" value="{{o.idTrim}}">{{o.TrimName}}</option>
+                        </select>
+                        <span class="lorem"><a href="#" ng-click="ClearData()">Clear Filter</a></span>
+                    </div>
+                    <div style="margin-left:5px; margin-top:20px;">
+                        <span style="font-size:12px;float:left;margin-top:5px;">Selected Vehicle :</span>
+                        <div class="full-attribute city">
+                            <div class="attribute">
+                                <div class="attribute-name">
+                                    <p ng-repeat="vl in lstVehicle" ng-show="model.VehicleDetails=={{vl.id}}">{{vl.Make}}{{" "}}{{" "}}({{vl.ModelName}}){{" "}}{{vl.TrimName}}{{" "}}{{vl.EngineName}}(cc){{" "}}{{vl.TransmissionName}}</p>
+                                </div>
+                                <div class="close-attribute">
+                                    <div class="img" ng-click="Reset()"></div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="filter-right">
+                    <div class="filt">
+                        <a href="#">filter</a>                       
+                    </div>                  
+                </div>
+            </div>
+            <div class="select">
+                <div class="lorem1"> <span>Lorem ipsum is damy text.Lorem ipsum is damy text.Lorem ipsum is damy text.</span> </div>
+                <div class="ex">
+                    <div class="exampale">
+                        <form id="tfnewsearch" method="get" action="">
+                            <input type="text" class="sel-search" name="q" size="21" maxlength="120" placeholder="Example:BJR9022">
+                        </form>
+                    </div>
+                    <div class="clear" style="clear: both;"></div>
+                    <div class="sel"> <a href="#">SELECT</a> </div>
+                </div>
+            </div>
+            <div class="clear"></div>
+            
+        </div>
+    </div>
+    </div>
+<script src="~/Areas/FrontTaps/app/controllers/Filter/Filter.js"></script>

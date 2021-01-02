@@ -1,0 +1,54 @@
+﻿<form role="form1"
+      id="form1"
+      name="form1"
+      class="form-horizontal"
+      novalidate
+      ng-submit="formSubmit()">
+    <table class="table table-striped table-bordered table-condensed bootstrap-datatable datatable">
+        <thead>
+            <tr>
+                <th style="width:10%;text-align:center;">No</th>
+                <th style="text-align: center;">MetaKey</th>
+                <th style=" text-align: center;">MetaValue</th>
+                <th style="width: 10%; text-align: center;">Action</th>
+            </tr>
+        </thead>
+        <tbody>
+            <tr ng-repeat="o in list2">
+                <td style="text-align: center;">
+                    <input type="hidden" value="{{o.idProduct}}" ng-model="o.idProduct" />
+                    {{$index+1}}
+                </td>
+                <td>
+                    <input id="oMetaKey" type="text" class="form-control" value="{{o.MetaKey}}" ng-model="o.MetaKey">
+
+                </td>
+                <td>
+                    <input id="oMetaValue" type="text" class="form-control" value="{{o.MetaValue}}" ng-model="o.MetaValue">
+                </td>
+
+                <td class="center">
+                    <a href="#" class="btn btn-info" ng-click="UpdateProductMeta(o)" data-rel="tooltip">
+                        <i class="fa fa-edit"></i>
+                    </a>
+                    <a href="#" class="btn btn-danger" ng-really-message="Are you sure, you want to Delete this Record ?" ng-really-click="DeleteProductMeta(o.id)" title="Delete" data-rel="tooltip">
+                        <i class="fa fa-trash-o"></i>
+                    </a>
+                </td>
+            </tr>
+            <tr ng-model="o">
+
+                <td></td>
+                <td><input id="MetaKey" type="text"  maxlength="255" class="form-control" ng-required="true" ng-model="o.MetaKey"></td>
+                <td><input id="MetaValue" type="text" class="form-control" ng-model="o.MetaValue" ng-required="true"></td>
+                <td>
+                    <a href="#" class="btn btn-info" ng-disabled="!form1.$valid" ng-click="CreateProductMeta(o)" data-rel="tooltip">
+                        Create
+                    </a>
+                </td>
+            </tr>
+        </tbody>
+    </table>
+    </form>
+
+

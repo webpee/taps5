@@ -1,0 +1,749 @@
+﻿@{
+    ViewBag.Title = "Index";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+<link href="~/Areas/FrontTaps/Css/jquery.raty.css" rel="stylesheet" />
+<link href="~/Content/slick.css" rel="stylesheet" />
+<link href="~/Content/slick-theme.css" rel="stylesheet" />
+<style type="text/css">
+    .active {
+        background-color: #8cc568;
+        text-decoration: underline;
+    }
+
+    #nav a.active {
+        background-color: #ee1c25;
+        color: #fff;
+    }
+</style>
+<style type="text/css">
+    .close {
+        background: url("/Areas/FrontTaps/Img/left.png") no-repeat 0 0;
+    }
+
+    .open {
+        background: url("/Areas/FrontTaps/Img/left.png") no-repeat 0 0;
+    }
+
+    .open {
+        background: none;
+        -webkit-transform: rotate(90deg);
+    }
+
+    li {
+        list-style: none;
+    }
+    /*img.col-exp.open {
+        -webkit-transform: rotate(90deg);
+    }*/
+    /* selected link */
+</style>
+
+<div class="body-part">
+    <input type="hidden" value="@ViewBag.ProductId" id="idProduct" />
+    <div class="part-right">
+        <input type="hidden" ng-model="model.SearchText" value="@ViewBag.SearchText" id="SearchText" />
+        <div class="sub-menu">
+            <ul>
+                <li id="nav"><a href="/Parts/Parts" class="active">Select Parts</a></li>
+                <li><a href="/Cart/ShoppingCart">Shopping Cart</a></li>
+                <li><a href="#">Delivery option</a></li>
+                <li><a href="#">Summary</a></li>
+                <li><a href="#">Payment</a></li>
+            </ul>
+        </div>
+
+        <div class="condition" style="margin-top: 60px;height: 22px;">
+            <span class="condition">2. Select Car</span>
+        </div>
+        <div ng-controller="FilterCtrl">
+
+            <div class="filter" ng-show="model.IdFilter==false">
+
+                <div class="filter-left">
+
+                    <div class="btn-group">
+                        <select id="make" ng-model="model.Make" ng-change="FillModelData(model.Make)">
+                            <option value="">-Make-</option>
+                            <option ng-repeat="o in lstGetAllMake" ng-selected="model.Make == o.id" value="{{o.id}}">{{o.Make}}</option>
+                        </select>
+                        <select id="Model" ng-model="model.Model" ng-change="GetVehicles(model.Model)" ng-disabled="model.Make==0">
+                            <option value="">-Model-</option>
+                            <option ng-repeat="o in lstGetModel" ng-selected="model.Model == o.id" value="{{o.id}}">{{o.Name}}</option>
+                        </select>
+                        <select id="VehicleDetails" ng-model="model.VehicleDetails" ng-change="showFilter()" style="width: 122px">
+                            <option value="">Your Vehicle(s)</option>
+                            <option ng-repeat="vl in lstVehicle" ng-click="SetTrim(vl.idTrim)" ng-selected="model.VehicleDetails == vl.id" value="{{vl.id}}">{{vl.Make}}{{" "}}{{" "}}({{vl.ModelName}}){{" "}}{{vl.TrimName}}{{" "}}{{vl.EngineName}}(cc){{" "}}{{vl.TransmissionName}}</option>
+                        </select>
+                        <select id="year" ng-model="model.Year" ng-change="SetYear(model.Year)">
+                            <option value="">-AnyYear-</option>
+                            <option ng-repeat="o in lstYearData" ng-selected="model.Year == o.idYear" value="{{o.idYear}}">{{o.Year}}</option>
+                        </select>
+                        <span class="clear-filter"><a href="#" class="clear-filter" ng-click="Reset()">Clear Filter</a></span>
+                        <span class="filt">
+                            <a href="#" ng-hide="model.Year == ''" ng-click="FilterLeftMenu()">FILTER</a>
+                        </span>
+                    </div>
+                    <div style="margin-left:5px; margin-top:15px;">
+                        <span style="font-size:12px;float:left;margin-top:5px;">Selected Vehicle :</span>
+                        <div class="full-attribute city" style="background-color:white !important;color:black !important;margin-left:1%;">
+                            <div class="attribute" ng-show="model.Year != ''" style="background-color:white !important;color:black !important;border-radius:15px;">
+                                <div class="attribute-name" style="background-color:white !important;color:black !important;">
+                                    <p ng-repeat="vl in lstVehicle" style="padding: 4px;color: black !important;font-size: 13px;" ng-show="model.VehicleDetails == {{vl.id}} && model.Year != ''"><i>{{vl.Make}}{{" "}}{{" "}}({{vl.ModelName}}){{" "}}{{vl.TrimName}}{{" "}}{{vl.EngineName}}(cc){{" "}}{{vl.TransmissionName}}{{" "}}{{model.YearName}}</i></p>
+                                </div>
+                                <div class="close-attribute">
+                                    <input type="button" style="border: none;margin-right:2px" value="x" ng-click="Reset()" />
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+        </div>
+
+        <div class="select" ng-controller="FilterCtrl">
+
+            <div class="ex" style="margin-top: 10px;">
+                <div class="exampale">
+                    <form id="tfnewsearch" method="get" action="">
+                        <input type="text" class="sel-search" name="q" size="21" maxlength="120" placeholder="Example:BJR9022" ng-model="model.RegistrationNumber">
+                    </form>
+                </div>
+                <div class="clear" style="clear: both;"></div>
+                <div class="sel"> <a href="#" ng-click="SelectVehicle()">SELECT</a> </div>
+            </div>
+            <div class="lorem1"> <span>Select from dropdown or enter your vehicle registration number to select your vehicle model, year, cc.</span> </div>
+            <div class="add">
+                <img ng-src="{{RightBanner}}" />
+            </div>
+        </div>
+
+       
+        @*<div ng-controller="ProductDetailCtrl">*@
+        <div ng-controller="PartsCtrl">
+            <div class="condition" style="margin-top: 100px; height: 22px; width: 630px;">
+                <span class="condition">3. Select Components</span>
+            </div>
+
+            <div class="filter">
+                <div class="clear"></div>
+                <div>
+                    <div class="part-one">
+                        <div class="list" id="pcontainer">
+                            <div class="filter-left">
+
+                                <div class="btn-group">
+                                    @*<select id="Parts" style="width: 180px;">
+                                        <option value="" ng-selected="true">Select Components</option>
+                                    </select>*@
+                                    <button class="sel-components">
+                                        <i style="font-size: 13px; font-style:normal">
+                                            Select Components &nbsp;
+                                        </i>
+                                        <img ng-src="~/assets/img/arrow_drop_down.png" class="dropdown-components" />
+                                    </button>
+                                </div>
+
+
+
+                            </div>
+
+
+                            @*<div style="padding-top: 10px !important">
+                                <h3 style="color:white;float:left">Choose Component</h3>
+                                <img src="~/assets/img/arrow-216-32.png" style="padding-top: 14px; margin-left: 4px;" id="Parts" />
+                            </div>*@
+                        </div>
+                        <input type="text" ng-model="model.SearchText" size="21" maxlength="120" class="sel-search" style="height: 19px; width: 270px; margin-top: 20px;">
+                        <input type="submit" value="SEARCH" class="tfbutton" ng-click="GetPartsData(model.SearchText)" style="font-size: 15px; height: 34px; padding: 0px 0px;">
+
+
+                        @*<div class="search" style="padding-top: 10px !important">
+                            <input type="text" class="tftextinput" ng-model="model.SearchText" size="21" maxlength="120">
+                            <input type="submit" value="SEARCH!" class="tfbutton" ng-click="FilterLeftMenu(1,20)">
+                        </div>*@
+
+                        <div class="fil-by" id="filterTaps" style="margin-left:5px">
+                            <ul ng-controller="Ctrl" style="padding-bottom: 5px;">
+                                <li><span style="color:black; font-weight:bold">Filtered By :</span></li>
+                                <li ng-repeat="itm in items">
+                                    <a href="#" class="white-tag" ng-model="model.clear" ng-click="Clear()" ng-show="itm.value==true">
+                                        <i style="font-size: 13px;">{{itm.name}} &nbsp;<input type="button" style="border: none;" value="x" ng-click="saveItems(items)" /></i>
+                                    </a>
+                                </li>
+                                <li ng-repeat="o in conditions">
+                                    <a href="#" class="white-tag" ng-model="model.clear" ng-click="Clear()" ng-show="o.value==true">
+                                        <i style="font-size: 13px;">{{o.name}} &nbsp;<input type="button" style="border: none;" value="x" ng-click="saveSetting(o)" /></i>
+                                    </a>
+                                </li>
+                                <li ng-repeat="othr in others">
+                                    <a href="#" class="white-tag" ng-model="model.clear" ng-click="Clear()" ng-show="othr.value==true">
+                                        <i style="font-size: 13px;">{{othr.name}} &nbsp;&nbsp;<input type="button" style="border: none;" value="x" ng-click="saveOthers(othr)" /></i>
+                                    </a>
+                                </li>
+                                <li>
+                                    <i ng-repeat="c in componentID"><a href="#" class="white-tag">{{c.name}} &nbsp;&nbsp;<input type="button" style="border: none;" value="x" ng-click="ClearFilter(c)" /></a></i>
+                                </li>
+                                <li ng-controller="Ctrl" ng-show="RM != null || To != null">
+                                    <a href="#" class="white-tag" ng-if="RM == null">
+                                        Max Price {{To}} &nbsp;&nbsp;
+                                        <input type="button" style="border: none;" value="x" ng-click="ClearRM()" />
+                                    </a>
+                                    <a href="#" class="white-tag" ng-if="To == null">
+                                        Min Price {{RM}} &nbsp;&nbsp;
+                                        <input type="button" style="border: none;" value="x" ng-click="ClearRM()" />
+                                    </a>
+                                    <a href="#" class="white-tag" ng-if="RM != null && To != null">
+                                        RM {{RM}} to {{To}} &nbsp;&nbsp;
+                                        <input type="button" style="border: none;" value="x" ng-click="ClearRM()" />
+                                    </a>
+                                </li>
+                            </ul>
+                        </div>
+                        <div class="clear"></div>
+                    </div>
+
+                    <div class="component" ng-controller="FilterCategoryCtrl" id="ppcontainer" style="visibility:hidden;  top:470px">
+                        <div id="phello" style="visibility:hidden;">
+                            <form class="form">
+                                <div class="com-list1">
+                                    <span>Body Group</span>
+                                    <div class="component-chec">
+                                        <ul>
+                                            <li id="li{{data.id}}" ng-repeat="data in list1" ng-if="data.idParent==null && data.idCategory==15">
+                                                <input type="checkbox" id="Check{{data.id}}" name="Check{{data.id}}" value="{{data.id}}" />
+                                                <img src="~/Areas/FrontTaps/Img/left.png" class=" col-exp close" ng-show="ParentList1(data.id)">
+                                                <b>{{data.Name}}</b>
+                                                <ul style="display: none;" ng-show="ParentList1(data.id)">
+                                                    <li ng-repeat="data1 in list1" ng-if="data.id==data1.idParent">
+                                                        <input type="checkbox" id="Check{{data1.id}}" name="Check{{data1.id}}" value="{{data1.id}}" />
+                                                        <img src="~/Areas/FrontTaps/Img/left.png" class="col-exp close" ng-show="ParentList1(data1.id)">
+                                                        <b>{{data1.Name}}</b>
+                                                        <ul style="display: none;" ng-show="ParentList1(data1.id)">
+                                                            <li ng-repeat="data2 in list1" ng-if="data1.id==data2.idParent">
+                                                                <input type="checkbox" id="Check{{data2.id}}" name="Check{{data2.id}}" value="{{data2.id}}" />
+                                                                <img src="~/Areas/FrontTaps/Img/left.png" class="col-exp close" ng-show="ParentList1(data2.id)">
+                                                                <b>{{data2.Name}}</b>
+                                                                <ul style="display: none;" ng-show="ParentList1(data2.id)">
+                                                                    <li ng-repeat="data3 in list1" ng-if="data2.id==data3.idParent">
+                                                                        <input type="checkbox" id="Check{{data3.id}}" name="Check{{data3.id}}" value="{{data3.id}}" />
+                                                                        <b>{{data3.Name}}</b>
+                                                                    </li>
+                                                                </ul>
+                                                            </li>
+                                                        </ul>
+                                                    </li>
+                                                </ul>
+                                            </li>
+                                        </ul>
+                                    </div>
+                                </div>
+                                <div class="com-list2" ng-click="OpenPopup()">
+                                    <span>Electrical Group</span>
+                                    <div class="component-chec">
+                                        <ul>
+                                            <li id="li{{data.id}}" ng-repeat="data in list2" ng-if="data.idParent==null && data.idCategory==16">
+                                                <input type="checkbox" id="Check{{data.id}}" name="Check{{data.id}}" value="{{data.id}}" />
+                                                <img src="~/Areas/FrontTaps/Img/left.png" class=" col-exp close" ng-show="ParentList2(data.id)">
+                                                <b>{{data.Name}}</b>
+                                                <ul style="display: none;" ng-show="ParentList2(data.id)">
+                                                    <li ng-repeat="data1 in list2" ng-if="data.id==data1.idParent">
+                                                        <input type="checkbox" id="Check{{data1.id}}" name="Check{{data1.id}}" value="{{data1.id}}" />
+                                                        <img src="~/Areas/FrontTaps/Img/left.png" class="col-exp close" ng-show="ParentList2(data1.id)">
+                                                        <b>{{data1.Name}}</b>
+                                                        <ul style="display: none;" ng-show="ParentList2(data1.id)">
+                                                            <li ng-repeat="data2 in list2" ng-if="data1.id==data2.idParent">
+                                                                <input type="checkbox" id="Check{{data2.id}}" name="Check{{data2.id}}" value="{{data2.id}}" />
+                                                                <img src="~/Areas/FrontTaps/Img/left.png" class="col-exp close" ng-show="ParentList2(data2.id)">
+                                                                <b>{{data2.Name}}</b>
+                                                                <ul style="display: none;" ng-show="ParentList2(data2.id)">
+                                                                    <li ng-repeat="data3 in list2" ng-if="data2.id==data3.idParent">
+                                                                        <input type="checkbox" id="Check{{data3.id}}" name="Check{{data3.id}}" value="{{data3.id}}" />
+                                                                        <b>{{data3.Name}}</b>
+                                                                    </li>
+                                                                </ul>
+                                                            </li>
+                                                        </ul>
+                                                    </li>
+                                                </ul>
+                                            </li>
+                                        </ul>
+                                    </div>
+                                </div>
+                                <div class="com-list3" ng-click="OpenPopup()">
+                                    <span>Engine, Fuel Group</span>
+                                    <div class="component-chec">
+                                        <ul>
+                                            <li id="li{{data.id}}" ng-repeat="data in list3" ng-if="data.idParent==null && data.idCategory==17">
+                                                <input type="checkbox" id="Check{{data.id}}" name="Check{{data.id}}" value="{{data.id}}" />
+                                                <img src="~/Areas/FrontTaps/Img/left.png" class=" col-exp close" ng-show="ParentList3(data.id)">
+                                                <b>{{data.Name}}</b>
+                                                <ul style="display: none;" ng-show="ParentList3(data.id)">
+                                                    <li ng-repeat="data1 in list3" ng-if="data.id==data1.idParent">
+                                                        <input type="checkbox" id="Check{{data1.id}}" name="Check{{data1.id}}" value="{{data1.id}}" />
+                                                        <img src="~/Areas/FrontTaps/Img/left.png" class="col-exp close" ng-show="ParentList3(data1.id)">
+                                                        <b>{{data1.Name}}</b>
+                                                        <ul style="display: none;" ng-show="ParentList3(data1.id)">
+                                                            <li ng-repeat="data2 in list3" ng-if="data1.id==data2.idParent">
+                                                                <input type="checkbox" id="Check{{data2.id}}" name="Check{{data2.id}}" value="{{data2.id}}" />
+                                                                <img src="~/Areas/FrontTaps/Img/left.png" class="col-exp close" ng-show="ParentList3(data2.id)">
+                                                                <b>{{data2.Name}}</b>
+                                                                <ul style="display: none;" ng-show="ParentList3(data2.id)">
+                                                                    <li ng-repeat="data3 in list3" ng-if="data2.id==data3.idParent">
+                                                                        <input type="checkbox" id="Check{{data3.id}}" name="Check{{data3.id}}" value="{{data3.id}}" />
+                                                                        <b>{{data3.Name}}</b>
+                                                                    </li>
+                                                                </ul>
+                                                            </li>
+                                                        </ul>
+                                                    </li>
+                                                </ul>
+                                            </li>
+                                        </ul>
+                                    </div>
+                                </div>
+                                <div class="com-list4" ng-click="OpenPopup()">
+                                    <span>Power Train, Chassis Group</span>
+                                    <div class="component-chec">
+                                        <ul>
+                                            <li id="li{{data.id}}" ng-repeat="data in list4" ng-if="data.idParent==null && data.idCategory==18">
+                                                <input type="checkbox" id="Check{{data.id}}" name="Check{{data.id}}" value="{{data.id}}" />
+                                                <img src="~/Areas/FrontTaps/Img/left.png" class=" col-exp close" ng-show="ParentList4(data.id)">
+                                                <b>{{data.Name}}</b>
+                                                <ul style="display: none;" ng-show="ParentList4(data.id)">
+                                                    <li ng-repeat="data1 in list4" ng-if="data.id==data1.idParent">
+                                                        <input type="checkbox" id="Check{{data1.id}}" name="Check{{data1.id}}" value="{{data1.id}}" />
+                                                        <img src="~/Areas/FrontTaps/Img/left.png" class="col-exp close" ng-show="ParentList4(data1.id)">
+                                                        <b>{{data1.Name}}</b>
+                                                        <ul style="display: none;" ng-show="ParentList4(data1.id)">
+                                                            <li ng-repeat="data2 in list4" ng-if="data1.id==data2.idParent">
+                                                                <input type="checkbox" id="Check{{data2.id}}" name="Check{{data2.id}}" value="{{data2.id}}" />
+                                                                <img src="~/Areas/FrontTaps/Img/left.png" class="col-exp close" ng-show="ParentList4(data2.id)">
+                                                                <b>{{data2.Name}}</b>
+                                                                <ul style="display: none;" ng-show="ParentList4(data2.id)">
+                                                                    <li ng-repeat="data3 in list4" ng-if="data2.id==data3.idParent">
+                                                                        <input type="checkbox" id="Check{{data3.id}}" name="Check{{data3.id}}" value="{{data3.id}}" />
+                                                                        <b>{{data3.Name}}</b>
+                                                                    </li>
+                                                                </ul>
+                                                            </li>
+                                                        </ul>
+                                                    </li>
+                                                </ul>
+                                            </li>
+                                        </ul>
+                                    </div>
+                                </div>
+                            </form>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+
+            <div class="clear"></div>
+            <div ng-controller="ProductDetailCtrl">
+                <div class="result" style="min-height: 500px; height: auto !important;">
+                    <div class="addto">
+                        <div class="add-img">
+                            <img ng-src="~/MediaUploads/{{lstProductDetail.ImageUrl}}" err-src="~/assets/img/no_image.jpg" ng-model="lstProductDetail.ImageUrl" alt="No Image" width="135px" height="135px" />
+                        </div>
+                        <div class="add-con">
+                            <div class="cart-name">
+
+                                <span><b>{{lstProductDetail.Name.trim()}}</b><br /></span>
+                            </div>
+                            <div class="cart-de">
+                                <ul>
+                                    <li>
+                                        Price (RM) : <span style="color:red;">{{lstProductDetail.MovingAvgPrice | number:2}}</span> delivery to
+                                        <select id="VehicleDetail" ng-model="model.DeliveryTo">
+                                            <option value="">Peninsula</option>
+                                            @*<option ng-repeat="vl in lstVehicleDetail" ng-click="SetTrim(vl.idTrim)" value="{{vl.id}}">{{vl.MakeName}}{{" "}}{{" "}}({{vl.ModelName}}){{" "}}{{vl.TrimName}}{{" "}}{{vl.EngineName}}(cc){{" "}}{{vl.TransmissionName}}</option>*@
+                                        </select>
+                                    </li>
+                                    <br />
+                                    <li>(Dispatched in 2 days)</li>
+                                    <br />
+                                    <li>Only {{lstProductDetail.StockQty}} left!</li>
+                                    <br />
+                                    <li>
+                                        <div id="ReviewRating"></div>
+                                        {{lstProductReview.length}} Review(s)
+                                    </li>
+                                </ul>
+                            </div>
+                        </div>
+                        <div class="add-cart">
+                            <div class="addtocart" style=" text-align: right;">
+                                <span style="font-size: 13px; font-weight: bold;">By : <a href=""> {{lstProductDetail.Vendor}}</a></span>
+                            </div>
+                            <div style="margin-top: 75%; padding-bottom: 10px;">
+                                <span style="float: left; font-size: 12px; padding-top: 5px; font-weight: bold;">Quantity: </span>
+                                <div style="float:left;">
+                                    <button class="qty" type="button" ng-click="MinusQuantity()">-</button>
+                                    <input class="qty" type="text" value="1" ng-model="model.Qty" ng-disabled="true" />
+                                    <button class="qty" type="button" ng-click="PlusQuantity()">+</button>
+                                    <div class="clear"></div>
+                                </div>
+                                <div class="clear"></div>
+                            </div>
+                            <div class="addtocart">
+                                @if (User.Identity.Name != string.Empty)
+                                {
+                                    <a href="" ng-click="AddtoCart(model.idProduct)" style="padding: 7px 25px;">
+                                        ADD TO CART
+                                    </a>
+                                }
+                                else
+                                {
+                                    <a href="" ng-click="AddtoCookie(model)" style="padding: 7px 25px;">
+                                        ADD TO CART
+                                    </a>
+                                }
+                            </div>
+                        </div>
+                        <div class="clear"></div>
+                        <div class="add-con-dup text-center" style="width:100%;">
+                            <div class="SlideProduct">
+
+                            </div>
+                        </div>
+                        <table class="tableCartdetail" align="center">
+                            <tr>
+                                <th style="text-decoration:underline;">Product Description</th>
+                            </tr>
+                            <tr>
+                                <th style="width:5%">Part suitable for.</th>
+                                <td>
+                                    <select id="VehicleDetail" ng-model="model.VehicleDetail" ng-change="">
+                                        <option value="">View vehicle model(s)</option>
+                                        <option ng-repeat="vl in lstVehicleDetail" ng-click="SetTrim(vl.idTrim)" value="{{vl.id}}">{{vl.MakeName}}{{" "}}{{" "}}({{vl.ModelName}}){{" "}}{{vl.TrimName}}{{" "}}{{vl.EngineName}}(cc){{" "}}{{vl.TransmissionName}}{{" "}}{{vl.Year}}</option>
+                                    </select>
+                                </td>
+                            </tr>
+                            <tr>
+                                <th style="width:9%"> Quality </th>
+                                <td>
+                                    <div ng-if="lstProductDetail.Condition == 'REMAN'">
+                                        Remanufactured Parts (REMAN)
+                                    </div>
+                                    <div ng-if="lstProductDetail.Condition == 'GQUP'">
+                                        Good Quality Used Parts (GQUP)
+                                    </div>
+                                    <div ng-if="lstProductDetail.Condition == 'NP'">
+                                        New Part (NP)
+                                    </div>
+                                    <div ng-if="lstProductDetail.Condition == 'NP-Ori'">
+                                        Original (NP-Ori)
+                                    </div>
+                                    <div ng-if="lstProductDetail.Condition == 'NP-Non-Ori'">
+                                        Non-Original (NP-Non-Ori)
+                                    </div>
+                                </td>
+                            </tr>
+                            <tr>
+                                <th style="width:12%"> Warranty Period </th>
+                                <td ng-if="lstProductDetail.Warranty == null">
+                                    Nil
+                                </td>
+                                <td ng-if="lstProductDetail.Warranty != null">
+                                    {{lstProductDetail.Warranty}} month(s)
+                                </td>
+                            </tr>
+                            <tr>
+                                <th style="width:30%"> Manufactured in. </th>
+                                <td>
+                                    NA
+                                </td>
+                            </tr>
+                            <tr>
+                                <th style="width:9%"> Remanufactured in </th>
+                                <td>
+                                    NA
+                                </td>
+                            </tr>
+                            <tr>
+                                <th style="width:12%"> Item Weight </th>
+                                <td>
+                                    <div ng-if="lstProductDetail.Weight != null">
+                                        {{lstProductDetail.Weight}}
+                                    </div>
+                                    <div ng-if="lstProductDetail.Weight == null">
+                                        NA
+                                    </div>
+                                </td>
+                            </tr>
+                            <tr>
+                                <th style="width:13%"> Item Dimension </th>
+                                <td>
+                                    <div ng-if="lstProductDetail.VolumeL != null">
+                                        {{lstProductDetail.VolumeL}} * {{lstProductDetail.VolumeW}} * {{lstProductDetail.VolumeH}}
+                                    </div>
+                                    <div ng-if="lstProductDetail.VolumeL == null">
+                                        NA
+                                    </div>
+                                </td>
+                            </tr>
+                        </table>
+
+                        <table class="tableCartdetail1" align="center">
+                            <tr>
+                                <th>Remark</th>
+                            </tr>
+                            <tr>
+                                <td>
+                                    {{lstProductDetail.Description}}
+                                </td>
+                            </tr>
+                        </table>
+
+
+                        <table class="tableCartdetailReview" align="center">
+                            <tr>
+                                <th>Reviews ({{lstProductReview.length}})</th>
+                                <th> Leave review </th>
+                            </tr>
+                            <tr>
+                                <td>
+                                    <table class="tableCartdetailReviewIn" style="border: 1px solid; border-color: green;" ng-repeat="o in lstProductReview">
+                                        <tr>
+                                            <td>
+                                                <img src="~/Img/blankuser.png" height="35px" />
+                                            </td>
+                                            <td>
+                                                <div id="Ratting_{{o.id}}" style="float: left;"></div>
+                                                <span>- {{o.CreatedDate}}</span>
+                                                <div class="clear">{{o.Review}}</div>
+                                            </td>
+                                        </tr>
+                                    </table>
+                                    @*<table class="tableCartdetailReviewIn" style="border: 1px solid; border-color: green;">
+                                    <tr>
+                                        <td>
+                                            <img src="~/Img/blankuser.png" height="35px" />
+                                        </td>
+                                        <td>
+                                            <div id="Ratting2" style="float: left;"></div>
+                                            <span>- 24th jan 2015</span><br />
+                                            <div>Really good price and quality.</div>
+                                        </td>
+                                    </tr>
+                                </table>*@
+                                </td>
+                                <td valign="top">
+                                    <textarea id="Review" cols="15" rows="5" style="width: 280px;" ng-model="model.Review"></textarea>
+                                    <div style="padding:10px 0;">
+                                        <div id="Ratting" style="float: left;" ng-model="model.Rate"></div>
+                                        @if (User.Identity.Name != string.Empty)
+                                        {
+                                            <input type="submit" class="login-btn" ng-disabled="model.Review ==''" style="float:right;" name="Submit" value="Submit" ng-click="ProductReview(model)">
+                                        }
+                                        else
+                                        {
+                                            <input type="submit" class="login-btn" style="float:right;" name="Submit" value="Submit" ng-click="DoLogin()">
+                                        }
+                                    </div>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td></td>
+
+                                <td class="signup-btn"></td>
+                            </tr>
+                        </table>
+                    </div>
+                </div>
+            </div>
+        </div>
+        </div>
+    <div class="clear"></div>
+</div>
+
+<script src="~/Areas/FrontTaps/app/controllers/CategoryMgmt/FilterCategory.js"></script>
+<script src="~/Areas/FrontTaps/app/controllers/Parts/Parts.js"></script>
+<script src="~/Areas/FrontTaps/app/controllers/Filter/Filter.js"></script>
+<script src="~/Areas/FrontTaps/app/controllers/ProductDetail/ProductDetail.js"></script>
+<script src="~/js/jquery.raty.js"></script>
+<script>
+
+    $('#Ratting1').raty();
+    $('#Ratting2').raty();
+</script>
+
+<style>
+    .tableCartdetail {
+        margin-bottom: 15px;
+        margin-top: 50px;
+        font-size: 13px;
+        font-weight: bold;
+        width: 95%;
+        padding: 0;
+    }
+
+        .tableCartdetail th {
+            border: 1px solid #000;
+            /*background-color: #84b99d;*/
+        }
+
+        .tableCartdetail td, .tableCartdetail th {
+            padding: 9px 5px;
+            text-align: left;
+        }
+
+    .tableCartdetail {
+        border-collapse: collapse;
+    }
+
+        .tableCartdetail tr {
+            border: 1px solid #000;
+        }
+
+        .tableCartdetail .btnQty {
+            background-color: transparent;
+            border: medium none;
+            cursor: pointer;
+        }
+</style>
+<style>
+    .tableCartdetail1 {
+        margin-bottom: 15px;
+        margin-top: 15px;
+        font-size: 13px;
+        font-weight: bold;
+        width: 95%;
+        padding: 0;
+    }
+
+        .tableCartdetail1 th {
+            border: none;
+            /*background-color: #84b99d;*/
+        }
+
+        .tableCartdetail1 td, .tableCartdetail1 th {
+            padding: 9px 5px;
+            text-align: left;
+        }
+
+    .tableCartdetail1 {
+        border-collapse: collapse;
+    }
+
+        .tableCartdetail1 tr {
+            border: none;
+        }
+</style>
+<style>
+    .tableCartdetailReview {
+        margin-bottom: 15px;
+        margin-top: 50px;
+        font-size: 13px;
+        font-weight: bold;
+        width: 95%;
+        padding: 0;
+    }
+
+        .tableCartdetailReview th {
+            border: none;
+            /*background-color: #84b99d;*/
+        }
+
+        .tableCartdetailReview td, .tableCartdetailReview th {
+            padding: 9px 5px;
+            text-align: left;
+            width: 50%;
+        }
+
+    .tableCartdetailReview {
+        border-collapse: collapse;
+    }
+
+        .tableCartdetailReview tr {
+            border: none;
+        }
+
+        .tableCartdetailReview .btnQty {
+            background-color: transparent;
+            border: medium none;
+            cursor: pointer;
+        }
+
+        .tableCartdetailReview input[type=submit] {
+            display: inline-block;
+            background: #0b743b;
+            color: #fff;
+            border: none;
+            padding: 7px 15px;
+            border-radius: 5px;
+            cursor: pointer;
+            font-weight: 700;
+            /*margin-left: 100px;*/
+        }
+
+    .tableCartdetailReviewIn td, .tableCartdetailReviewIn th {
+        padding: 9px 5px;
+        text-align: left;
+        width: 0% !important;
+    }
+</style>
+<style>
+    .gallery-cell {
+        width: 87%;
+        height: 100px;
+        margin-right: 10px;
+        /*background: #8C8;*/
+        counter-increment: gallery-cell;
+    }
+
+        .gallery-cell.is-selected {
+            background: #ED2;
+        }
+
+        /* cell number */
+        .gallery-cell:before {
+            display: block;
+            text-align: center;
+            content: counter(gallery-cell);
+            line-height: 200px;
+            font-size: 80px;
+            color: white;
+        }
+
+    .add-con-dup {
+        float: left;
+        width: 200px;
+    }
+
+    .slick-slide img {
+        display: block;
+        padding: 62px;
+        position: relative;
+    }
+
+    .slider {
+        margin: 0;
+    }
+
+        .slider .slide {
+            width: 100%;
+            height: 100%;
+        }
+
+    .slick-prev {
+        left: 0;
+        background: red;
+    }
+
+    .slick-next {
+        right: 0;
+        background: red;
+    }
+
+    .slick-dots {
+        bottom: 0px;
+        margin-left: 0; /* Fixes the visible horizontal scroll bar */
+    }
+</style>
+
+<script src="~/Scripts/slick.min.js"></script>

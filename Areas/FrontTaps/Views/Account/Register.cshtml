@@ -1,0 +1,175 @@
+﻿@{
+    ViewBag.Title = "Register";
+    Layout = null;
+}
+<html ng-app="Taps5">
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>@ViewBag.Title</title>
+    @*@Styles.Render("~/Content/css")
+        @Scripts.Render("~/bundles/modernizr")*@
+
+    <link href="~/assets/css/bootstrap.min.css" rel="stylesheet">
+
+    <link href="~/assets/css/retina.min.css" rel="stylesheet">
+    <link href="~/assets/css/Custom-Angular.css" rel="stylesheet" />
+    <link href="~/assets/css/style.min.css" rel="stylesheet">
+    <link href="~/assets/css/toastr.min.css" rel="stylesheet" />
+
+    <script src="~/assets/js/jquery-2.1.0.min.js"></script>
+    <script src="~/assets/js/jquery-migrate-1.2.1.min.js"></script>
+
+    @* custom angular *@
+    <script src="~/assets/angular-1.2.9/angular.min.js"></script>
+    <script src="~/Scripts/angular-file-upload-shim.min.js"></script>
+    <script src="~/Scripts/angular-file-upload.min.js"></script>
+    <script src="~/assets/angular-1.2.9/angular-route.min.js"></script>
+    <script src="~/assets/angular-1.2.9/angular-sanitize.min.js"></script>
+    <script src="~/assets/js/bootstrap.min.js"></script>
+    <script src="~/assets/js/ui-bootstrap-tpls-0.10.0.min.js"></script>
+    <script src="~/assets/js/jquery-ui-1.10.3.min.js"></script>
+
+    @* custom 3rd party *@
+    <script src="~/assets/js/toastr.min.js"></script>
+    <script src="~/assets/js/bootbox.min.js"></script>
+    <script src="~/assets/js/jquery.blockUI.js"></script>
+    @*<script src="~/assets/js/underscore-min.js"></script>*@
+    <script src="~/assets/js/jquery.ui.widget.js"></script>
+    <script src="~/assets/js/jquery.fileupload.js"></script>
+
+    @* custom simplitheme *@
+    <script src="~/assets/js/jquery.ui.touch-punch.min.js"></script>
+    <script src="~/assets/js/jquery.sparkline.min.js"></script>
+    <script src="~/assets/js/fullcalendar.min.js"></script>
+    <script src="~/assets/js/jquery.flot.min.js"></script>
+    <script src="~/assets/js/jquery.flot.pie.min.js"></script>
+    <script src="~/assets/js/jquery.flot.stack.min.js"></script>
+    <script src="~/assets/js/jquery.flot.resize.min.js"></script>
+    <script src="~/assets/js/jquery.flot.time.min.js"></script>
+    <script src="~/assets/js/jquery.autosize.min.js"></script>
+    <script src="~/assets/js/jquery.placeholder.min.js"></script>
+
+
+
+    <script src="~/assets/js/custom.min.js"></script>
+    <script src="~/assets/js/core.min.js"></script>
+    @*<script src="~/js/pages/index.js"></script>*@
+    <script src="~/app/utils.js"></script>
+    <script src="~/app/route.js"></script>
+    <script src="~/app/services.js"></script>
+    <script src="~/app/app.js"></script>
+    <script src="~/app/createDialog.js"></script>
+    <script src="~/app/appInterceptor.js"></script>
+    <script src="~/app/directives/ng-really.js"></script>
+</head>
+<body>
+    <div class="container">
+        <div class="row">
+            <div id="content" class="col-lg-10 col-sm-11" style="min-height: 600px; width: 100%; background-color: #383e4b; ">
+                <div ng-controller="SampleCtrl">
+                    <div class="row">
+                        <div class="col-lg-12">
+                            <div class="box" style="padding-right: 250px; padding-left: 250px; box-shadow: none;">
+                                <div class="box-header">
+                                    <h2><i class="fa fa-edit"></i>Taps 5.0</h2>
+                                    <div class="box-icon">
+                                        <label class="input-large"><a href="~/FrontTaps/Account/Index" class="control-label"><i class="fa fa-user"></i></a></label>
+                                        <div class="clearfix"></div>
+                                    </div>
+                                </div>
+                                <div class="box-content" style="padding-right: 0;padding-left: 150px;">
+                                    <form role="form"
+                                          id="form"
+                                          name="form"
+                                          class="form-horizontal"
+                                          novalidate
+                                          ng-submit="formSubmit()">
+                                        <div class="form-group">
+                                            <div class="row">
+                                                <div class="col-lg-3 col-sm-3">
+                                                    <label>
+                                                        <label class="control-label">User Name</label>
+                                                    </label>
+                                                </div>
+                                                <div class="col-lg-3 col-sm-3" style="width: 50%;">
+                                                    <input id="UserName" type="text" name="UserName" class="form-control" ng-required="true" ng-model="model.UserName">
+                                                    <span style="color:red" ng-show="form.UserName.$dirty && form.UserName.$invalid">
+                                                        <span ng-show="form.UserName.$error.required">Please Enter User Name</span>
+                                                    </span>
+                                                </div>
+                                            </div>
+                                        </div>                                        
+                                        <div class="form-group">
+                                            <div class="row">
+                                                <div class="col-lg-3 col-sm-3">
+                                                    <label>
+                                                        <label class="control-label">Password</label>
+                                                    </label>
+                                                </div>
+                                                <div class="col-lg-3 col-sm-3" style="width: 50%;">
+                                                    <input id="Password" type="password" name="Password" ng-pattern="/(?=.*[a-z])(?=.*[A-Z])(?=.*[^a-zA-Z])/" ng-minlength="6" class="form-control" ng-required="true" ng-model="model.Password">
+                                                    <span style="color:red" ng-show="form.Password.$dirty && form.Password.$invalid">
+                                                        <span ng-show="form.Password.$error.required">Please Enter Password</span>
+                                                        <span ng-show="form.Password.$error.pattern">Must contain one lower & uppercase letter, and one non-alpha character (a number or a symbol.) </span>
+                                                        <span ng-show="form.Password.$error.minlength">Password must be 6 characters Long</span>
+                                                    </span>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="form-group">
+                                            <div class="row">
+                                                <div class="col-lg-3 col-sm-3">
+                                                    <label>
+                                                        <label class="control-label">EMail Address</label>
+                                                    </label>
+                                                </div>
+                                                <div class="col-lg-3 col-sm-3" style="width: 50%;">
+                                                    <input id="Email" type="email" name="Email" class="form-control" ng-required="true" ng-model="model.Email">
+                                                    <span style="color:red" ng-show="form.Email.$dirty && form.Email.$invalid">
+                                                        <span ng-show="form.Email.$error.required">Email is required.</span>
+                                                        <span ng-show="form.Email.$error.email">Enter valid Email address(eg.abc@gmail.com or abc@ymail.co.in)</span>
+                                                    </span>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="row">
+                                            <div class="col-lg-3 col-sm-3">
+                                            </div>
+                                            <div class="col-lg-4 col-sm-4">
+                                                <span style="color:red" ng-show="(form.BankAccount4.$dirty && form.BankAccount4.$invalid) ||(form.BankAccount3.$dirty && form.BankAccount3.$invalid)||(form.BankAccount2.$dirty && form.BankAccount2.$invalid)||(form.BankAccount1.$dirty && form.BankAccount1.$invalid)">
+                                                    <span ng-show="form.BankAccount4.$error.required ||form.BankAccount3.$error.required ||form.BankAccount2.$error.required || form.BankAccount1.$error.required">Required value</span><br />
+                                                    <span ng-show="form.BankAccount4.$error.pattern ||form.BankAccount3.$error.pattern ||form.BankAccount2.$error.pattern || form.BankAccount1.$error.pattern">Enter only digits</span><br />
+                                                    <span ng-show="form.BankAccount4.$error.minlength ||form.BankAccount3.$error.minlength ||form.BankAccount2.$error.minlength || form.BankAccount1.$error.minlength">Required at least 4 Digits</span><br />
+                                                    <span ng-show="form.BankAccount4.$error.maxlength ||form.BankAccount3.$error.maxlength ||form.BankAccount2.$error.maxlength || form.BankAccount1.$error.maxlength">Required 4 Digits Only</span>
+                                                </span>
+                                            </div>
+                                        </div>
+                                        <br />
+                                        <div class="form-group">
+                                            <div class="row">
+                                                <div class="col-lg-3 col-sm-3">
+                                                </div>
+                                                <div class="col-lg-3 col-sm-3">
+                                                    <button type="button" class="btn btn-primary" ng-disabled="!form.$valid" ng-click="Create(model)">REGISTER</button>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </form>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <footer>
+        <span style="text-align: left; float: left">&copy; Copyright 2014 INTI International University &amp; Colleges. All Rights Reserved. <a href="#"> </a> </span>
+        <span class="hidden-phone" style="text-align: right; float: right">version : <a href="#" alt="Assembly Version">@ViewContext.Controller.GetType().Assembly.GetName().Version </a></span>
+    </footer>
+</body>
+</html>
+
+<script src="~/app/controllers/Account/Register.js"></script>
+

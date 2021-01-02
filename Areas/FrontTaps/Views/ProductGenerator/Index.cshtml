@@ -1,0 +1,546 @@
+﻿@{
+    ViewBag.Title = "ProductGeneratorMgmt";
+    Layout = "~/Areas/FrontTaps/Views/Shared/_Layout.cshtml";
+}
+
+
+
+<div ng-controller="ProductGeneratorCtrl">
+    <div class="row">
+        <div class="col-lg-12">
+            <div class="box">
+                <div class="box-header">
+                    <h2><i class="fa fa-edit"></i>Product Generator Management</h2>
+                    <div class="box-icon">
+                        <a href="form-elements.html#" class="btn-minimize"><i class="fa fa-chevron-up"></i></a>
+                    </div>
+                </div>
+                <div class="box-content">
+                    <form role="form"
+                          id="form"
+                          name="form"
+                          class="form-horizontal"
+                          novalidate
+                          ng-submit="formSubmit()">
+                        <input type="hidden" value="{{model.id}}" ng-model="model.id" />
+                        <div class="form-group">
+                            <div class="row">
+                                <div class="col-lg-2 col-sm-2" ng-class="{ 'has-error' : submitted && form.ddmake.$invalid }">
+                                    <label class="control-label">Make *:-</label>
+                                </div>
+                                <div class="col-lg-3 col-sm-3" ng-class="{ 'has-error' : submitted && form.ddmake.$invalid }">
+                                    <div class="input-group">
+                                        <select id="ddMake" multiple="multiple" ng-model="model.SelectedMake" name="ddmake"></select>
+                                        <p ng-show="submitted && form.ddmake.$invalid" class="help-block">Please Select Make.</p>
+                                    </div>
+                                </div>
+                                <div class="col-lg-2 col-sm-2" ng-class="{ 'has-error' : submitted && form.ddModel.$invalid }">
+                                    <label class="control-label">Model *:-</label>
+                                </div>
+                                <div class="col-lg-3 col-sm-3" ng-class="{ 'has-error' : submitted && form.ddModel.$invalid }">
+                                    <div class="input-group">
+                                        <div class="col-lg-3 col-sm-3" ng-class="{ 'has-error' : submitted && form.ddModel.$invalid }">
+                                            <div class="input-group">
+                                                <select id="ddModel" name="ddModel" multiple="multiple" ng-model="model.SelectedModel"></select>
+                                                <p ng-show="submitted && form.ddModel.$invalid" class="help-block">Please Select Model.</p>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <div class="row">
+                                <div class="col-lg-2 col-sm-2" ng-class="{ 'has-error' : submitted && form.ddTrim.$invalid }">
+                                    <label class="control-label">Trim *:-</label>
+                                </div>
+                                <div class="col-lg-3 col-sm-3" ng-class="{ 'has-error' : submitted && form.ddTrim.$invalid }">
+                                    <div class="input-group">
+                                        <select id="ddTrim" name="ddTrim" multiple="multiple" ng-model="model.SelectedTrim" style="overflow:scroll"></select>
+                                        <p ng-show="submitted && form.ddTrim.$invalid" class="help-block">Please Select Trim.</p>
+                                    </div>
+                                </div>
+                                <div class="col-lg-2 col-sm-2" ng-class="{ 'has-error' : submitted && form.ddYear.$invalid }">
+                                    <label class="control-label">Year *:-</label>
+                                </div>
+                                <div class="col-lg-3 col-sm-3" ng-class="{ 'has-error' : submitted && form.ddYear.$invalid }">
+                                    <div class="input-group">
+                                        <div class="col-lg-3 col-sm-3" ng-class="{ 'has-error' : submitted && form.ddYear.$invalid }">
+                                            <div class="input-group">
+                                                <select id="ddYear" name="ddYear" multiple="multiple" ng-model="model.SelectedYear"></select>
+                                                <p ng-show="submitted && form.ddYear.$invalid" class="help-block">Please Select Year.</p>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <div class="row">
+                                <div class="col-lg-2 col-sm-2" ng-class="{ 'has-error' : submitted && form.Name.$invalid }">
+                                    <label class="control-label">Product Name *:-</label>
+                                </div>
+                                <div class="col-lg-3 col-sm-3" ng-class="{ 'has-error' : submitted && form.Name.$invalid }">
+                                    <div class="input-group">
+                                        <input id="Name" name="Name" type="text" maxlength="255" class="form-control" required ng-model="model.Name">
+                                        <p ng-show="submitted && form.Name.$invalid" class="help-block">Product Name is required.</p>
+                                    </div>
+                                </div>
+                                <div class="col-lg-2 col-sm-2" ng-class="{ 'has-error' : submitted && form.Component.$invalid }">
+                                    <label class="control-label">Component Category* :-</label>
+                                </div>
+                                <div class="col-lg-3 col-sm-3" ng-class="{ 'has-error' : submitted && form.Component.$invalid }">
+                                    <div class="input-group">
+                                        <select id="idParent" name="Component" class="form-control" required ng-model="model.idComponent">
+                                            <option value="">--Select Component Category--</option>
+                                            <option ng-repeat="ct in Categorylist | orderBy : 'Name'" value="{{ct.id}}">{{ct.Name}}</option>
+                                        </select>
+                                        <p ng-show="submitted && form.Component.$invalid" class="help-block">Please Select Component.</p>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <div class="row">
+                                <div class="col-lg-2 col-sm-2">
+                                    <label class="control-label">Description :-</label>
+                                </div>
+                                <div class="col-lg-3 col-sm-3">
+                                    <div class="input-group">
+                                        <input id="Description" type="text" class="form-control" ng-model="model.Description">
+                                    </div>
+                                </div>
+                                <div class="col-lg-2 col-sm-2">
+                                    <label class="control-label">Manage Stock :-</label>
+                                </div>
+                                <div class="col-lg-3 col-sm-3">
+                                    <div class="input-group">
+                                        <input id="ManageStock" type="checkbox" class="checkbox" ng-model="model.ManageStock" />
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <div class="row">
+                                <div class="col-lg-2 col-sm-2">
+                                    <label class="control-label">SKU :-</label>
+                                </div>
+                                <div class="col-lg-3 col-sm-3">
+                                    <div class="input-group">
+                                        <input id="SKU" type="text" class="form-control" ng-model="model.SKU">
+                                    </div>
+                                </div>
+                                <div class="col-lg-2 col-sm-2">
+                                    <label class="control-label">Sale Price Date :-</label>
+                                </div>
+                                <div class="col-lg-3 col-sm-3">
+                                    <div class="input-group">
+                                        <span class="input-group-addon"><i class="fa fa-calendar"></i></span>
+                                        <input type="text" class="form-control" name="dateranger" id="daterange" ng-model="model.Date">
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <div class="row">
+                                <div class="col-lg-2 col-sm-2">
+                                    <label class="control-label">Image URL :-</label>
+                                </div>
+                                <div class="col-lg-3 col-sm-3">
+                                    <div class="input-group">
+                                        <div class="input-group col-sm-4">
+                                            <img ng-if="model.ImageUrl != ''" ng-src="~/MediaUploads/{{model.ImageUrl}}" class="img-polaroid" ng-model="model.ImageUrl" style="height:100px;width:100px;border: 2px solid #36a9e1" err-src="~/assets/img/no_image.jpg" />
+                                        </div>
+                                        <br ng-hide="model.ImageUrl == ''" />
+                                        <div class="input-group col-sm-4">
+                                            <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#Product" ng-click="FetchMedia()">Select Image</button>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col-lg-2 col-sm-2">
+                                    <label class="control-label">SKU Image URL :-</label>
+                                </div>
+                                <div class="col-lg-3 col-sm-3">
+                                    <div class="input-group col-sm-4" ng-hide="model.SKUImageUrl == ''">
+                                        <img ng-if="model.SKUImageUrl != ''" ng-src="~/MediaUploads/{{model.SKUImageUrl}}" class="img-polaroid" ng-model="model.SKUImageUrl" style="height:100px;width:100px;border: 2px solid #36a9e1" err-src="~/assets/img/no_image.jpg" />
+                                    </div>
+                                    <br ng-hide="model.SKUImageUrl == ''" />
+                                    <div class="input-group col-sm-4">
+                                        <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#SKUImage" ng-click="FetchMediaSKU()">Select Image</button>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <div class="row">
+                                <div class="col-lg-2 col-sm-2">
+                                    <label class="control-label">Regular Price :-</label>
+                                </div>
+                                <div class="col-lg-3 col-sm-3">
+                                    <div class="input-group">
+                                        <input id="RegularPrice" type="text" class="form-control" money ng-model="model.RegularPrice">
+                                    </div>
+                                </div>
+                                <div class="col-lg-2 col-sm-2">
+                                    <label class="control-label">Sale Price :-</label>
+                                </div>
+                                <div class="col-lg-3 col-sm-3">
+                                    <div class="input-group">
+                                        <input id="SalePrice" type="text" class="form-control" money ng-model="model.SalePrice">
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        @*<div class="form-group">
+                                <div class="row">
+                                    <div class="col-lg-2 col-sm-2">
+                                        <label class="control-label">Max. Price :-</label>
+                                    </div>
+                                    <div class="col-lg-3 col-sm-3">
+                                        <div class="input-group">
+                                            <input id="MaxPrice" type="text" class="form-control" money ng-model="model.MaxPrice">
+                                        </div>
+                                    </div>
+                                    <div class="col-lg-2 col-sm-2">
+                                        <label class="control-label">Min. Price :-</label>
+                                    </div>
+                                    <div class="col-lg-3 col-sm-3">
+                                        <div class="input-group">
+                                            <input id="MinPrice" type="text" class="form-control" money ng-model="model.MinPrice">
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <div class="row">
+                                    <div class="col-lg-2 col-sm-2">
+                                        <label class="control-label">Avg. Price :-</label>
+                                    </div>
+                                    <div class="col-lg-3 col-sm-3">
+                                        <div class="input-group">
+                                            <input id="AvgPrice" type="text" class="form-control" money ng-model="model.AvgPrice">
+                                        </div>
+                                    </div>
+                                    <div class="col-lg-2 col-sm-2">
+                                    </div>
+                                    <div class="col-lg-3 col-sm-3">
+                                    </div>
+                                </div>
+                            </div>*@
+
+                        <div class="form-group">
+                            <div class="row">
+                                <div class="col-lg-2 col-sm-2">
+                                    <label class="control-label">Allow Back Order :-</label>
+                                </div>
+                                <div class="col-lg-3 col-sm-3">
+                                    <div class="input-group">
+                                        <input id="AllowBackOrder" type="checkbox" class="checkbox" ng-model="model.AllowBackOrder" />
+                                    </div>
+                                </div>
+                                <div class="col-lg-2 col-sm-2">
+                                    <label class="control-label">Sold Individually :-</label>
+                                </div>
+                                <div class="col-lg-3 col-sm-3">
+                                    <div class="input-group">
+                                        <input id="SoldIndividually" type="checkbox" class="checkbox" ng-model="model.SoldIndividually" />
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <div class="row">
+                                <div class="col-lg-2 col-sm-2">
+                                    <label class="control-label">Stock Qty :-</label>
+                                </div>
+                                <div class="col-lg-3 col-sm-3">
+                                    <div class="input-group">
+                                        <input id="StockQty" type="text" numbers-only="numbers-only" class="form-control" ng-model="model.StockQty">
+                                    </div>
+                                </div>
+
+                                <div class="col-lg-2 col-sm-2">
+                                    <label class="control-label">Stock Status :-</label>
+                                </div>
+                                <div class="col-lg-3 col-sm-3">
+                                    <div class="input-group">
+                                        <input id="StockStatus" type="text" numbers-only="numbers-only" class="form-control" ng-model="model.StockStatus">
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <div class="row">
+                                <div class="col-lg-2 col-sm-2">
+                                    <label class="control-label">Warranty(in Months) :-</label>
+                                </div>
+                                <div class="col-lg-3 col-sm-3">
+                                    <div class="input-group">
+                                        <input id="StockQty" type="text" numbers-only class="form-control" ng-model="model.Warranty">
+                                    </div>
+                                </div>
+
+                                <div class="col-lg-2 col-sm-2">
+                                    <label class="control-label">Quality :-</label>
+                                </div>
+                                <div class="col-lg-3 col-sm-3">
+                                    <div class="input-group">
+                                        @*<select id="Condition" class="form-control" ng-model="model.Condition">
+                                            <option value="">---Select Condition---</option>
+                                            <option value="QUP">Quality Used Parts</option>
+                                            <option value="UP">Used Parts</option>
+                                            <option value="OEM">Original Equipment Manufacturer</option>
+                                        </select>*@
+                                        <select id="Condition" class="form-control" ng-model="model.Condition">
+                                            <option value="">---Select Quality---</option>
+                                            <option value="REMAN">Remanufactured Parts (REMAN)</option>
+                                            <option value="GQUP">Good Quality Used Parts (GQUP)</option>
+                                            <optgroup label="New Part (NP)">
+                                                <option value="NP-Ori">Original (NP-Ori)</option>
+                                                <option value="NP-Non-Ori">Non-Original (NP-Non-Ori)</option>
+                                            </optgroup>
+                                        </select>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <div class="row">
+                                <div class="col-lg-2 col-sm-2">
+                                    <label class="control-label">Weight :-</label>
+                                </div>
+                                <div class="col-lg-3 col-sm-3">
+                                    <div class="input-group">
+                                        <input id="Weight" type="text" class="form-control" money ng-model="model.Weight">
+                                    </div>
+                                </div>
+                                <div class="col-lg-2 col-sm-2">
+                                    <label class="control-label">VolumeL :-</label>
+                                </div>
+                                <div class="col-lg-3 col-sm-3">
+                                    <div class="input-group">
+                                        <input id="VolumeL" type="text" class="form-control" money ng-model="model.VolumeL">
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <div class="row">
+                                <div class="col-lg-2 col-sm-2">
+                                    <label class="control-label">VolumeW :-</label>
+                                </div>
+                                <div class="col-lg-3 col-sm-3">
+
+                                    <div class="input-group">
+                                        <input id="VolumeW" type="text" class="form-control" money ng-model="model.VolumeW">
+                                    </div>
+                                </div>
+                                <div class="col-lg-2 col-sm-2">
+                                    <label class="control-label">VolumeH :-</label>
+                                </div>
+                                <div class="col-lg-3 col-sm-3">
+
+                                    <div class="input-group">
+                                        <input id="VolumeH" type="text" class="form-control" money ng-model="model.VolumeH">
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <div class="row">
+                                <div class="col-lg-2 col-sm-2">
+                                    <label class="control-label">Vendor :-</label>
+                                </div>
+                                <div class="col-lg-3 col-sm-3">
+                                    <div class="input-group">
+                                        <select id="idVendor" class="form-control" ng-model="model.idVendor">
+                                            <option value="">--Select Vendor--</option>
+                                            <option ng-repeat="ct in lstVendor" value="{{ct.id}}">{{ct.CompanyName}}</option>
+                                        </select>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <br />
+                        <div class="form-actions">                            
+                            <button type="button" id="myBtnSave" class="btn btn-primary" ng-click="CreateProduct(form,model)">Save</button>
+                            <button type="reset" class="btn" ng-click="Reset()">Cancel</button>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+        @*<div class="col-lg-12">
+            <div class="box">
+                <div class="box-header" data-original-title>
+                    <h2><i class="fa fa-user"></i><span class="break"></span>Product Meta List</h2>
+                    <div class="box-icon">
+                        <a href="table.html#" class="btn-minimize"><i class="fa fa-chevron-up"></i></a>
+                    </div>
+                </div>
+                <div class="box-content">
+                    <div class="box-content">
+                        @{ Html.RenderPartial("_ListProductMetaList"); }
+                    </div>
+                </div>
+            </div>
+        </div>*@
+        <div class="col-lg-12">
+            <div class="box">
+                <div class="box-header" data-original-title>
+                    <h2><i class="fa fa-user"></i><span class="break"></span>Product Management List</h2>
+                    <div class="box-icon">
+                        <a href="table.html#" class="btn-minimize"><i class="fa fa-chevron-up"></i></a>
+                    </div>
+                </div>
+                <div class="box-content">
+                    <div class="col-lg-8">
+                        <button type="button" id="myBtn" class="btn btn-primary" ng-click="CalculateMovingAvgPrice(form,model)">Calculate MVP Price</button>
+                    </div>
+                    <div class="col-lg-1">
+                        <h4>Search :</h4>
+                    </div>
+                    <div class="col-lg-3">
+                        <input id="Search" type="text" maxlength="50" class="form-control" ng-model="model.SearchText" ng-enter="GetAllProduct(1)" ng-change="CheckSearchText()">
+                    </div>
+                    <br /><br />
+                    @{ Html.RenderPartial("_ListProductMgmtList"); }
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="modal fade" id="Product" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+        <div class="modal-dialog modal-lg">
+            <div class="modal-content">
+                <div class="modal-header" style="background: #36a9e1">
+                    <button type="button" class="close" data-dismiss="modal"><span aria-hidden="true">&times;</span><span class="sr-only">Close</span></button>
+                    <h4 class="modal-title" style="color:white">Select Image</h4>
+                </div>
+                <div class="modal-body">
+                    <form role="form"
+                          id="form1"
+                          name="form1"
+                          class="form-horizontal"
+                          ng-submit="formSubmit()">
+                        <div class="form-group">
+                            <div class="row">
+                                <div class="col-lg-1">
+                                    <h4>Search</h4>
+                                </div>
+                                <div class="col-lg-3">
+                                    <input id="Search" type="text" maxlength="50" class="form-control" ng-model="model.SearchText3" ng-change="CheckSearchProduct()" ng-enter="FetchMedia(1)" @*ng-blur="FetchMedia(1)"*@>
+                                </div>
+                                <div class="col-lg-8">
+                                    <pagination class="pull-right" data-boundary-links="true" page="pager.PageNum"
+                                                total-items="pager.Total"
+                                                items-per-page="pager.PageSize"
+                                                max-size="10"
+                                                on-select-page="FetchMedia(page)"></pagination>
+                                </div>
+                                <br /><br />
+                            </div>
+                            <div class="row">
+                                <table class="table table-striped table-bordered table-condensed bootstrap-datatable datatable">
+                                    <thead>
+                                        <tr>
+                                            <th>No</th>
+                                            <th>Image</th>
+                                            <th>File Name</th>
+                                            <th>Action</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        <tr ng-repeat="o in ImageList">
+                                            <td>
+                                                {{$index + 1}}
+                                            </td>
+                                            <td>
+                                                <img ng-src="~/MediaUploads/{{o.FileName}}" height="50px" width="50px">
+                                            </td>
+                                            <td>
+                                                {{o.Name}}
+                                            </td>
+                                            <td class="center">
+                                                <button type="button" class="btn btn-primary" ng-click="SelectImage(o.FileName)" ng-model="model.ImageName" data-dismiss="modal">Select</button>
+                                            </td>
+                                        </tr>
+                                    </tbody>
+                                </table>
+                            </div>
+                        </div>
+                        <br />
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="modal fade" id="SKUImage" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+        <div class="modal-dialog modal-lg">
+            <div class="modal-content">
+                <div class="modal-header" style="background: #36a9e1">
+                    <button type="button" class="close" data-dismiss="modal"><span aria-hidden="true">&times;</span><span class="sr-only">Close</span></button>
+                    <h4 class="modal-title" style="color:white">Select Image</h4>
+                </div>
+                <div class="modal-body">
+                    <form role="form"
+                          id="form2"
+                          name="form2"
+                          class="form-horizontal"
+                          novalidate
+                          ng-submit="formSubmit()">
+                        <div class="form-group">
+                            <div class="row">
+                                <div class="col-lg-1">
+                                    <h4>Search</h4>
+                                </div>
+                                <div class="col-lg-3">
+                                    <input id="Search" type="text" maxlength="50" class="form-control" ng-model="model.SearchText2" ng-change="CheckSearchSKU()" ng-enter="FetchMediaSKU(1)">
+                                </div>
+                                <div class="col-lg-8">
+                                    <pagination class="pull-right" data-boundary-links="true" page="pager.PageNum"
+                                                total-items="pager.Total"
+                                                items-per-page="pager.PageSize"
+                                                max-size="10"
+                                                on-select-page="FetchMediaSKU(page)"></pagination>
+                                </div>
+                                <br /><br />
+                            </div>
+                            <div class="row">
+                                <table class="table table-striped table-bordered table-condensed bootstrap-datatable datatable">
+                                    <thead>
+                                        <tr>
+                                            <th>No</th>
+                                            <th>Image</th>
+                                            <th>File Name</th>
+                                            <th>Action</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        <tr ng-repeat="o in ImageList">
+                                            <td>
+                                                {{$index + 1}}
+                                            </td>
+                                            <td>
+                                                <img ng-src="~/MediaUploads/{{o.FileName}}" height="50px" width="50px">
+                                            </td>
+                                            <td>
+                                                {{o.Name}}
+                                            </td>
+                                            <td class="center">
+                                                <button type="button" class="btn btn-primary" ng-click="SelectImageSKU(o.FileName)" ng-model="model.ImageName" data-dismiss="modal">Select</button>
+                                            </td>
+                                        </tr>
+                                    </tbody>
+                                </table>
+                            </div>
+                        </div>
+                        <br />
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script src="~/app/controllers/ProductGenerator/ProductGeneratorCtrl.js"></script>

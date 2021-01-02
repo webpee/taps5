@@ -1,0 +1,78 @@
+﻿<table class="table table-striped table-bordered table-condensed bootstrap-datatable datatable">
+    <thead>
+        <tr>
+            <th style="width:3%"><input type="checkbox" id="selecctall" /></th>
+            <th style="width:5%">No</th>
+            <th style="width:5%">Product Image</th>
+            <th style="width:20%">Product Name</th>
+            <th>Category</th>
+            <th>Description</th>
+            <th style="width:10%">SKU</th>
+            <th style="width:9%">Regular Price</th>
+            <th style="width:9%">Sale Price</th>
+            <th style="width:9%">MVP</th>
+            <th style="width:9%">Max Price</th>
+            <th style="width:5%">Active</th>
+            <th style="width:10%">Action</th>
+        </tr>
+    </thead>
+    <tbody>
+        <tr ng-repeat="o in list1 | filter:SearchText">
+            <td>
+                <input type="checkbox" class="checkbox1" id="col{{$index}}" name="colname{{$index}}" value="{{o.id}}" />
+            </td>
+            <td>
+                {{$index+1}}
+            </td>
+            <td>
+                <img ng-src="~/MediaUploads/{{o.ImageUrl}}" err-src="~/assets/img/no_image.jpg" class="img-polaroid" ng-model="model.ImageUrl" style="height:60px;width:60px;" alt="No Image" />
+            </td>
+            <td>
+                {{o.Name}}
+            </td>
+            <td>
+                {{o.Category}}
+            </td>
+            <td>
+                {{o.Description}}
+            </td>
+            <td>
+                {{o.SKU}}
+            </td>
+            <td>
+                {{o.RegularPrice}}
+            </td>
+            <td>
+                {{o.SalePrice}}
+            </td>
+            <td>
+                {{o.MovingAvgPrice}}
+            </td>
+            <td>
+                {{o.MaxPrice}}
+            </td>
+            <td>
+                <span ng-if="o.IsPosted || o.IsPosted== null"><img src="~/assets/img/true.png" height="25px"/></span>
+                <span ng-if="o.IsPosted == false"><img src="~/assets/img/false.png" height="25px" /></span>
+            </td>            
+            <td class="center">
+                <a href="#" class="btn btn-info" ng-click="FetchProductById(o)" ng-show="!o.LockStatus" title="Edit" data-rel="tooltip">
+                    <i class="fa fa-edit"></i>
+                </a>
+                <a href="#" class="btn btn-danger" ng-really-message="Are you sure to Delete this Record ?" ng-really-click="DeleteProduct(o)" title="Delete" data-rel="tooltip">
+                    <i class="fa fa-trash-o"></i>
+                </a>
+            </td>
+        </tr>
+    </tbody>
+</table>
+
+<div class="row show-hide-animation">
+    <div class="col-md-12">
+        <pagination class="pull-right" data-boundary-links="true" page="pager.PageNum"
+                    total-items="pager.Total"
+                    items-per-page="pager.PageSize"
+                    max-size="10"
+                    on-select-page="GetAllProduct(page)"></pagination>
+    </div>
+</div>

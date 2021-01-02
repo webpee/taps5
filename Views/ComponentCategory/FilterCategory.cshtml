@@ -1,0 +1,222 @@
+﻿@{
+    ViewBag.Title = "FilterCategory";
+}
+<script type="text/javascript">
+    $(document).ready(function () {
+        //	$('.col-exp.close').on('click', function(){
+        $(document).on('click', '.col-exp.close', function () {
+            $(this).attr('src', '/Areas/FrontTaps/Img/left.png');
+            //		sval = $(this).parent('li').find('input[type="checkbox"]:first').val();
+            sval = $('.form').serialize();
+            //alert(sval);
+            $(this).addClass('open');
+            $(this).removeClass('close');
+            $(this).parent('li').find('ul:first').show();
+        })
+
+        //	$('.col-exp.open').on('click', function(){
+        $(document).on('click', '.col-exp.open', function () {
+            sval = $('.form').serialize();
+            //	alert(sval);
+            $(this).attr('src', '/Areas/FrontTaps/Img/left.png');
+            $(this).addClass('close');
+            $(this).removeClass('open');
+            $(this).parent('li').find('ul:first').hide();
+        })
+    });
+</script>
+<style type="text/css">
+    ul {
+        padding-left: 2em;
+        list-style-type: none;
+    }
+
+        ul li {
+            margin-bottom: 0;
+            padding-left: 0.5em;
+        }
+
+    .closed {
+        background: url('/Areas/FrontTaps/Img/left.png') no-repeat 0 0;
+    }
+
+    .open {
+        background: url('/Areas/FrontTaps/Img/left.png') no-repeat 0 0;
+    }
+
+    a {
+        color: #0000FF;
+    }
+        /* unvisited link */
+        a:visited {
+            color: #0000FF;
+        }
+        /* visited link */
+        a:hover {
+            color: #0000FF;
+        }
+        /* mouse over link */
+        a:active {
+            color: #0000FF;
+        }
+
+    .open, .closed {
+        background: none;
+        transform: rotate(90deg);
+    }
+    /* selected link */
+</style>
+<div ng-controller="FilterCategoryCtrl">
+    <div class="body-padding">
+        <div class="body-part">
+            <div class="part-right">
+                <div class="part-one">
+                    <div class="list">
+                        <img src="~/Areas/FrontTaps/Img/list.png" ng-click="model.flag = !model.flag" />
+
+                    </div>
+                    <div class="search">
+                        <form>
+                            <input type="text" class="tftextinput" name="q" size="21" maxlength="120">
+                            <input type="submit" value="SEARCH" class="tfbutton" ng-click="lassan()">
+                        </form>
+                    </div>
+                    <div class="clear"></div>
+                </div>
+                <div class="component" ng-show="model.flag">
+                    <form class="form">
+                        <div class="com-list1">
+                            <span>Body Group</span>
+                            <div class="component-chec">
+                                <ul>
+                                    <li id="li{{data.id}}" ng-repeat="data in list1" ng-if="data.idParent==null && data.idCategory==15">
+                                        <input type="checkbox" name="Check{{data.id}}" value="{{data.id}}" />
+                                        <img src="~/Areas/FrontTaps/Img/left.png" class=" col-exp close" ng-show="ParentList1(data.id)">
+                                        <b>{{data.Name}}</b>
+                                        <ul style="display: none;" ng-show="ParentList1(data.id)">
+                                            <li ng-repeat="data1 in list1" ng-if="data.id==data1.idParent">
+                                                <input type="checkbox" name="Check{{data1.id}}" value="{{data1.id}}" />
+                                                <img src="~/Areas/FrontTaps/Img/left.png" class="col-exp close" ng-show="ParentList1(data1.id)">
+                                                <b>{{data1.Name}}</b>
+                                                <ul style="display: none;" ng-show="ParentList1(data1.id)">
+                                                    <li ng-repeat="data2 in list1" ng-if="data1.id==data2.idParent">
+                                                        <input type="checkbox" name="Check{{data2.id}}" value="{{data2.id}}" />
+                                                        <img src="~/Areas/FrontTaps/Img/left.png" class="col-exp close" ng-show="ParentList1(data2.id)">
+                                                        <b>{{data2.Name}}</b>
+                                                        <ul style="display: none;" ng-show="ParentList1(data2.id)">
+                                                            <li ng-repeat="data3 in list1" ng-if="data2.id==data3.idParent">
+                                                                <input type="checkbox" name="Check{{data3.id}}" value="{{data3.id}}" />
+                                                                <b>{{data3.Name}}</b>
+                                                            </li>
+                                                        </ul>
+                                                    </li>
+                                                </ul>
+                                            </li>
+                                        </ul>
+                                    </li>
+                                </ul>
+                            </div>
+                        </div>
+                        <div class="com-list2">
+                            <span>Electrical Group</span>
+                            <div class="component-chec">
+                                <ul>
+                                    <li id="li{{data.id}}" ng-repeat="data in list2" ng-if="data.idParent==null && data.idCategory==16">
+                                        <input type="checkbox" name="Check{{data.id}}" value="{{data.id}}" />
+                                        <img src="~/Areas/FrontTaps/Img/left.png" class=" col-exp close" ng-show="ParentList2(data.id)">
+                                        <b>{{data.Name}}</b>
+                                        <ul style="display: none;" ng-show="ParentList2(data.id)">
+                                            <li ng-repeat="data1 in list2" ng-if="data.id==data1.idParent">
+                                                <input type="checkbox" name="Check{{data1.id}}" value="{{data1.id}}" />
+                                                <img src="~/Areas/FrontTaps/Img/left.png" class="col-exp close" ng-show="ParentList2(data1.id)">
+                                                <b>{{data1.Name}}</b>
+                                                <ul style="display: none;" ng-show="ParentList2(data1.id)">
+                                                    <li ng-repeat="data2 in list2" ng-if="data1.id==data2.idParent">
+                                                        <input type="checkbox" name="Check{{data2.id}}" value="{{data2.id}}" />
+                                                        <img src="~/Areas/FrontTaps/Img/left.png" class="col-exp close" ng-show="ParentList2(data2.id)">
+                                                        <b>{{data2.Name}}</b>
+                                                        <ul style="display: none;" ng-show="ParentList2(data2.id)">
+                                                            <li ng-repeat="data3 in list2" ng-if="data2.id==data3.idParent">
+                                                                <input type="checkbox" name="Check{{data3.id}}" value="{{data3.id}}" />
+                                                                <b>{{data3.Name}}</b>
+                                                            </li>
+                                                        </ul>
+                                                    </li>
+                                                </ul>
+                                            </li>
+                                        </ul>
+                                    </li>
+                                </ul>
+                            </div>
+                        </div>
+                        <div class="com-list3">
+                            <span>Engine, Fuel Group</span>
+                            <div class="component-chec">
+                                <ul>
+                                    <li id="li{{data.id}}" ng-repeat="data in list3" ng-if="data.idParent==null && data.idCategory==17">
+                                        <input type="checkbox" name="Check{{data.id}}" value="{{data.id}}" />
+                                        <img src="~/Areas/FrontTaps/Img/left.png" class=" col-exp close" ng-show="ParentList3(data.id)">
+                                        <b>{{data.Name}}</b>
+                                        <ul style="display: none;" ng-show="ParentList3(data.id)">
+                                            <li ng-repeat="data1 in list3" ng-if="data.id==data1.idParent">
+                                                <input type="checkbox" name="Check{{data1.id}}" value="{{data1.id}}" />
+                                                <img src="~/Areas/FrontTaps/Img/left.png" class="col-exp close" ng-show="ParentList3(data1.id)">
+                                                <b>{{data1.Name}}</b>
+                                                <ul style="display: none;" ng-show="ParentList3(data1.id)">
+                                                    <li ng-repeat="data2 in list3" ng-if="data1.id==data2.idParent">
+                                                        <input type="checkbox" name="Check{{data2.id}}" value="{{data2.id}}" />
+                                                        <img src="~/Areas/FrontTaps/Img/left.png" class="col-exp close" ng-show="ParentList3(data2.id)">
+                                                        <b>{{data2.Name}}</b>
+                                                        <ul style="display: none;" ng-show="ParentList3(data2.id)">
+                                                            <li ng-repeat="data3 in list3" ng-if="data2.id==data3.idParent">
+                                                                <input type="checkbox" name="Check{{data3.id}}" value="{{data3.id}}" />
+                                                                <b>{{data3.Name}}</b>
+                                                            </li>
+                                                        </ul>
+                                                    </li>
+                                                </ul>
+                                            </li>
+                                        </ul>
+                                    </li>
+                                </ul>
+                            </div>
+                        </div>
+                        <div class="com-list4">
+                            <span>Power Train, Chassis Group</span>
+                            <div class="component-chec">
+                                <ul>
+                                    <li id="li{{data.id}}" ng-repeat="data in list4" ng-if="data.idParent==null && data.idCategory==18">
+                                        <input type="checkbox" name="Check{{data.id}}" value="{{data.id}}" />
+                                        <img src="~/Areas/FrontTaps/Img/left.png" class=" col-exp close" ng-show="ParentList4(data.id)">
+                                        <b>{{data.Name}}</b>
+                                        <ul style="display: none;" ng-show="ParentList4(data.id)">
+                                            <li ng-repeat="data1 in list4" ng-if="data.id==data1.idParent">
+                                                <input type="checkbox" name="Check{{data1.id}}" value="{{data1.id}}" />
+                                                <img src="~/Areas/FrontTaps/Img/left.png" class="col-exp close" ng-show="ParentList4(data1.id)">
+                                                <b>{{data1.Name}}</b>
+                                                <ul style="display: none;" ng-show="ParentList4(data1.id)">
+                                                    <li ng-repeat="data2 in list4" ng-if="data1.id==data2.idParent">
+                                                        <input type="checkbox" name="Check{{data2.id}}" value="{{data2.id}}" />
+                                                        <img src="~/Areas/FrontTaps/Img/left.png" class="col-exp close" ng-show="ParentList4(data2.id)">
+                                                        <b>{{data2.Name}}</b>
+                                                        <ul style="display: none;" ng-show="ParentList4(data2.id)">
+                                                            <li ng-repeat="data3 in list4" ng-if="data2.id==data3.idParent">
+                                                                <input type="checkbox" name="Check{{data3.id}}" value="{{data3.id}}" />
+                                                                <b>{{data3.Name}}</b>
+                                                            </li>
+                                                        </ul>
+                                                    </li>
+                                                </ul>
+                                            </li>
+                                        </ul>
+                                    </li>
+                                </ul>
+                            </div>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<script src="~/Areas/FrontTaps/app/controllers/CategoryMgmt/FilterCategory.js"></script>

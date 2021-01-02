@@ -1,0 +1,183 @@
+﻿@{
+    ViewBag.Title = "Index";
+    Layout = "~/Areas/TapsAdmin/Views/Shared/_AddItemLayout.cshtml";
+}
+
+<div class="content_inner" id="step-3" ng-controller="InventoryCtrl">
+    <div class="content_inner_main">
+        <div class="product-slecetion-part">
+
+            <div class="product-status-left">
+                <div class="pro-checkbox"><input type="checkbox" id="chkFirst" ng-click="toggleSeleted()"></div>
+                <a class="pro-status-part post" ng-click="ProductStatusChange(true)">Post <br>Product</a>
+                <a class="pro-status-part pause" ng-click="ProductStatusChange(false)">Mark <br>On-hold</a>
+                <a class="pro-status-part pen" ng-click="ProductStatusChange(false)">Edit <br>Product</a>
+                <a class="pro-status-part delete" ng-click="DeleteInventoryProduct()">Delete <br>Selection</a>
+                <div class="clear"></div>
+            </div>
+
+            <div class="product-status-right">
+                <a class="pro-status-part van" ng-click="ExportExcel()">Export <br>Supply List</a>
+                <a class="pro-status-part print">Print<br>Supplay List</a>
+                <div class="clear"></div>
+            </div>
+
+            <div class="clear"></div>
+        </div>
+        <div class="product-table-outter" id="idTable">
+            <table width="100%" cellpadding="0" cellspacing="0" border="0">
+                <tr>
+                    <th style="width:44px; height:30px; border-right:1px solid #000; border-bottom:1px solid #000; font-size:13px;">No.</th>
+                    <th style="background:url(/Areas/TapsAdmin/Img/icon-tringlebg.png) no-repeat 88% 50%; width:108px; height:30px; border-right:1px solid #000; border-bottom:1px solid #000; font-size:13px;" ng-click="predicate = 'Status'; reverse=!reverse">Status</th>
+                    <th style="background:url(/Areas/TapsAdmin/Img/icon-tringlebg.png) no-repeat 88% 50%; width:117px; height:30px; border-right:1px solid #000; border-bottom:1px solid #000; font-size:13px;" ng-click="predicate = 'CreatedDate'; reverse=!reverse">Date &amp;<br> Time</th>
+                    <th style="background:url(/Areas/TapsAdmin/Img/icon-tringlebg.png) no-repeat 82% 50%; width:214px; height:30px; border-right:1px solid #000; border-bottom:1px solid #000; font-size:13px;" ng-click="predicate = 'ComponentName'; reverse=!reverse">Component</th>
+                    <th style="background:url(/Areas/TapsAdmin/Img/icon-tringlebg.png) no-repeat 75% 50%; width:339px; height:30px; border-right:1px solid #000; border-bottom:1px solid #000; font-size:13px;" ng-click="predicate = 'MakeName'; reverse=!reverse">Make and Model</th>
+                    <th style="background:url(/Areas/TapsAdmin/Img/icon-tringlebg.png) no-repeat 88% 50%; width:138px; height:30px; border-right:1px solid #000; border-bottom:1px solid #000; font-size:13px;" ng-click="predicate = 'Condition'; reverse=!reverse"><span class="con-sapn">Condition</span></th>
+                    <th style="background:url(/Areas/TapsAdmin/Img/icon-tringlebg.png) no-repeat 92% 50%; width:136px; height:30px; border-right:1px solid #000; border-bottom:1px solid #000; font-size:13px;" ng-click="predicate = 'ItemPrice'; reverse=!reverse">Price</th>
+                    <th style="width:263px; height:30px; border-right:1px solid #000; border-bottom:1px solid #000; font-size:13px; padding-left:10px;">Remark(s)</th>
+                </tr>
+                <tr ng-repeat="o in ProductInventoryList | orderBy:predicate:reverse">
+                    <td style="border-right:1px solid #000; border-bottom:1px solid #000; text-align:center; vertical-align:text-top;">
+                        <p>{{o.RowNo}}</p>
+                        <div class="table-checkbox"><input name="" type="checkbox" ng-checked="o.checked" ng-model="o.checked" value="{{o.idProduct}}"></div>
+                    </td>
+                    <td style="border-right:1px solid #000; border-bottom:1px solid #000; font-size:13px; text-align:center; vertical-align:text-top;">
+                        <p>{{o.Status}}</p>
+                        <p class="status-change">Last Satatus change {{o.ModifiedDate}}</p>
+                    </td>
+                    <td style="border-right:1px solid #000; border-bottom:1px solid #000; font-size:13px; vertical-align:text-top;">
+                        <p style="line-height:130%;">{{o.CreatedDate}}</p>
+                    </td>
+                    <td style="border-right:1px solid #000; border-bottom:1px solid #000; font-size:13px; vertical-align:text-top; position:relative; zoom:1;">
+                        <p style="line-height:130%;">{{o.ComponentName}}</p>
+                        <p class="sku-tag">SKU: {{o.SKU}}</p>
+                    </td>
+                    <td style="border-right:1px solid #000; border-bottom:1px solid #000; font-size:13px; text-align:center; text-align:left; vertical-align:text-top;">
+                        <ul class="ul-main" ng-repeat="v in o.ProductVehicle | limitTo : o.no">
+                            <li>{{v.MakeName}} {{v.ModelName}} {{v.TrimName}} {{v.EngineName}} {{v.TransmissionName}} {{v.Year}}</li>
+                        </ul>
+                        <span ng-if="o.ProductVehicle.length > 0 && o.ProductVehicle.length >= o.no">
+                            <a class="show-more-btn" ng-click="ShowMore(o)" ng-if="o.no != o.ProductVehicle.length">...show more</a>
+                        </span>
+                    </td>
+                    <td style="border-right:1px solid #000; border-bottom:1px solid #000; font-size:13px; vertical-align:text-top;">
+                        <p style="line-height:130%; text-align:center;">{{o.Condition}} <br><br> {{o.Warranty}} month(s)</p>
+                    </td>
+                    <td style="border-right:1px solid #000; border-bottom:1px solid #000; font-size:13px; text-align:center; vertical-align:text-top;">
+                        <p class="item-tag">Item:</p>
+                        <p class="item-value">RM {{o.ItemPrice}}</p>
+                        <p class="item-tag">Delivery:</p>
+                        <p class="item-value">+ &nbsp;&nbsp;RM {{o.DeliveryPrice}}</p>
+                        <hr color="#000000" class="hr-total" />
+                        <p class="item-value">RM {{o.ItemPrice + o.DeliveryPrice}}</p>
+
+                    </td>
+                    <td style="border-right:1px solid #000; border-bottom:1px solid #000; font-size:13px; ">
+                        <img ng-src="~/MediaUploads/{{o.ImageUrl}}" err-src="~/assets/img/no_image.jpg" ng-model="model.ImageUrl" alt="No Image" width="50px" height="50px" />
+                        @*<div class="criterion-slider-space">
+                    <div class="content-slider-bg">
+                        <div id="content-slider-1" class="royalSlider contentSlider rsDefault">
+                            <div class="rsContent">
+                                <div class="slider-img"><img src="~/Areas/TapsAdmin/Img/slide1.png" /></div>
+                                <span class="rsTmb"><img src="~/Areas/TapsAdmin/Img/slide1.png" /></span>
+                            </div>
+                            <div class="rsContent">
+                                <div class="slider-img"><img src="~/Areas/TapsAdmin/Img/slide1.png" /></div>
+                                <span class="rsTmb"><img src="~/Areas/TapsAdmin/Img/slide1.png" /></span>
+                            </div>
+                            <div class="rsContent">
+                                <div class="slider-img"><img src="~/Areas/TapsAdmin/Img/slide1.png" /></div>
+                                <span class="rsTmb"><img src="~/Areas/TapsAdmin/Img/slide1.png" /></span>
+                            </div>
+                            <div class="rsContent">
+                                <div class="slider-img"><img src="~/Areas/TapsAdmin/Img/slide1.png" /></div>
+                                <span class="rsTmb"><img src="~/Areas/TapsAdmin/Img/slide1.png" /></span>
+                            </div>
+                            <div class="rsContent">
+                                <div class="slider-img"><img src="~/Areas/TapsAdmin/Img/slide1.png" /></div>
+                                <span class="rsTmb"><img src="~/Areas/TapsAdmin/Img/slide1.png" /></span>
+                            </div>
+                            <div class="rsContent">
+                                <div class="slider-img"><img src="~/Areas/TapsAdmin/Img/slide1.png" /></div>
+                                <span class="rsTmb"><img src="~/Areas/TapsAdmin/Img/slide1.png" /></span>
+                            </div>
+                            <div class="rsContent">
+                                <div class="slider-img"><img src="~/Areas/TapsAdmin/Img/slide1.png" /></div>
+                                <span class="rsTmb"><img src="~/Areas/TapsAdmin/Img/slide1.png" /></span>
+                            </div>
+                            <div class="rsContent">
+                                <div class="slider-img"><img src="~/Areas/TapsAdmin/Img/slide1.png" /></div>
+                                <span class="rsTmb"><img src="~/Areas/TapsAdmin/Img/slide1.png" /></span>
+                            </div>
+                            <div class="rsContent">
+                                <div class="slider-img"><img src="~/Areas/TapsAdmin/Img/slide1.png" /></div>
+                                <span class="rsTmb"><img src="~/Areas/TapsAdmin/Img/slide1.png" /></span>
+                            </div>
+                            <div class="rsContent">
+                                <div class="slider-img"><img src="~/Areas/TapsAdmin/Img/slide1.png" /></div>
+                                <span class="rsTmb"><img src="~/Areas/TapsAdmin/Img/slide1.png" /></span>
+                            </div>
+                            <div class="rsContent">
+                                <div class="slider-img"><img src="~/Areas/TapsAdmin/Img/slide1.png" /></div>
+                                <span class="rsTmb"><img src="~/Areas/TapsAdmin/Img/slide1.png" /></span>
+                            </div>
+                            <div class="rsContent">
+                                <div class="slider-img"><img src="~/Areas/TapsAdmin/Img/slide1.png" /></div>
+                                <span class="rsTmb"><img src="~/Areas/TapsAdmin/Img/slide1.png" /></span>
+                            </div>
+                            <div class="rsContent">
+                                <div class="slider-img"><img src="~/Areas/TapsAdmin/Img/slide1.png" /></div>
+                                <span class="rsTmb"><img src="~/Areas/TapsAdmin/Img/slide1.png" /></span>
+                            </div>
+                            <div class="rsContent">
+                                <div class="slider-img"><img src="~/Areas/TapsAdmin/Img/slide1.png" /></div>
+                                <span class="rsTmb"><img src="~/Areas/TapsAdmin/Img/slide1.png" /></span>
+                            </div>
+                        </div>
+                    </div>
+                </div>*@
+                        <p style="line-height:130%;">
+                            <ul class="ul-main">
+                                <li> Quantity: {{o.Quantity}}</li>
+                                <li ng-repeat="m in o.ProductMetaMgmt" ng-if="m.MetaKey == 'ProductNo'"> {{m.MetaKey}} : {{m.MetaValue}}</li>
+                                <li ng-repeat="m in o.ProductMetaMgmt" ng-if="m.MetaKey == 'ItemAge'"> {{m.MetaKey}} : {{m.MetaValue}}</li>
+                            </ul>
+                        </p>
+                        <a class="show-more-btn">...show more</a>
+                    </td>
+                </tr>
+            </table>
+            <pagination style="padding: 25px; float: right; " boundary-links="true" previous-text="&lsaquo;" next-text="&rsaquo;" first-text="&laquo;" last-text="&raquo;"
+                        page="pager.PageNum"
+                        total-items="pager.Total"
+                        items-per-page="pager.PageSize"
+                        max-size="10"
+                        on-select-page="GetVendorInventory(page)"></pagination>
+            <div class="clear"></div>
+        </div>
+
+    </div>
+</div>
+
+<script src="~/Areas/TapsAdmin/app/controllers/Vendor/Inventory.js"></script>
+<style>
+    .pagination li {
+        display: inline;
+        list-style: none;
+        padding: 5px;
+    }
+
+        .pagination li:hover {
+            color: white;
+        }
+
+        .pagination li a:active {
+            background-color: #09743C;
+        }
+
+    .active {
+        background-color: #09743C;
+        color: white;
+        text-decoration: underline;
+    }
+</style>

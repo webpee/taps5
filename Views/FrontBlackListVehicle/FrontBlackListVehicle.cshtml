@@ -1,0 +1,54 @@
+﻿@{
+    ViewBag.Title = "FrontBlackListVehicle";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<div ng-controller="BlacklistCtrl">
+    <div class="part-right">
+        <div class="part-one">
+            <div class="search">
+                <input type="text" id="Engineno" class="sel-search-vehicle" ng-model="model.EngineNo" placeholder="Engine No." maxlength="120" ng-change="BlankSearch(1)">
+                <input type="text" id="Registrationno" class="sel-search-vehicle" ng-model="model.RegistrationNo" placeholder="Registration No." maxlength="120" ng-change="BlankSearch(2)">
+                <input type="text" id="Chassisno" ng-model="model.ChassisNo" class="sel-search-vehicle" placeholder="Chassis No." maxlength="120" ng-change="BlankSearch(3)">
+                <input type="button" value="Search" class="btn btn-success" ng-click="FilterBlackListedVehicle(model)">
+            </div>
+            <div class="clear"></div>
+        </div>
+        <div class="clear"></div>
+        <div class="condition">
+            <table class="tableCart" align="center">
+                <tr>
+                    <th style="width: 5%;">No.</th>
+                    <th style="width: 15%;">Engine No.</th>
+                    <th style="width: 15%;">Registration No.</th>
+                    <th style="width: 15%;">Chassis No.</th>
+                    <th style="width: 15%;">Date of Loss</th>
+                </tr>
+                <tr ng-repeat="o in list1 | startFrom:(currentPage-1)*entryLimit | filter:filtered | limitTo:entryLimit">
+                    <td style="width: 5%;">
+                        {{$index + 1}}
+                    </td>
+                    <td style="width: 15%;">
+                        {{o.EngineNo}}
+                    </td>
+                    <td style="width: 15%;">
+                        {{o.RegistrationNo}}
+                    </td>
+                    <td style="width: 15%;">
+                        {{o.ChassisNo}}
+                    </td>
+                    <td style="width: 15%;">{{o.DateofLoss}}</td>
+                </tr>
+            </table>
+        </div>
+        <div class="hostory-foot">
+            <div class="pagenation">
+                <ul style="cursor:pointer">
+                    <pagination page="currentPage" class="pull-right btnPagination" max-size="noOfPages" total-items="totalItems" items-per-page="entryLimit" data-boundary-links="true"></pagination>
+                </ul>
+            </div>
+            <div class="clear"></div>
+        </div>
+    </div>
+</div>
+<script src="~/Areas/FrontTaps/app/controllers/BlackListedVehicle/BlackListVehicle.js"></script>

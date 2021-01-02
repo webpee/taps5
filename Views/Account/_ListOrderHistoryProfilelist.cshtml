@@ -1,0 +1,38 @@
+﻿
+<table class="history-table">
+    <tr>
+        <td>ORDER</td>
+        <td>DATE</td>
+        <td>STATUS</td>
+        <td>TOTAL</td>
+        <td></td>
+    </tr>
+    <tr ng-repeat="o in OrderList | startFrom:(currentPage-1)*entryLimit | limitTo:entryLimit" ng-show="model.Sort==false">
+        <td>#{{o.id}}</td>
+        <td>{{o.CreatedOnUtc}}</td>
+        <td>{{o.Status}}</td>
+        <td ng-show="o.OrderTotal !=Null">RM {{' '}}{{o.OrderTotal}} For {{o.TotalOrderItemsCount}}{{' '}} items</td>
+        <td align="right">
+            <a class="action" style="cursor:pointer" ng-click="PrintInvoice(o.id)">View ></a>
+            <a class="action" style="cursor:pointer" ng-click="PrintInvoice(o.id)">Print ></a>
+        </td>
+    </tr>
+    <tr ng-repeat="o in SortOrderlist | startFrom:(currentPage-1)*entryLimit | limitTo:entryLimit" ng-show="model.Sort==true">
+        <td>#{{o.id}}</td>
+        <td>{{o.CreatedOnUtc}}</td>
+        <td>{{o.Status}}</td>
+        <td ng-show="o.OrderTotal !=Null">RM {{' '}}{{o.OrderTotal}} For {{' '}}{{o.TotalOrderItemsCount}}{{' '}} items</td>
+        <td align="right">
+            <a class="action" ng-click="PrintInvoice(o.id)">View ></a>
+            <a class="action" ng-click="PrintInvoice(o.id)">Print ></a>
+        </td>
+    </tr>
+</table>
+<div class="hostory-foot">
+    <div class="pagenation">
+        <ul style="cursor:pointer">
+            <pagination page="currentPage" class="pull-right btnPagination" max-size="noOfPages" total-items="totalItems" items-per-page="entryLimit" data-boundary-links="true"></pagination>
+        </ul>
+    </div>
+    <div class="clear"></div>
+</div>

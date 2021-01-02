@@ -1,0 +1,86 @@
+﻿@{
+   ViewBag.Title = "Classification Code Setup";
+}
+
+<div ng-controller="ClassificationCodeCtrl">
+   <div class="col-lg-12">
+      <div class="box">
+         <div class="box-header">
+            <h2><i class="fa fa-edit"></i>Classification Setup</h2>
+            <div class="box-icon">
+               @*<a href="form-elements.html#" class="btn-setting"><i class="fa fa-wrench"></i></a>*@
+               <a href="form-elements.html#" class="btn-minimize"><i class="fa fa-chevron-up"></i></a>
+               @*<a href="form-elements.html#" class="btn-close"><i class="fa fa-times"></i></a>*@
+            </div>
+         </div>
+         <div class="box-content">
+            <form id="form"
+                  name="form"
+                  class="form-horizontal"
+                  novalidate
+                  ng-submit="formSubmit()">
+               ddd
+               <fieldset class="col-sm-12">
+                  <div class="form-group">
+                     <label for="focusedInput" class="col-lg-2 control-label">Classification Code <span class="redStar">* </span></label>
+                     <div class="col-lg-10">
+                        <input id="ClassificationCode" name="ClassificationCode" type="text"
+                               class="form-control" placeholder=""
+                               ng-model="model.ClassificationCode"
+                               ng-minlength="1"
+                               ng-maxlength="20"
+                               required
+                               ng-disabled="isUpdate()"
+                               x-webkit-speech="x-webkit-speech" />
+                        <div class="error" ng-show="form.ClassificationCode.$dirty">
+                           <span class="label label-danger" ng-show="form.ClassificationCode.$error.minlength || form.ClassificationCode.$error.maxlength">The field Classification Code must be a string with a minimum length of 3 and a maximum length of 20.</span>
+                           <span class="label label-danger" ng-show="form.ClassificationCode.$error.required">The Classification Code field is required.</span>
+                        </div>
+                     </div>
+                  </div>
+                  <div class="form-group">
+                     <label for="focusedInput" class="col-lg-2 control-label">Classification Name <span class="redStar">* </span></label>
+                     <div class="col-lg-10">
+                        <input id="Name" name="Name" type="text"
+                               class="form-control" placeholder=""
+                               ng-model="model.Name"
+                               ng-minlength="1"
+                               ng-maxlength="100"
+                               ng-required="true"
+                               x-webkit-speech="x-webkit-speech" />
+                        <div class="error" ng-show="form.Name.$dirty">
+                           <span class="label label-danger" ng-show="form.Name.$error.minlength || form.Name.$error.maxlength">The field Classification Name must be a string with a minimum length of 3 and a maximum length of 100.</span>
+                           <span class="label label-danger" ng-show="form.Name.$error.required">The Classification Name field is required.</span>
+                        </div>
+                     </div>
+                  </div>
+                  <div class="form-actions">
+                     <button type="submit" class="btn btn-primary" ng-disabled="!form.$valid">Save</button>
+                     <button type="button" class="btn" ng-click="reset()">New / Clear</button>
+                     <a href="@Url.Action("Report", "ClassificationCode", new { CCode = "rpt" })" class="btn" target="_blank">Print</a>
+                  </div>
+               </fieldset>
+
+            </form>
+         </div>
+      </div>
+   </div>
+
+   <div class="col-lg-12">
+      <div class="box">
+         <div class="box-header" data-original-title>
+            <h2><i class="fa fa-user"></i><span class="break"></span>Classification Code List</h2>
+            <div class="box-icon">
+               @*<a href="table.html#" class="btn-setting"><i class="fa fa-wrench"></i></a>*@
+               <a href="table.html#" class="btn-minimize"><i class="fa fa-chevron-up"></i></a>
+               @*<a href="table.html#" class="btn-close"><i class="fa fa-times"></i></a>*@
+            </div>
+         </div>
+         <div class="box-content">
+            @{ Html.RenderPartial("_List"); }
+         </div>
+      </div>
+   </div>
+</div>
+
+<script src="~/js/ClassificationCode/controller.js"></script>

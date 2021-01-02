@@ -1,0 +1,148 @@
+﻿@{
+    Layout = "~/Views/Shared/_OrderLayout.cshtml";
+}
+<!doctype html>
+<html>
+<head>
+    <meta charset="utf-8">
+    <title>Parts Result List</title>
+
+    <link href="~/Areas/FrontTaps/Css/style.css" rel="stylesheet" />
+    <script src="~/js/jquery.hashchange.min.js"></script>
+    <script src="~/js/jquery.easytabs.min.js"></script>
+    <script src="~/Areas/FrontTaps/app/controllers/Account/Login.js"></script>
+    <script type="text/javascript">
+        $(document).ready(function () {
+            $('#tabs').easytabs();
+        });
+    </script>
+</head>
+<body>
+    <div class="main-body">
+        <div class="padding">
+            <div class="logo"> <img src="~/Areas/FrontTaps/img/logo.jpg" /></div>
+
+            <div class="baner" id="TopBanner" ng-controller="PointsCtrl">
+                <div class="baner-in">
+                    <div class="logout-first">
+                        <span>
+                            Welcome,@if (User.Identity.Name != string.Empty)
+                            { <span><a style="color: #70c3e5;" href="/Account/Profile">@User.Identity.Name</a></span>}
+                            else
+                            {
+                            <span style="color: #70c3e5;">Guest</span>
+                            }, you have {{Points}} pts.
+                        </span>
+                    </div>
+                    <div class="logout-second">
+                        <div class="in">
+                            @if (User.Identity.Name != string.Empty)
+                            {
+                            <a href="/Account/Logout">Logout</a>
+                            }
+                            else
+                            {
+                            <a href="/Account/Login">Login</a>
+
+                            }
+                        </div>
+                        <div style="float:left; margin-left:60px; margin-top:5px; color:#fff;">|</div>
+                        <div class="cart"> <a href="/Cart/ShoppingCart">CART &#8744;</a> </div>
+                    </div>
+                </div>
+            </div>
+            <div class="clear"></div>
+        </div>
+        <div class="clear"></div>
+        <div class="header_bottom">
+            <div class="menu">
+                <ul>
+                    <li><a href="/Parts/Parts">BUY PARTS</a></li>
+                    <li><a href="/MotorEclaim/MotorEclaim">MOTOR E-CLAIMS</a></li>
+                    <li><a href="/FrontBlackListVehicle/FrontBlackListVehicle">STOLEN VEHICLE</a></li>
+                    <li><a href="/AuthoriseWorkshop/AuthoriseWorkshop">TAPS AUTHORISED WORKSHOP</a></li>
+                    <li><a href="/WishList/WishList">WISHLIST</a></li>
+                    <li><a href="/FaqHelp/FaqHelp">FAQ & HELP</a></li>
+                </ul>
+                <div class="clear"></div>
+            </div>
+        </div>
+        <div ng-controller="ChangePasswordCtrl">
+            <div class="body-padding">
+                <div class="body-part">
+                    <div class="clear"></div>
+                    <div class="row pt15">
+                        <div class="green-box">
+                            <div class="title-block"><h3>User Detail</h3></div>
+                            <div class="signup-box">
+                                <form role="form" id="form" name="form" class="sign-form" novalidate ng-submit="formSubmit()">
+                                    <div class="signup">
+                                        <a href="">Change Password</a>
+                                    </div>
+                                    <div class="mail">
+                                        <div class="password">
+                                            <span>UserName</span>
+                                            <div id="tfnewsearch">
+                                                <input id="Email" type="email" size="49" maxlength="120" name="Email" class="email-coman" ng-required="true" value="@User.Identity.Name" ng-disabled="true">
+                                            </div>
+                                            <span>Old Password</span>
+                                            <div id="tfnewsearch">
+                                                <input id="Password" type="password" class="email-coman" name="OldPassword" class="input-col" ng-required="true" ng-model="model.OldPassword">
+                                            </div>
+                                        </div>
+                                        <div class="retype">
+                                            <span>New Password</span>
+                                            <div id="tfnewsearch">
+                                                <input id="Password" type="password" class="email-coman" name="NewPassword" ng-pattern="/^(?=.*\d)(?=.*[a-z])(?=.*[A-Z])[0-9a-zA-Z]{6,}$/" ng-minlength="6" class="input-col" ng-required="true" ng-model="model.NewPassword">
+                                                <span class="control-label" style="color:red" ng-show="form.NewPassword.$dirty && form.NewPassword.$invalid">
+                                                    <span ng-show="form.NewPassword.$error.required">Please Enter Password</span>
+                                                    <span ng-show="form.NewPassword.$error.pattern">Must contain one lower & upper case letter,<br /> and one digit </span>
+                                                    <span ng-show="form.NewPassword.$error.minlength">Password must be 6 characters Long</span>
+                                                </span>
+                                            </div>
+                                            <span>Retype Password</span>
+                                            <div id="tfnewsearch">
+                                                <input id="ConfirmPassword" class="email-coman" type="password" name="ConfirmPassword" nx-equal-ex="model.NewPassword" ng-model="model.ConfirmPassword">
+                                                <br />
+                                                <span style="color:red" ng-show="form.ConfirmPassword.$dirty && form.ConfirmPassword.$invalid">
+                                                    <span ng-show="form.ConfirmPassword.$error.nxEqualEx">Passwords do not match!</span>
+                                                </span>
+                                            </div>
+                                        </div>
+                                        <div class="clear"></div>
+                                    </div>
+                                    <div class="sign-last">
+                                        <div class="signup-btn">
+                                            <input type="button" ng-disabled="!form.$valid" ng-click="ChangePassword(model)" name="Apply" value="Apply" />
+                                        </div>
+                                    </div>
+                                </form>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</body>
+</html>
+<script src="~/Areas/FrontTaps/app/controllers/Account/ChangePassword.js"></script>
+
+
+<script>
+    $(function () {
+        var pgurl = window.location.pathname;
+        $(".menu ul li a").each(function () {
+            if ($(this).attr("href") == pgurl || $(this).attr("href") == '')
+                $(this).addClass("activeMenu");
+        })
+    });
+</script>
+
+<style>
+    .activeMenu {
+        background: #0b743b;
+        color: #fff !important;
+        transition: all 0.9s ease 0s;
+    }
+</style>

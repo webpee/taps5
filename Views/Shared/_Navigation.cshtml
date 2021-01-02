@@ -1,0 +1,32 @@
+﻿<div class="menu">
+    <ul>
+        <li><a href="/Parts/Parts">BUY PARTS</a></li>
+        <li><a href="/MotorEclaim/MotorEclaim">MOTOR E-CLAIMS</a></li>
+        <li><a href="/FrontBlackListVehicle/FrontBlackListVehicle">STOLEN VEHICLE</a></li>
+        <li><a href="/AuthoriseWorkshop/AuthoriseWorkshop">TAPS AUTHORISED WORKSHOP</a></li>
+        <li><a href="/WishList/WishList">WISHLIST</a></li>
+        <li><a href="/FaqHelp/FaqHelp">FAQ & HELP</a></li>
+        
+    </ul>
+    <div class="clear"></div>
+</div>
+
+<script src="~/Areas/FrontTaps/app/ngStorage.js"></script>
+
+<script>
+    $(function () {
+        var pgurl = window.location.pathname;
+        $(".menu ul li a").each(function () {
+            if ($(this).attr("href") == pgurl || $(this).attr("href") == '')
+                $(this).addClass("activeNav");
+        })
+    });
+</script>
+
+<style>
+    .activeNav {
+        background: #0b743b;
+        color: #fff !important;
+        transition: all 0.9s ease 0s;
+    }
+</style>

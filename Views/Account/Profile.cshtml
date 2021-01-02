@@ -1,0 +1,226 @@
+﻿@{
+    Layout = "~/Views/Shared/_OrderLayout.cshtml";
+}
+<!doctype html>
+<html>
+<head>
+    <meta charset="utf-8">
+    <title>Parts Result List</title>
+
+    <link href="~/Areas/FrontTaps/Css/style.css" rel="stylesheet" />
+    <script src="~/js/jquery.hashchange.min.js"></script>
+    <script src="~/js/jquery.easytabs.min.js"></script>
+    <script src="~/Areas/FrontTaps/app/controllers/Account/Login.js"></script>
+    <script type="text/javascript">
+        $(document).ready(function () {
+            $('#tabs').easytabs();
+        });
+    </script>
+</head>
+<body>
+    <div class="main-body">
+        <div class="padding">
+            <div class="logo"> <img src="~/Areas/FrontTaps/img/logo.jpg" /></div>
+
+          <div class="baner" id="TopBanner" ng-controller="PointsCtrl">
+                <div class="baner-in">
+                    <div class="logout-first">
+                        <span>
+                            Welcome,@if (User.Identity.Name != string.Empty)
+                            { <span><a style="color: #70c3e5;" href="/Account/Profile">@User.Identity.Name</a></span>}
+                            else
+                            {
+                                <span style="color: #70c3e5;">Guest</span>
+                            }, you have {{Points}} pts.
+                        </span>
+                    </div>
+                    <div class="logout-second">
+                        <div class="in">
+                            @if (User.Identity.Name != string.Empty)
+                            {
+                                <a href="/Account/Logout">Logout</a>
+                            }
+                            else
+                            {
+                                <a href="/Account/Login">Login</a>
+
+                            }
+                        </div>
+                        <div style="float:left; margin-left:60px; margin-top:5px; color:#fff;">|</div>
+                        <div class="cart"> <a href="/Cart/ShoppingCart">CART &#8744;</a> </div>
+                    </div>
+                </div>
+            </div>
+            <div class="clear"></div>
+        </div>
+        <div class="clear"></div>
+        <div class="header_bottom">
+            <div class="menu">
+                <ul>
+                    <li><a href="/Parts/Parts">BUY PARTS</a></li>
+                    <li><a href="/MotorEclaim/MotorEclaim">MOTOR E-CLAIMS</a></li>
+                    <li><a href="/FrontBlackListVehicle/FrontBlackListVehicle">STOLEN VEHICLE</a></li>
+                    <li><a href="/AuthoriseWorkshop/AuthoriseWorkshop">TAPS AUTHORISED WORKSHOP</a></li>
+                    <li><a href="/WishList/WishList">WISHLIST</a></li>
+                    <li><a href="/FaqHelp/FaqHelp">FAQ & HELP</a></li>
+                </ul>
+                <div class="clear"></div>
+            </div>
+        </div>
+        <div ng-controller="ProfileCtrl">
+            <div class="body-padding">
+                <div class="body-part">
+                    <div class="clear"></div>
+                    <div class="row pt15">
+                        <div class="green-box">
+                            <div class="title-block"><h3>My Profile</h3></div>
+                            <div class="detail-block">
+                                <p>Hello <b>@User.Identity.Name</b> (not @User.Identity.Name? <a href="/Account/Logout" class="blue">Sign out</a>). From your account dashboard you can view your recent orders,<br />manage your shipping and billing addresses and <a href="#" class="blue">edit your password and account details</a>.</p>
+                                <div class="pro-action">
+                                    <div class="pro-menu">
+                                        <table>
+                                            <tr>
+                                                <td><a href="/Account/UserDetail">Edit Account</a></td>
+                                                <td><a href="/CompanyVendorApplication/CompanyVendorApplication?id=Workshop"><img src="~/Areas/FrontTaps/img/i.png" />Become a TAPS authorised company</a></td>
+                                                <td><a href="/CompanyVendorApplication/CompanyVendorApplication?id=Company">Sell your own<br />product on TAPS</a></td>
+                                            </tr>
+                                        </table>
+                                    </div>
+                                </div>
+                                <div class="wishlist-wrap">
+                                    <h3 class="wish-title">My Wishlist : <a href="~/WishList/WishList">ADD ITEM</a></h3>
+                                    <table class="wishlist">
+                                        <tr align="center">
+                                            <td width="100">Date & Time added</td>
+                                            <td width="150">Car Model</td>
+                                            <td width="300">Component</td>
+                                            <td width="100">Condition</td>
+                                            <td width="200">Offered Item + Delivery Price (Warranty)</td>
+                                            <td width="150">Action	</td>
+                                        </tr>
+                                        <tr ng-repeat="w in WishlistOffer">
+                                            <td>{{w.CreatedDate}}</td>
+                                            <td>{{w.MakeName}}{{' '}}{{w.MakeModel}}<br /></td>
+                                            <td>{{w.ComponentName}}</td>
+                                            <td align="center">{{w.Condition}} </td>@*<p class="sub-dertail">Remanufactured</p>*@
+                                            <td align="center">
+                                                <table>
+                                                    <tr>
+                                                        <td align="center" ng-repeat="o in w.WishlistOffer | startFrom:(currentPage-1)*entryLimit | limitTo:entryLimit">
+                                                            <input type="radio" ng-model="model.Price" value="{{o.Price}}" name="roffer" />
+                                                            RM {{o.Price}} {{'+'}} RM {{o.DeliveryPrice}}
+                                                            <br />({{o.Warranty}}{{' '}}Months)
+                                                            <br />
+                                                            <p class="sub-dertail">
+                                                                By:<a href="#">{{o.VendorName}}</a><br />
+                                                        </td>
+                                                    </tr>
+                                                </table>
+                                                <select ng-model="model.Offer" ng-show="model.MoreOffer==true && w.WishlistOffer.length>0" ng-change="LoadMore()">
+                                                    <option value="">MoreOffer(s)</option>
+                                                    <option value="More">Next Offer(s)</option>
+                                                    <option value="Prev">Previous Offer(s)</option>
+
+                                                </select>
+
+                                            </td>
+                                            <td align="center">
+                                                <a href="#" class="cart-btn" ng-show="w.WishlistOffer.length != 0" ng-click="AddtoCart(w.idProduct,w.id)">ADD TO CART</a>
+                                                <a href="#" ng-click="DeleteWishList(w.id)">REMOVE</a>
+                                            </td>
+                                        </tr>
+                                    </table>
+                                </div>
+                                <div id="tabs" class='tab-container'>
+                                    <ul class='etabs'>
+                                        <li class='tab'><a href="#order">Order History</a></li>
+                                        <li class='tab'><a href="#point">Point History</a></li>
+                                    </ul>
+                                    <div class='panel-container'>
+                                        <div id="order">
+                                            <div class="tab-title">
+                                                <div class="left">
+                                                    <h3>Order History</h3>
+                                                    <ul class="display">
+                                                        <li><i>Display per page</i></li>
+                                                        <li><a href="#" ng-click="GetAllOrderList(5)">5</a></li>
+                                                        <li><a href="#" ng-click="GetAllOrderList(20)">20</a></li>
+                                                        <li><a href="#" ng-click="GetAllOrderList(50)">50</a></li>
+                                                        <li><a href="#">All</a></li>
+                                                    </ul>
+                                                    <div class="clear"></div>
+                                                </div>
+                                                <div class="right">
+                                                    <h3>SortBy</h3>
+                                                    <select class="sort" ng-model="model.SortOrder" ng-change="SortOrderList(model.SortOrder)">
+                                                        <option value="">-Select-</option>
+                                                        <option value="None">None</option>
+                                                        <option value="id">Order</option>
+                                                        <option value="Status">Status</option>
+                                                        <option value="PaidDateUtc">Date</option>
+                                                    </select>
+                                                </div>
+                                                <div class="clear"></div>
+                                            </div>
+                                            @{ Html.RenderPartial("_ListOrderHistoryProfilelist"); }
+                                        </div>
+                                        <div id="point">
+                                            <div class="tab-title">
+                                                <div class="left">
+                                                    <h3>Points History</h3>
+                                                    <ul class="display">
+                                                        <li><i>Display per page</i></li>
+                                                        <li><a href="#" ng-click="GetAllOrderList(5)">5</a></li>
+                                                        <li><a href="#" ng-click="GetAllOrderList(20)">20</a></li>
+                                                        <li><a href="#" ng-click="GetAllOrderList(50)">50</a></li>
+                                                        <li><a href="#">All</a></li>
+                                                    </ul>
+                                                    <div class="clear"></div>
+                                                </div>
+                                                <div class="right">
+                                                    <h3>SortBy</h3>
+                                                    <select class="sort" ng-model="model.SortPointOrder" ng-change="SortPointOrder(model.SortPointOrder)">
+                                                        <option value="">-Select-</option>
+                                                        <option value="None">None</option>
+                                                        <option value="id">Order</option>
+                                                        <option value="PaidDateUtc">Date</option>
+                                                    </select>
+                                                </div>
+                                                <div class="clear"></div>
+                                            </div>
+                                            @{ Html.RenderPartial("_ListPointHistoryProfilelist"); }
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+            </div>
+        </div>
+
+    </div>
+
+</body>
+
+</html>
+<script src="~/Areas/FrontTaps/app/controllers/Account/Profile.js"></script>
+
+<script>
+    $(function () {
+        var pgurl = window.location.pathname;
+        $(".menu ul li a").each(function () {
+            if ($(this).attr("href") == pgurl || $(this).attr("href") == '')
+                $(this).addClass("activeMenu");
+        })
+    });
+</script>
+
+<style>
+    .activeMenu {
+        background: #0b743b;
+        color: #fff !important;
+        transition: all 0.9s ease 0s;
+    }
+</style>

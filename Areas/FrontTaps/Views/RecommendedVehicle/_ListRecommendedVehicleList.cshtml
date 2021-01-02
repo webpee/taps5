@@ -1,0 +1,58 @@
+﻿
+<table class="table table-striped table-bordered table-condensed bootstrap-datatable datatable">
+    <thead>
+        <tr>
+            <th style="width:5%">No</th>
+            <th style="width:15%">Make</th>
+            <th style="width:15%">Model</th>
+            <th style="width:15%">Trim</th>
+            <th style="width:10%">Vendor</th>
+            <th style="width:8%">From Year</th>
+            <th style="width:7%">To Year</th>
+            <th style="width:12%">Status</th>
+            <th style="width:13%">Action</th>
+        </tr>
+    </thead>
+    <tbody>
+        <tr ng-repeat="o in lstRecommondedVehicle | filter:SearchText | startFrom:(currentPage-1)*entryLimit | limitTo:entryLimit">
+            <td>{{$index + 1}}</td>
+            <td>
+                {{o.Make}}
+            </td>
+            <td>
+                {{o.Model}}
+            </td>
+            <td>
+                {{o.Trim}}
+            </td>
+            <td>
+                {{o.VendorName}}
+            </td>
+            <td>
+                {{o.FromYear}}
+            </td>
+            <td>
+                {{o.ToYear}}
+            </td>
+            <td>
+                {{o.Flag}}
+            </td>
+            <td class="center">
+                <a href="#" class="btn btn-primary" ng-click="ApproveRecommendedVehicle(o)" ng-show="o.Flag=='Not Approved'" title="Edit" data-rel="tooltip">
+                    Approve
+                </a>
+            </td>
+        </tr>
+    </tbody>
+</table>
+<div class="row show-hide-animation">
+    <div class="col-md-12">
+        <pagination page="currentPage" class="pull-right" max-size="noOfPages" total-items="totalItems" items-per-page="entryLimit" data-boundary-links="true"></pagination>
+    </div>
+</div>
+
+
+
+
+
+

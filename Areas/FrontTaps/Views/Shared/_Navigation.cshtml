@@ -1,0 +1,105 @@
+﻿<script src="~/app/controllers/Navigation/SubtabCount.js"></script>
+<div id="sidebar-left" class="col-lg-2 col-sm-1">
+    @*<input type="text" class="search hidden-sm" placeholder="..." />*@
+    <div class="nav-collapse sidebar-nav collapse navbar-collapse bs-navbar-collapse">
+        <ul class="nav nav-tabs nav-stacked main-menu" ng-controller="SubtabCountCtrl">
+            <li>
+                <a class="submenu" href="@Url.Action("Index", "Home")"><i class="fa fa-eye"></i><span class="hidden-sm">Dashboard</span> <span class="label"></span></a>
+            </li>
+            <li>
+                <a class="dropmenu" href="javascript:void(0)"><i class="fa fa-eye"></i><span class="hidden-sm">Sales</span> <span class="label">{{ labels.Sales }}</span></a>
+                <ul id="subtab-count-Sales">
+                    @*<li><a href="#"><span class="hidden-sm">Create Order</span></a></li>*@
+                    <li><a href="@Url.Action("Index", "Order")"><span class="hidden-sm">Order</span></a></li>
+                    <li><a href="@Url.Action("WorkshopMargin", "WorkshopMgmt")"><span class="hidden-sm">Authorized Workshop Margin</span></a></li>
+                </ul>
+            </li>
+
+            <li>
+                <a class="dropmenu" href="javascript:void(0)"><i class="fa fa-eye"></i><span class="hidden-sm">Payment Transaction</span> <span class="label">{{ labels.Payment }}</span></a>
+                <ul id="subtab-count-Payment">
+                    <li><a href="@Url.Action("PaymentTransaction", "PaymentTransaction")"><span class="hidden-sm">Payment Transaction</span></a></li>
+                </ul>
+            </li>
+            <li>
+                <a class="dropmenu" href="javascript:void(0)"><i class="fa fa-eye"></i><span class="hidden-sm">Users / Profile</span> <span class="label">{{ labels.Users }}</span></a>
+                <ul id="subtab-count-Users">
+                    <li><a href="@Url.Action("ManageRole", "Admin")"><span class="hidden-sm">Role</span></a></li>
+                    <li><a href="@Url.Action("ManageUser", "Admin")"><span class="hidden-sm">User</span></a></li>
+                    <li><a href="@Url.Action("Vendor", "Vendor")"><span class="hidden-sm">Vendor</span></a></li>
+                    <li><a href="@Url.Action("ChangePassword", "Account")"><span class="hidden-sm">Change Password</span></a></li>
+                </ul>
+            </li>
+            <li>
+                <a class="dropmenu" href="javascript:void(0)"><i class="fa fa-eye"></i><span class="hidden-sm">Products</span> <span class="label">{{ labels.Products }}</span></a>
+                <ul id="subtab-count-Products">
+                    <li><a href="@Url.Action("ProductMgmt", "Product")"><span class="hidden-sm">Product</span></a></li>
+                    <li><a href="@Url.Action("ProductVehicle", "Product")"><span class="hidden-sm">Product Vehicle</span></a></li>
+                    <li><a href="@Url.Action("Index", "ProductGenerator")"><span class="hidden-sm">Product Generator</span></a></li>
+                    <li><a href="@Url.Action("MakeMgmt", "MasterMgmt")"><span class="hidden-sm">Make</span></a></li>
+                    <li><a href="@Url.Action("TrimMgmt", "MasterMgmt")"><span class="hidden-sm">Trim</span></a></li>
+                    <li><a href="@Url.Action("ModelMgmt", "MasterMgmt")"><span class="hidden-sm">Model</span></a></li>
+                    <li><a href="@Url.Action("ModelYearMgmt", "MasterMgmt")"><span class="hidden-sm">Year</span></a></li>
+                    <li><a href="@Url.Action("EngineMgmt", "Engine")"><span class="hidden-sm">Engine</span></a></li>
+                    <li><a href="@Url.Action("TransimissionMgmt", "Transmission")"><span class="hidden-sm">Transmission</span></a></li>
+                    <li><a href="@Url.Action("ModelTrimMgmt", "MasterMgmt")"><span class="hidden-sm">Model Trim</span></a></li>
+                    <li><a href="@Url.Action("CategoryMgmt", "MasterMgmt")"><span class="hidden-sm">Category</span></a></li>
+                    <li><a href="@Url.Action("ComponentCategoryMgmt", "MasterMgmt")"><span class="hidden-sm">Component Category</span></a></li>
+                    <li><a href="@Url.Action("ModelTrimEngineTransmission", "MasterMgmt")"><span class="hidden-sm">Model Trim Engine</span></a></li>
+                </ul>
+            </li>
+            <li>
+                <a class="dropmenu" href="javascript:void(0)"><i class="fa fa-eye"></i><span class="hidden-sm">Recommends</span> <span class="label">{{ labels.Recommends }}</span></a>
+                <ul id="subtab-count-Recommends">
+                    <li><a href="@Url.Action("RecommendedComponentMgmt", "RecommendedComponentMgmt")"><span class="hidden-sm">Component</span></a></li>
+                    <li><a href="@Url.Action("RecommendedVehicle", "RecommendedVehicle")"><span class="hidden-sm">Vehicle</span></a></li>
+                </ul>
+            </li>
+            <li>
+                <a class="dropmenu" href="javascript:void(0)"><i class="fa fa-eye"></i><span class="hidden-sm">CMS & Media</span> <span class="label">{{ labels.CMS }}</span></a>
+                <ul id="subtab-count-CMS">
+                    <li><a href="@Url.Action("Banner", "MasterMgmt")"><span class="hidden-sm">Banner</span></a></li>
+                    <li><a href="@Url.Action("BannerMgmt", "BannerMgmt")"><span class="hidden-sm">Manage Banner</span></a></li>
+                    <li><a href="@Url.Action("MediaMgmt", "MediaMgmt")"><span class="hidden-sm">Media</span></a></li>
+                    <li><a href="@Url.Action("ProductImages", "Product")"><span class="hidden-sm">Product Images</span></a></li>
+                    <li><a href="@Url.Action("BlacklistedVehicle", "BlacklistedVehicle")"><span class="hidden-sm">Blacklisted Vehicles</span></a></li>
+                    <li><a href="@Url.Action("WorkShopeMgmt", "WorkshopMgmt")"><span class="hidden-sm">Authorised Workshop</span></a></li>
+                    <li><a href="@Url.Action("Faq", "Faq")"><span class="hidden-sm">FAQ</span></a></li>
+                </ul>
+            </li>
+            <li>
+                <a class="dropmenu" href="javascript:void(0)"><i class="fa fa-eye"></i><span class="hidden-sm">Tool & Setting</span> <span class="label">{{ labels.Tool }}</span></a>
+                <ul id="subtab-count-Tool">
+                    <li><a href="@Url.Action("CountryMgmt", "MasterMgmt")"><span class="hidden-sm">Country</span></a></li>
+                    <li><a href="@Url.Action("CountryStateMgmt", "MasterMgmt")"><span class="hidden-sm">Country State</span></a></li>
+                    <li><a href="@Url.Action("StateCityMgmt", "MasterMgmt")"><span class="hidden-sm">State City</span></a></li>
+                    <li><a href="@Url.Action("ImportExcel", "ImportExcel")"><span class="hidden-sm">Import Product</span></a></li>
+                </ul>
+            </li>
+            @*<li>
+                    <a class="dropmenu" href="javascript:void(0)"><i class="fa fa-eye"></i><span class="hidden-sm">Page Management</span> <span class="label">{{ labels.pageMgmt }}</span></a>
+                    <ul id="subtab-count-pageMgmt">
+                        <li><a href="@Url.Action("PageMgmt", "PageMgmt")"><span class="hidden-sm">Manage Page</span></a></li>
+
+                    </ul>
+                </li>*@
+            @*<li>
+                    <a class="dropmenu" href="javascript:void(0)"><i class="fa fa-eye"></i><span class="hidden-sm">Menu Management</span> <span class="label">{{ labels.menuMgmt }}</span></a>
+                    <ul id="subtab-count-menuMgmt">
+                        <li><a href="@Url.Action("MenuMgmt", "MenuMgmt")"><span class="hidden-sm">Manage Menu</span></a></li>
+                    </ul>
+                </li>*@
+            @*<li>
+                    <a class="dropmenu" href="javascript:void(0)"><i class="fa fa-eye"></i><span class="hidden-sm">Vendor</span> <span class="label">{{ labels.vendor }}</span></a>
+                    <ul id="subtab-count-vendor">
+                        <li><a href="@Url.Action("Vendor", "Vendor")"><span class="hidden-sm">Manage Vendor</span></a></li>
+                    </ul>
+                </li>*@
+            <li>
+                <a class="submenu" href="@Url.Action("Logout", "Account")"><i class="fa fa-lock"></i><span class="hidden-sm">LOGOUT</span></a>
+            </li>
+        </ul>
+        <ul class="nav nav-tabs nav-stacked main-menu"></ul>
+    </div>
+</div>
+

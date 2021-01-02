@@ -1,0 +1,39 @@
+﻿<table class="history-table">
+    <tr>
+        <td>ORDER</td>
+        <td>DATE</td>
+        <td>ORDER AMOUNT</td>
+        <td>POINT ADDED</td>
+        <td>POINT DEDUCTED</td>
+        <td></td>
+    </tr>
+    <tr ng-repeat="o in OrderList | startFrom:(currentPage-1)*entryLimit | limitTo:entryLimit" ng-show="model.SortPoint==false">
+        <td>#{{o.id}}</td>
+        <td>{{o.CreatedOnUtc}}</td>
+        <td>{{o.OrderTotal}}</td>
+        <td></td>
+        <td></td>
+        <td align="right"><a class="action" href="#">View ></a><a class="action" href="#">Print ></a></td>
+    </tr>
+    <tr ng-repeat="o in SortPointOrderlist | startFrom:(currentPage-1)*entryLimit | limitTo:entryLimit" ng-show="model.SortPoint==true">
+        <td>#{{o.id}}</td>
+        <td>{{o.CreatedOnUtc}}</td>
+        <td>{{o.OrderTotal}}</td>
+        <td></td>
+        <td></td>
+        <td align="right"><a class="action" href="#">View ></a><a class="action" href="#">Print ></a></td>
+    </tr>
+</table>
+<div class="hostory-foot">
+    <div class="totle-point" ng-controller="PointsCtrl">
+        <p>Total Point Added : </p>
+        <p>Total Point Deducated : </p>
+        <p>Total Saved Point : {{Points}}  </p>
+    </div>
+    <div class="pagenation">
+        <ul style="cursor:pointer">
+            <pagination page="currentPage" class="pull-right btnPagination" max-size="noOfPages" total-items="totalItems" items-per-page="entryLimit" data-boundary-links="true"></pagination>
+        </ul>
+    </div>
+    <div class="clear"></div>
+</div>

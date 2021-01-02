@@ -1,0 +1,117 @@
+﻿
+<!doctype html>
+<html>
+<head>
+    <meta charset="utf-8">
+    <title>WarrantyClaim</title>
+    <link href="~/Areas/TapsAdmin/Css/style.css" rel="stylesheet" />
+
+</head>
+<body>
+    <div class="main-body">
+        <div class="padding">
+            <div class="logo">
+                <a href="#" class="sup-logo">Warranty</a>
+                <ul class="sup-sort">
+                    <li><a href="#">All (2)</a></li>
+                    <li><a href="#">Sort Warranty Claims</a></li>
+                </ul>
+                <div class="sup-filter">
+                    <select>
+                        <option>Workshop Name</option>
+                        <option>Workshop Name 2</option>
+                        <option>Workshop Name 3</option>
+                    </select>
+                    <input type="submit" value="Filter" />
+                </div>
+            </div>
+            <div class="history">
+                <div class="sup-search">
+                    <input type="text" />
+                    <input type="submit" value="Search" />
+                </div>
+                <ul class="time-filter">
+                    <li><a href="#" class="active">All Time</a></li>
+                    <li><a href="#">Current year</a></li>
+                    <li><a href="#">Current Month</a></li>
+                    <li><a href="#">Last 30 Days</a></li>
+                    <li><a href="#">Last 7 Days</a></li>
+                    <li>Custom : <a href="#">dd-mm-yy dd-mm-yy</a></li>
+                    <li><a href="#" class="go">Go</a></li>
+                </ul>
+            </div>
+            <div class="clear"></div>
+        </div>
+        <div class="header_bottom"> </div>
+        <div class="body-padding">
+            <div class="sup-table">
+                <div class="orderDetail">
+                    <div class="left-action">
+                        <ul>
+                            <li><input type="checkbox" id="chkFirst"></li>
+                            <li><a href="#" class="view-sup">View<br />Entry</a></li>
+                        </ul>
+                    </div>
+                    <div class="right-action">
+                        <div class="pagenation">
+                            <ul>
+                                <li><a href="#">&lt;&lt;</a></li>
+                                <li><a href="#">&lt;</a></li>
+                                <li><input type="text" value="1" /></li>
+                                <li style="padding-top: 6px;">of 1</li>
+                                <li><a href="#">&gt;</a></li>
+                                <li><a href="#">&gt;&gt;</a></li>
+                            </ul>
+                        </div>
+                    </div>
+                    <div class="clear"></div>
+                </div>
+                <table class="supplier" align="center">
+                    <tr>
+                        <th> No.</th>
+                        <th>Workshop Name</th>
+                        <th>Customer Name</th>
+                        <th>Registered</th>
+                        <th>Claims Submitted</th>
+                        <th>Approved</th>
+                        <th>QUP Claims</th>
+                        <th>UP Claims</th>
+                        <th>OEM Claims</th>
+                    </tr>
+                    <tr>
+                        <td>
+                            <label id="n2">1</label>
+                            <br>
+                            <input type="checkbox" id="chkFirst">
+                        </td>
+                        <td>RK Car Repair</td>
+                        <td>Tan Ah Kow</td>
+                        <td>5 Minite(s)</td>
+                        <td>2 item(s)</td>
+                        <td>1 item</td>
+                        <td>1 item</td>
+                        <td>0 item</td>
+                        <td>0 item</td>
+                    </tr>
+                    <tr>
+                        <td>
+                            <label id="n2">2</label>
+                            <br>
+                            <input type="checkbox" id="chkSecond">
+                        </td>
+                        <td>JC Auto Parts</td>
+                        <td>Pue Chee Seng</td>
+                        <td>12 Minite(s)</td>
+                        <td>4 item(s)</td>
+                        <td>2 item (s)</td>
+                        <td>1 item</td>
+                        <td>1 item</td>
+                        <td>0 item</td>
+                    </tr>
+                </table>
+
+            </div>
+        </div>
+    </div>
+</body>
+</html>

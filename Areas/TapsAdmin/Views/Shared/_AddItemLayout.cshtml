@@ -1,0 +1,148 @@
+﻿<!doctype html>
+<html ng-app="TapsAdmin">
+<head>
+    <meta charset="utf-8">
+    <title>Taps Manage</title>
+
+    <link href="~/Areas/TapsAdmin/Css/common.css" rel="stylesheet" />
+    <link href="~/Areas/TapsAdmin/Css/royalslider.css" rel="stylesheet" />
+    <link href="~/Areas/TapsAdmin/Css/rs-default.css" rel="stylesheet" />
+    <link href="~/assets/css/toastr.min.css" rel="stylesheet" />
+    <link href="~/Areas/FrontTaps/Css/bootstrap.min.css" rel="stylesheet" />
+    <link href="~/assets/css/dropzone.css" rel="stylesheet" />
+
+    
+    <script src="~/assets/js/jquery-2.1.0.min.js"></script>
+    <script src="~/assets/js/jquery-migrate-1.2.1.min.js"></script>
+    <script src="~/Areas/TapsAdmin/js/modenizr.js"></script>
+    <script src="~/Areas/TapsAdmin/js/jquery.royalslider.min.js"></script>
+    <script src="~/assets/js/pages/form-dropzone.js"></script>
+    <script src="~/assets/js/dropzone.min.js"></script>
+
+    @* custom angular *@
+    <script src="~/assets/angular-1.2.9/angular.min.js"></script>
+    <script src="~/assets/angular-1.2.9/angular-cookies.js"></script>
+    <script src="~/assets/angular-1.2.9/ngDraggable.js"></script>
+    <script src="~/Scripts/angular-file-upload.min.js"></script>
+    <script src="~/assets/angular-1.2.9/angular-route.min.js"></script>
+    <script src="~/assets/angular-1.2.9/angular-sanitize.min.js"></script>
+    <script src="~/assets/js/bootstrap.min.js"></script>
+    <script src="~/assets/js/ui-bootstrap-tpls-0.10.0.min.js"></script>
+    <script src="~/assets/js/jquery-ui-1.10.3.min.js"></script>
+
+    @* custom 3rd party *@
+    <script src="~/assets/js/toastr.min.js"></script>
+    <script src="~/assets/js/bootbox.min.js"></script>
+    <script src="~/assets/js/underscore-min.js"></script>
+    <script src="~/assets/js/jquery.blockUI.js"></script>
+
+    <script src="~/Areas/TapsAdmin/app/app.js"></script>
+    <script src="~/Areas/TapsAdmin/app/utils.js"></script>
+    <script src="~/Areas/TapsAdmin/app/route.js"></script>
+    <script src="~/Areas/TapsAdmin/app/services.js"></script>
+
+    <script src="~/Areas/TapsAdmin/app/createDialog.js"></script>
+    <script src="~/Areas/TapsAdmin/app/appInterceptor.js"></script>
+    <script src="~/Areas/TapsAdmin/app/directives/ng-really.js"></script>
+    <script src="~/Areas/TapsAdmin/app/angular-local-storage.min.js"></script>
+    <script src="~/Areas/TapsAdmin/js/default.js"></script>
+
+    <style type="text/css">
+        .chklabel {
+            text-indent: -32px;
+            display: block;
+            padding-left: 32px;
+        }
+
+        .toast-top-center {
+            top: 12px;
+            margin: 0 auto;
+            left: 50%;
+            margin-left: -150px;
+        }
+    </style>
+    <script>
+
+        toastr.options = {
+            "closeButton": true,
+            "debug": false,
+            "newestOnTop": false,
+            "progressBar": false,
+            "positionClass": "toast-top-center",
+            "preventDuplicates": false,
+            "onclick": null,
+            "showDuration": "300",
+            "hideDuration": "1000",
+            "timeOut": 0,
+            "extendedTimeOut": 0,
+            "showEasing": "swing",
+            "hideEasing": "linear",
+            "showMethod": "fadeIn",
+            "hideMethod": "fadeOut",
+            "tapToDismiss": true
+
+        }
+    </script>
+</head>
+<body>
+    <div class="layout_outter">
+        <div class="header_inner">
+            <div class="header-left-part">
+                <a class="logo-space" href="index.html"></a>
+                <div class="user-details-part">
+                    <h4 class="user-name">Welcome, @User.Identity.Name.</h4>
+                    <div class="user-option-part">
+                        <a class="user-back" href="/FrontTaps/Parts/Parts">Back to TAPS site</a>
+                        <a class="user-logout" href="/TapsAdmin/TapsManage/Logout">Logout</a>
+                        <div class="clear"></div>
+                    </div>
+                </div>
+                <div class="clear"></div>
+            </div>
+            <div class="header-right-part">
+                <a class="remark-btn" href="#">Remark</a>
+                <a class="not-btn" href="#">Help</a>
+                <div class="clear"></div>
+            </div>
+            <div class="clear"></div>
+        </div>
+    </div>
+
+    <div class="layout_outter">
+        <div class="page_inner">
+            <a class="page-deact" href="/TapsAdmin/Vendor/Order" ng-controller="OrderCtrl">ORDERS ({{model.TotalOrder}})</a>
+            <a class="page-deact" href="/TapsAdmin/Vendor/SalesReport">SALES REPORT</a>
+            <a class="page-deact" href="/TapsAdmin/Vendor/Inventory" ng-controller="InventoryCtrl">INVENTORY ({{model.TotalInventory}})</a>
+            <a class="page-deact" href="/TapsAdmin/Vendor/AddItem">ADD ITEM</a>
+            <div class="display-item-right">
+                <p class="per-page-title">Display per page</p>
+                <a class="per-page-item">20</a>
+                <a class="per-page-item">50</a>
+                <a class="per-page-item">100</a>
+                <a class="per-page-item">All</a>
+                <div class="clear"></div>
+            </div>
+            <div class="clear"></div>
+        </div>
+    </div>
+
+    <div class="layout_outter">
+        @RenderBody()
+    </div>  
+</body>
+</html>
+
+<script>
+    $(function () {
+        var pgurl = window.location.pathname;
+        $(".page-deact").each(function () {
+            $('page-deact').removeClass("act");
+            if ($(this).attr("href") == pgurl || $(this).attr("href") == '') {                
+                $(this).addClass("act");
+            }
+        })
+    });
+</script>
+
+<script src="~/Areas/TapsAdmin/app/controllers/Vendor/Orders.js"></script>
+<script src="~/Areas/TapsAdmin/app/controllers/Vendor/Inventory.js"></script>

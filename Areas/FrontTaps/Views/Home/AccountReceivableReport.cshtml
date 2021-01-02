@@ -1,0 +1,67 @@
+﻿@{
+   ViewBag.Title = "Classification Code Setup";
+}
+
+<div ng-controller="ClassificationCodeCtrl">
+   <div class="col-lg-12">
+      <div class="box">
+         <div class="box-header">
+            <h2><i class="fa fa-edit"></i>Student Statement - Account Receiable Report  </h2>
+            <div class="box-icon">
+               @*<a href="form-elements.html#" class="btn-setting"><i class="fa fa-wrench"></i></a>*@
+               <a href="form-elements.html#" class="btn-minimize"><i class="fa fa-chevron-up"></i></a>
+               @*<a href="form-elements.html#" class="btn-close"><i class="fa fa-times"></i></a>*@
+            </div>
+         </div>
+         <div class="box-content">
+            <form id="form"
+                  name="form"
+                  class="form-horizontal"
+                  novalidate
+                  ng-submit="formSubmit()">
+               <div class="form-group">
+                  <label class="col-lg-3 control-label">Matric No / IC Passport / Student Name</label>
+                  <div class="col-lg-3">
+                     <select id="SearchType" name="SearchType" class="form-control"
+                             ng-model="model.SearchType">
+                        <option value="1">Matriculation No</option>
+                        <option value="2">IC Passport</option>
+                        <option value="3">Student Name</option>
+                     </select>
+                  </div>
+                  <div class="col-xs-4">
+                     <input id="MatricName" name="MatricName" type="text"
+                            class="form-control" placeholder="{{getMatric()}}"
+                            ng-model="model.MatricName"
+                            x-webkit-speech="x-webkit-speech" />
+                  </div>
+                  <div class="form-actions">
+                     <button type="submit" class="btn btn-primary" ng-disabled="!form.$valid">Search</button>
+                     <button type="button" class="btn" ng-click="reset()">New/Clear</button>
+                  </div>
+               </div>
+
+
+            </form>
+         </div>
+      </div>
+   </div>
+
+   <div class="col-lg-12">
+      <div class="box">
+         <div class="box-header" data-original-title>
+            <h2><i class="fa fa-user"></i><span class="break"></span>Matching Student List</h2>
+            <div class="box-icon">
+               @*<a href="table.html#" class="btn-setting"><i class="fa fa-wrench"></i></a>*@
+               <a href="table.html#" class="btn-minimize"><i class="fa fa-chevron-up"></i></a>
+               @*<a href="table.html#" class="btn-close"><i class="fa fa-times"></i></a>*@
+            </div>
+         </div>
+         <div class="box-content">
+            @{ Html.RenderPartial("_List"); }
+         </div>
+      </div>
+   </div>
+</div>
+
+<script src="~/js/ClassificationCode/controller.js"></script>

@@ -1,0 +1,254 @@
+﻿@{
+    ViewBag.Title = "ProductVehicle";
+    Layout = "~/Areas/FrontTaps/Views/Shared/_Layout.cshtml";
+}
+
+
+<div ng-controller="ProductVehicleCtrl">
+    <div class="row">
+        <div class="col-lg-12">
+            <div class="box">
+                <div class="box-header">
+                    <h2><i class="fa fa-edit"></i>Product Vehicle</h2>
+                    <div class="box-icon">
+                        <a href="form-elements.html#" class="btn-minimize"><i class="fa fa-chevron-up"></i></a>
+                    </div>
+                </div>
+                <div class="box-content">
+                    <form role="form"
+                          id="form"
+                          name="form"
+                          class="form-horizontal"
+                          novalidate
+                          ng-submit="formSubmit()">
+                        <input type="hidden" value="{{model.id}}" ng-model="model.id" />
+                        <div class="form-group">
+                            <label class="control-label">Product Name :-</label>
+                            <div class="input-group col-sm-4">
+                                @*<input type="hidden" class="form-control" value="" id="ProductId" ng-required="true">
+                                <input type="hidden" class="form-control" value="@ViewBag.Product" id="Product">*@
+                                <select id="Product" name="Product" ng-model="model.idProduct" class="form-control" ng-required="true">
+                                    <option value="">-- Select Product --</option>
+                                    <option ng-repeat="o in Product | orderBy:'Name'" value="{{o.id}}">{{o.Name}}</option>
+                                </select>
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label class="control-label">Make Name :-</label>
+                            <div class="input-group col-sm-4">
+                                <select id="Make" name="Make" ng-model="model.idMake" class="form-control" ng-required="true">
+                                    <option value="">-- Select Make --</option>
+                                    <option ng-repeat="o in Make | orderBy:'Make'" value="{{o.id}}">{{o.Make}}</option>
+                                </select>
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label class="control-label">Make Model Name :-</label>
+                            <div class="input-group col-sm-4">
+                                <select id="Model" name="Model" ng-model="model.idMakeModel" class="form-control" ng-required="true">
+                                    <option value="">-- Select Model --</option>
+                                    <option ng-repeat="o in Model | orderBy:'Name'" value="{{o.id}}">{{o.Name}}</option>
+                                </select>
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label class="control-label">Model Trim Name :-</label>
+                            <div class="input-group col-sm-4">
+                                <select id="Trim" name="Trim" ng-model="model.idModelTrimTransmission" class="form-control" ng-required="true">
+                                    <option value="">-- Select Model Trim --</option>
+                                    <option ng-repeat="o in Transmission | orderBy:'TrimName'" value="{{o.id}}">{{o.TrimName}}  {{o.EngineName}}  {{o.TransmissionName}}</option>
+                                </select>
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label class="control-label">Model Year Name :-</label>
+                            <div class="input-group col-sm-4">
+                                <select id="Year" name="Year" ng-model="model.idModelYear" class="form-control" ng-required="true">
+                                    <option value="">-- Select Year --</option>
+                                    <option ng-repeat="o in Year | orderBy:'Year'" value="{{o.id}}">{{o.Year}}</option>
+                                </select>
+                            </div>
+                        </div>
+                        <br />
+                        <div class="form-actions">
+                            <button type="button" class="btn btn-primary" ng-disabled="!form.$valid" ng-click="CreateProductVehicle(model)">Save</button>
+                            <button type="reset" class="btn" ng-click="Reset()">Cancel</button>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+        <div class="col-lg-12">
+            <div class="box">
+                <div class="box-header" data-original-title>
+                    <h2><i class="fa fa-user"></i><span class="break"></span>Product Vehicle List</h2>
+                    <div class="box-icon">
+                        <a href="table.html#" class="btn-minimize"><i class="fa fa-chevron-up"></i></a>
+                    </div>
+                </div>
+                <div class="box-content">
+                    <div class="col-lg-8">
+                    </div>
+                    <div class="col-lg-1">
+                        <h4>Search :</h4>
+                    </div>
+                    <div class="col-lg-3">
+                        <input id="Search" type="text" maxlength="50" class="form-control" ng-model="model.SearchText" ng-enter="GetAllProductVehicle(1)" ng-change="CheckSearchText()">
+                    </div>
+                    <br /><br />
+                    @{ Html.RenderPartial("_ListProductVehicleList"); }
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<script src="~/app/controllers/ProductMgmt/ProductVehicle.js"></script>
+
+<script src="~/assets/js/jquery.tokeninput.js"></script>
+<link href="~/assets/css/token-input.css" rel="stylesheet" />
+<style>
+    .token-input-list {
+        width: 100%;
+    }
+
+    #token-input-SearchText::-webkit-input-placeholder {
+        color: #000;
+        font-size: 14px;
+        line-height: 1.42857143;
+    }
+
+    .form-search .form-field .token-input-list .token-input-input-token #token-input-SearchText {
+        position: relative !important;
+        z-index: 2 !important;
+        width: 100% !important;
+        border: 1px solid #ccc !important;
+        outline: none !important;
+        color: #000 !important;
+        background-color: transparent !important;
+        font-weight: 300 !important;
+        border-bottom: 1px dashed #25ab4b !important;
+        width: 100%;
+        -webkit-border-radius: 0;
+        -moz-border-radius: 0;
+        border-radius: 0;
+        -moz-background-clip: padding;
+        -webkit-background-clip: padding-box;
+        background-clip: padding-box;
+        -webkit-box-shadow: none;
+        -moz-box-shadow: none;
+        box-shadow: none;
+    }
+
+    .token-input-token {
+        position: relative;
+        z-index: 2;
+        width: 100%;
+        border: 0;
+        outline: none;
+        color: #000;
+        background-color: transparent;
+        font-weight: 300;
+    }
+
+    ul.token-input-list {
+        overflow: hidden;
+        height: auto !important;
+        height: 1%;
+        border: 0px solid #999 !important;
+        cursor: text;
+        font-size: inherit;
+        /*font-family: Verdana;*/
+        z-index: 999;
+        margin: 0;
+        padding: 0;
+        background-color: transparent !important;
+        list-style-type: none;
+        clear: left;
+        width: 100%;
+    }
+
+        ul.token-input-list li input {
+            border: 1px solid #ccc;
+            /*background-color: #2d323d;*/
+            width: 100% !important;
+            padding: 6px 12px;
+            /*background-color: transparent;*/
+            -webkit-appearance: inherit !important;
+            font-size: 14px;
+            color: #000 !important;
+            margin-bottom: 10px;
+            /*border-radius: 4px;
+                                    border-top-right-radius: 0;
+                                    border-bottom-right-radius: 0;*/
+        }
+
+    li.token-input-token {
+        overflow: hidden;
+        height: auto !important;
+        height: 1%;
+        margin: 0px !important;
+        padding: 10px !important;
+        background-color: #fff !important;
+        /*margin-bottom: 10px;*/
+        color: #000;
+        font-weight: 300;
+        cursor: default;
+        display: block;
+        border: 1px solid #ccc;
+    }
+
+    .token-input-dropdown {
+        /*top: 45px !important;*/
+        z-index: 999999 !important;
+    }
+
+    /*li.token-input-token span {
+                                    margin-left: 10px;
+                                    cursor: pointer;
+                                    vertical-align: middle;
+                                    font-size: 14px;
+                                    color: #C69C6D;
+                                    font-weight: bold;
+                                    float: none;
+                                }*/
+
+    div.token-input-dropdown ul li.token-input-dropdown-item {
+        background-color: transparent;
+    }
+
+    div.token-input-dropdown ul li.token-input-dropdown-item2 {
+        background-color: #f9f9f9;
+    }
+
+    div.token-input-dropdown ul li.token-input-selected-dropdown-item {
+        background-color: #1e8fc6;
+        color: #fff;
+    }
+
+    div.token-input-dropdown {
+        width: 25% !important;
+        top: 178px !important;
+    }
+</style>
+
+@*<script type="text/javascript">
+    $("#Product").tokenInput("@Url.Action("GetAllProductBySearch", "Product")", {
+            tokenLimit: 1,
+            preventDuplicates: true,
+            hintText: "Searching...",
+            minChars: 3,
+            onAdd: function (item) {
+                console.log(item);
+                var Name = item.name.split('-');
+
+                $("#ProductId").val(item.id);
+                console.log($("#ProductId").val());
+            },
+            onDelete: function (item) {
+                $("#ProductId").val('');
+                console.log($("#ProductId").val());
+            },
+        });
+        $(".token-input-dropdown").width($("#token-input-SearchText").width());
+        $("#token-input-SearchText").attr("placeholder", "Search...");
+    </script>*@

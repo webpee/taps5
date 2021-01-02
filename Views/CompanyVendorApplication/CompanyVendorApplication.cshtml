@@ -1,0 +1,424 @@
+﻿@{
+    ViewBag.Title = "CompanyVendorApplication";
+    Layout = "~/Views/Shared/_OnlyLayout.cshtml";
+}
+
+<style type="text/css">
+    .content {
+        padding: 1px 20px;
+        width: 60%;
+    }
+
+    .form-input {
+        width: 100%;
+        padding: 8px 0 0;
+    }
+
+    .inside_main {
+        padding: 1px 15px 0;
+    }
+
+    .input_label {
+        clear: both;
+        width: 20%;
+        float: left;
+        margin-top: 7px;
+    }
+
+    .div_text, .styled-select1 {
+        float: right;
+        margin-top: 5px;
+        width: 79%;
+    }
+
+        .div_text .input_text {
+            width: 95%;
+        }
+
+        .div_text .input_text_no {
+            width: 35%;
+        }
+
+    .btn.Apply {
+        border: 0;
+        margin-left: 45%;
+    }
+
+    .small_select .styled-select1.slate1 {
+        margin-right: 3px;
+        width: 187px;
+    }
+
+    .input-cheq {
+        margin-left: 0;
+        margin-top: 5px;
+    }
+
+    .checkbox {
+        float: left;
+        font-size: 14px;
+        width: 99px;
+    }
+
+    .part-left-menu {
+        float: left;
+        width: 730px;
+        margin-left: 15px;
+    }
+</style>
+<div ng-controller="CompanyVendorAppCtrl">
+    <div class="body-padding">
+        <div class="body-part">
+            <input type="hidden" value="@ViewBag.id" id="idValue" />
+            <div class="part-part-left-menu">
+                <div class="content">
+                    <div class="condition">
+                        <span ng-show="model.form == 'Workshop'">TAPS AUTHORISED COMPANY APPLICATION</span>
+                        <span ng-show="model.form != 'Workshop'">VENDOR APPLICATION</span>
+                        <div class="inside_main">
+                            <div class="form-input">
+                                <label ng-show="model.form == 'Workshop'"><b>Type of Company</b></label>
+                                <label ng-show="model.form != 'Workshop'"><b>You are:</b></label>
+                                <br />
+                                <div class="form-input">
+                                    <div class="styled-select1 slate1" style="float:left;">
+                                        <select ng-model="model.form">
+                                            <option value="Workshop">Workshop</option>
+                                            <option value="Company">A Company</option>
+                                            @*<option value="Seller">An Individual Seller</option>*@
+                                        </select>
+                                    </div>
+                                </div>
+                            </div>
+                            <br />
+                            <br />
+                            <div ng-show="model.form == 'Workshop'">
+                                ***Explanation of the selected Type of company.<br />
+                            </div>
+                            <br />
+                            <div ng-show="model.form == 'Workshop'">
+                                <form role="form" id="form1" name="form1" class="sign-form" novalidate ng-submit="formSubmit()">
+                                    <div class="form-input">
+                                        <label><b>Person incharge/supevisor/owner:</b></label>
+                                        <br />
+                                    </div>
+                                    <div class="form-input">
+                                        <div class="input_label">
+                                            <label>Full name</label>
+                                        </div>
+                                        <div class="div_text">
+                                            <input type="text" class="input_text border" ng-model="model.CompanyFullName" ng-required="true" />
+                                        </div>
+                                        <div class="input_label">
+                                            <label>Preffered name</label>
+                                        </div>
+                                        <div class="div_text">
+                                            <input type="text" class="input_text border" ng-model="model.CompanyPreferredName" />
+                                        </div>
+                                        <div class="input_label">
+                                            <label>Handphone No.</label>
+                                        </div>
+                                        <div class="div_text">
+                                            <input type="text" class="input_text_no border" ng-model="model.CompanyHandPhoneNo" />
+                                        </div>
+                                    </div>
+                                    <br />
+                                    <br />
+                                    <div class="form-input">
+                                        <label><b>Company:</b></label>
+                                        <br />
+                                    </div>
+                                    <div class="form-input">
+                                        <div class="input_label">
+                                            <label>Company name</label>
+                                        </div>
+                                        <div class="div_text">
+                                            <input type="text" class="input_text border" ng-model="model.CompanyCompanyName" ng-required="true" />
+                                        </div>
+                                        <div class="input_label">
+                                            <label>Company Number</label>
+                                        </div>
+                                        <div class="div_text">
+                                            <input type="text" class="input_text_no border" ng-model="model.CompanyNo" ng-required="true" />
+                                        </div>
+                                        <div class="input_label">
+                                            <label>Address</label>
+                                        </div>
+                                        <div class="div_text">
+                                            <input type="text" class="input_text border" ng-model="model.CompanyAddress" />
+                                        </div>
+                                        <div class="input_label">
+                                            <br>
+                                        </div>
+                                        <div class="div_text">
+                                            <input type="text" class="input_text border" ng-model="model.CompanyAddress1" />
+                                        </div>
+                                        <div class="input_label">
+                                            <label>Office Number 1</label>
+                                        </div>
+                                        <div class="div_text">
+                                            <input type="text" class="input_text_no border" ng-model="model.OfficeNo1" ng-required="true" />
+                                        </div>
+                                        <div class="input_label">
+                                            <label>Office Number 2</label>
+                                        </div>
+                                        <div class="div_text">
+                                            <input type="text" class="input_text_no border" ng-model="model.OfficeNo2" />
+                                        </div>
+                                        <div class="input_label">
+                                            <label>Office H/P No.</label>
+                                        </div>
+                                        <div class="div_text">
+                                            <input type="text" class="input_text_no border" ng-model="model.OfficeHPNo" />
+                                        </div>
+                                        <div class="input_label">
+                                            <label>Fax(optional)</label>
+                                        </div>
+                                        <div class="div_text">
+                                            <input type="text" class="input_text_no border" ng-model="model.Fax" />
+                                        </div>
+                                        <div class="input_label">
+                                            <label>Email</label>
+                                        </div>
+                                        <div class="div_text">
+                                            <input type="email" class="input_text_no border" ng-model="model.CompanyEmail" ng-required="true" />
+                                        </div>
+                                        <div style="clear: both;float:left;width: 50%;">
+                                            <div class="input_label" style="width: 40%;">
+                                                <label>Opening hour</label>
+                                            </div>
+                                            <div class="small_select">
+                                                <div class="styled-select1 slate1">
+                                                    <select ng-model="model.OpeningHour">
+                                                        <option value="1">1</option>
+                                                        <option value="2">2</option>
+                                                        <option value="3">3</option>
+                                                        <option value="4">4</option>
+                                                        <option value="5">5</option>
+                                                        <option value="6">6</option>
+                                                        <option value="7">7</option>
+                                                        <option value="8">8</option>
+                                                        <option value="9">9</option>
+                                                        <option value="10">10</option>
+                                                        <option value="11">11</option>
+                                                        <option value="12">12</option>
+                                                    </select>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div style="float:right;width: 50%;">
+                                            <div class="input_label" style="width: 35%;padding-left:4px;">
+                                                <label>Closing hour</label>
+                                            </div>
+                                            <div class="small_select">
+                                                <div class="styled-select1 slate1">
+                                                    <select ng-model="model.ClosingHour">
+                                                        <option value="1">1</option>
+                                                        <option value="2">2</option>
+                                                        <option value="3">3</option>
+                                                        <option value="4">4</option>
+                                                        <option value="5">5</option>
+                                                        <option value="6">6</option>
+                                                        <option value="7">7</option>
+                                                        <option value="8">8</option>
+                                                        <option value="9">9</option>
+                                                        <option value="10">10</option>
+                                                        <option value="11">11</option>
+                                                        <option value="12">12</option>
+                                                    </select>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="input_label">
+                                            <label>Working days</label>
+                                        </div>
+                                        <div class="div_text">
+                                            <div class="checkbox">
+                                                <input type="checkbox" class="input-cheq" value="false" name="Monday" ng-model="model.Monday">
+                                                Monday
+                                            </div>
+                                            <div class="checkbox">
+                                                <input type="checkbox" class="input-cheq" value="false" name="Tuesday" ng-model="model.Tuesday">
+                                                Tuesday
+                                            </div>
+                                            <div class="checkbox">
+                                                <input type="checkbox" class="input-cheq" value="false" name="Wednesday" ng-model="model.Wednesday">
+                                                Wednesday
+                                            </div>
+                                            <div class="checkbox">
+                                                <input type="checkbox" class="input-cheq" value="false" name="Thursday" ng-model="model.Thursday">
+                                                Thursday
+                                            </div>
+                                            <div class="checkbox">
+                                                <input type="checkbox" class="input-cheq" value="false" name="Friday" ng-model="model.Friday">
+                                                Friday
+                                            </div>
+                                            <div class="checkbox">
+                                                <input type="checkbox" class="input-cheq" value="false" name="Saturday" ng-model="model.Saturday">
+                                                Saturday
+                                            </div>
+                                            <div class="checkbox">
+                                                <input type="checkbox" class="input-cheq" value="false" name="Sunday" ng-model="model.Sunday">
+                                                Sunday
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="form-input">
+                                        <button class="btn Apply" ng-disabled="!form1.$valid" ng-click="CreateAuthorisedCompany(model)">APPLY</button>
+                                    </div>
+                                    <br />
+                                    <br />
+                                </form>
+                            </div>
+
+                            <div ng-show="model.form == 'Company'">
+                                <br />
+                                <div class="form-input">
+                                    <label><b>Person incharge/supevisor/owner:</b></label>
+                                    <br />
+                                </div>
+                                <form role="form" id="form2" name="form2" class="sign-form" novalidate ng-submit="formSubmit()">
+                                    <div class="form-input">
+                                        <div class="input_label">
+                                            <label>Full name</label>
+                                        </div>
+                                        <div class="div_text">
+                                            <input type="text" class="input_text border" ng-model="model.FullName" ng-required="true" />
+                                        </div>
+                                        <div class="input_label">
+                                            <label>Preffered Name</label>
+                                        </div>
+                                        <div class="div_text">
+                                            <input type="text" class="input_text border" ng-model="model.PreferredName" />
+                                        </div>
+                                        <div class="input_label">
+                                            <label>HandPhone No.</label>
+                                        </div>
+                                        <div class="div_text">
+                                            <input type="text" class="input_text_no border" ng-model="model.HandPhoneNo" />
+                                        </div>
+                                    </div>
+                                    <div class="form-input">
+                                        <label><b>Company:</b></label>
+                                        <br />
+                                    </div>
+                                    <div class="form-input">
+                                        <div class="input_label">
+                                            <label>Company name</label>
+                                        </div>
+                                        <div class="div_text">
+                                            <input type="text" class="input_text border" ng-model="model.CompanyName" ng-required="true" />
+                                        </div>
+                                        <div class="input_label">
+                                            <label>Company Number</label>
+                                        </div>
+                                        <div class="div_text">
+                                            <input type="text" class="input_text_no border" ng-model="model.CompanyNumber" ng-required="true" />
+                                        </div>
+                                        <div class="input_label">
+                                            <label>Address</label>
+                                        </div>
+                                        <div class="div_text">
+                                            <input type="text" class="input_text border" ng-model="model.Address" />
+                                        </div>
+                                        <div class="input_label"> </div>
+                                        <div class="div_text">
+                                            <input type="text" class="input_text border" ng-model="model.Address1" />
+                                        </div>
+                                        <div class="input_label">
+                                            <label>Office Number 1</label>
+                                        </div>
+                                        <div class="div_text">
+                                            <input type="text" class="input_text_no border" ng-model="model.OfficeNumber1" />
+                                        </div>
+                                        <div class="input_label">
+                                            <label>Office Number 2</label>
+                                        </div>
+                                        <div class="div_text">
+                                            <input type="text" class="input_text_no border" ng-model="model.OfficeNumber2" />
+                                        </div>
+                                        <div class="input_label">
+                                            <label>Office H/P No.</label>
+                                        </div>
+                                        <div class="div_text">
+                                            <input type="text" class="input_text_no border" ng-model="model.OfficeH_PNo" />
+                                        </div>
+                                        <div class="input_label">
+                                            <label>Fax(optional)</label>
+                                        </div>
+                                        <div class="div_text">
+                                            <input type="text" class="input_text_no border" ng-model="model.FaxNo" />
+                                        </div>
+                                        <div class="input_label">
+                                            <label>Email</label>
+                                        </div>
+                                        <div class="div_text">
+                                            <input type="text" class="input_text_no border" ng-model="model.Email" />
+                                        </div>
+                                    </div>
+                                    <div class="form-input">
+                                        <button class="btn Apply" ng-disabled="!form2.$valid" ng-click="CreateNewVendor(model)">APPLY</button>
+                                    </div>
+                                    <br />
+                                    <br />
+                                </form>
+                            </div>
+
+                            <div class="condition" ng-show="model.form == 'Seller'">
+                                <div class="form-input">
+                                    <label><b>Details:</b></label>
+                                    <br />
+                                </div>
+                                <div class="form-input">
+                                    <div class="input_label">
+                                        <label>Full name</label>
+                                    </div>
+                                    <div class="div_text">
+                                        <input type="text" class="input_text border" ng-model="model.Name" />
+                                    </div>
+                                    <div class="input_label">
+                                        <label>IC/Passport No.</label>
+                                    </div>
+                                    <div class="div_text">
+                                        <input type="text" class="input_text_no border" ng-model="model.IC_PassportNo" />
+                                    </div>
+                                    <div class="input_label">
+                                        <label>Phone No.</label>
+                                    </div>
+                                    <div class="div_text">
+                                        <input type="text" class="input_text_no border" ng-model="model.PhoneNo" />
+                                    </div>
+                                    <div class="input_label">
+                                        <label>Email</label>
+                                    </div>
+                                    <div class="div_text">
+                                        <input type="text" class="input_text_no border" ng-model="model.EmailAddress" />
+                                    </div>
+                                    <div class="input_label">
+                                        <label>Address</label>
+                                    </div>
+                                    <div class="div_text">
+                                        <input type="text" class="input_text border" ng-model="model.VendorAddress" />
+                                    </div>
+                                    <div class="input_label"> </div>
+                                    <div class="div_text">
+                                        <input type="text" class="input_text border" ng-model="model.VendorAddress1" />
+                                    </div>
+                                </div>
+                                <div class="form-input">
+                                    <button class="btn Apply" ng-click="CreateSellerVendor(model)">APPLY</button>
+                                </div>
+                                <br />
+                                <br />
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="price-tag">
+                    <input class="btn btnBlack" type="button" value="BACK" ng-click="GoBackToProfile()">
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<script src="~/Areas/FrontTaps/app/controllers/CompanyVendor/CompanyVendorApp.js"></script>

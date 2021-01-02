@@ -1,0 +1,5 @@
+﻿Name : {Name}
+Email : {Email}
+Telephone : {Telephone}
+Subject : {Subject}
+Message : {Message}

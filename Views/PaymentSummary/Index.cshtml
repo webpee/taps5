@@ -1,0 +1,405 @@
+﻿@model Taps5.Areas.FrontTaps.Models.Lookup.CustomerOrderSummary
+
+@{
+    ViewBag.Title = "Index";
+    Layout = "~/Views/Shared/_OnlyLayout.cshtml";
+}
+
+<script type="text/javascript">
+    $(document).ready(function () {
+        $(document).on('click', '.col-exp.close', function () {
+            $(this).attr('src', '/Areas/FrontTaps/Img/left.png');
+            sval = $('.form').serialize();
+            $(this).addClass('open');
+            $(this).removeClass('close');
+            $(this).parent('li').find('ul:first').show();
+        })
+
+        $(document).on('click', '.col-exp.open', function () {
+            sval = $('.form').serialize();
+            $(this).attr('src', '/Areas/FrontTaps/Img/left.png');
+            $(this).addClass('close');
+            $(this).removeClass('open');
+            $(this).parent('li').find('ul:first').hide();
+        })
+
+    });
+</script>
+
+<style type="text/css">
+    #nav a.active {
+        background-color: #ee1c25;
+        color: #fff;
+    }
+
+    .open {
+        background: none;
+        -webkit-transform: rotate(90deg);
+    }
+
+    li {
+        list-style: none;
+    }
+</style>
+
+<div>
+    <div class="body-part">
+        <div class="part-right-only">
+            <div class="sub-menu">
+                <ul>
+                    <li><a href="/Parts/Parts">Select Parts</a></li>
+                    <li><a href="/Cart/ShoppingCart">Shopping Cart</a></li>
+                    <li><a href="/Address/DeliveryAddress">Delivery option</a></li>
+                    <li><a href="/OrderSummary/Index">Summary</a></li>
+                    <li id="nav"><a class="active" href="#">Payment</a></li>
+                </ul>
+            </div>
+            <div>
+                <div>
+                    @if (Model.PaymentMethod == "iPay88")
+                    {
+                        <form method="post" name="ePayment" action="https://www.mobile88.com/ePayment/entry.asp">
+                            <div class="clear"></div>
+                            <div class="condition">
+                                <table class="tableCart1" align="center">
+                                    <tr>
+                                        <th>Ref No.</th>
+                                        <td>@Model.RefNo</td>
+                                    </tr>
+                                    <tr>
+                                        <th> Amount </th>
+                                        <td>
+                                            @Model.Amount
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <th> Transaction Id</th>
+                                        <td>
+                                            @Model.TransId
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <th> Status </th>
+                                        <td>
+                                            @if (Model.Status == "0")
+                                            {
+                                                <pre class="test">Fail</pre>
+                                            }
+                                            else
+                                            {
+                                                <pre class="test">Success</pre>
+                                            }
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <th> Error Description </th>
+                                        <td>
+                                            @Model.ErrDesc
+                                        </td>
+                                    </tr>
+                                </table>
+                            </div>
+                            <div class="condition">
+                                <table class="tableCart" align="center">
+                                    <tr>
+                                        <th style="width:5%">No.</th>
+                                        <th style="width:30%"> Parts Info. </th>
+                                        <th style="width:9%"> Quantity </th>
+                                        <th style="width:12%"> Each Unit Price(RM) </th>
+                                        <th style="width:13%"> Price(RM) </th>
+                                    </tr>
+                                    @foreach (var item in Model.ItemList)
+                                    {
+                                        int cnt = 1;
+                                        <tr>
+                                            <td>@cnt</td>
+                                            <td>
+                                                @item.Name <br />
+                                                @item.Description
+                                            </td>
+                                            <td> @item.Quantity </td>
+                                            <td>
+                                                @item.SalePrice
+                                            </td>
+                                            <td>
+                                                @(item.SalePrice * item.Quantity)
+                                            </td>
+                                        </tr>
+                                        cnt++;
+                                    }
+
+                                </table>
+
+                                <div class="inside_main_Cart">
+                                    @*<div style="width:65%;float:left;">
+                                            <br>
+                                            <b>Shipping Address</b>
+                                            <br />
+                                            <br />
+                                            <small>
+                                                <b>
+                                                    {{Name}}<br>
+                                                    {{ContactNo}}<br>
+                                                    {{Address}}<br>
+                                                    {{CityName}} - {{StateName}}
+                                                </b>
+                                            </small>
+                                        </div>*@
+                                    <div style="width:30%; float:right;">
+                                        <label id="total"><b>TOTAL PRICE(RM):</b></label>
+                                        &nbsp;&nbsp;&nbsp;
+                                        <label id="total"><b>@Model.OrderTotal</b></label>
+                                        <br>
+                                    </div>
+                                    <div style="clear:both;"> </div>
+                                    <br>
+                                </div>
+                            </div>
+                        </form>
+                    }
+                    @if (Model.PaymentMethod == "revPay")
+                    {
+                        <form method="post" name="ePayment" action="https://www.mobile88.com/ePayment/entry.asp">
+                            <div class="clear"></div>
+                            <div class="condition">
+                                <table class="tableCart1" align="center">
+                                    <tr>
+                                        <th>Ref No.</th>
+                                        <td>@Model.RefNo</td>
+                                    </tr>
+                                    <tr>
+                                        <th> Amount </th>
+                                        <td>
+                                            @Model.Amount
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <th> Transaction Id</th>
+                                        <td>
+                                            @Model.TransId
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <th> Status </th>
+                                        <td>
+                                            @if (Model.Status == "0")
+                                            {
+                                                <pre class="test">Fail</pre>
+                                            }
+                                            else
+                                            {
+                                                <pre class="test">Success</pre>
+                                            }
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <th> Error Description </th>
+                                        <td>
+                                            @Model.ErrDesc
+                                        </td>
+                                    </tr>
+                                </table>
+                            </div>
+                            <div class="condition">
+                                <table class="tableCart" align="center">
+                                    <tr>
+                                        <th style="width:5%">No.</th>
+                                        <th style="width:30%"> Parts Info. </th>
+                                        <th style="width:9%"> Quantity </th>
+                                        <th style="width:12%"> Each Unit Price(RM) </th>
+                                        <th style="width:13%"> Price(RM) </th>
+                                    </tr>
+                                    @foreach (var item in Model.ItemList)
+                                    {
+                                        int cnt = 1;
+                                        <tr>
+                                            <td>@cnt</td>
+                                            <td>
+                                                @item.Name <br />
+                                                @item.Description
+                                            </td>
+                                            <td> @item.Quantity </td>
+                                            <td>
+                                                @item.SalePrice
+                                            </td>
+                                            <td>
+                                                @(item.SalePrice * item.Quantity)
+                                            </td>
+                                        </tr>
+                                        cnt++;
+                                    }
+
+                                </table>
+
+                                <div class="inside_main_Cart">
+                                    @*<div style="width:65%;float:left;">
+                                            <br>
+                                            <b>Shipping Address</b>
+                                            <br />
+                                            <br />
+                                            <small>
+                                                <b>
+                                                    {{Name}}<br>
+                                                    {{ContactNo}}<br>
+                                                    {{Address}}<br>
+                                                    {{CityName}} - {{StateName}}
+                                                </b>
+                                            </small>
+                                        </div>*@
+                                    <div style="width:30%; float:right;">
+                                        <label id="total"><b>TOTAL PRICE(RM):</b></label>
+                                        &nbsp;&nbsp;&nbsp;
+                                        <label id="total"><b>@Model.OrderTotal</b></label>
+                                        <br>
+                                    </div>
+                                    <div style="clear:both;"> </div>
+                                    <br>
+                                </div>
+                            </div>
+                        </form>
+                    }
+                    
+
+                    @if (Model.PaymentMethod == "paydollar")
+                    {
+                        <form method="post" name="ePayment" action="https://www.mobile88.com/ePayment/entry.asp">
+                            <div class="clear"></div>
+                            <div class="condition">
+                                <table class="tableCart1" align="center">
+                                    <tr>
+                                        <th>Ref No.</th>
+                                        <td>@Model.RefNo</td>
+                                    </tr>
+                                    <tr>
+                                        <th> Amount </th>
+                                        <td>
+                                            @Model.Amount
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <th> Transaction Id</th>
+                                        <td>
+                                            @Model.TransId
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <th> Status </th>
+                                        <td>
+                                            @if (Model.Status == "0")
+                                            {
+                                                <pre class="test">Fail</pre>
+                                            }
+                                            else
+                                            {
+                                                <pre class="test">Success</pre>
+                                            }
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <th> Error Description </th>
+                                        <td>
+                                            @Model.ErrDesc
+                                        </td>
+                                    </tr>
+                                </table>
+                            </div>
+                            <div class="condition">
+                                <table class="tableCart" align="center">
+                                    <tr>
+                                        <th style="width:5%">No.</th>
+                                        <th style="width:30%"> Parts Info. </th>
+                                        <th style="width:9%"> Quantity </th>
+                                        <th style="width:12%"> Each Unit Price(RM) </th>
+                                        <th style="width:13%"> Price(RM) </th>
+                                    </tr>
+                                    @foreach (var item in Model.ItemList)
+                                    {
+                                        int cnt = 1;
+                                        <tr>
+                                            <td>@cnt</td>
+                                            <td>
+                                                @item.Name <br />
+                                                @item.Description
+                                            </td>
+                                            <td> @item.Quantity </td>
+                                            <td>
+                                                @item.SalePrice
+                                            </td>
+                                            <td>
+                                                @(item.SalePrice * item.Quantity)
+                                            </td>
+                                        </tr>
+                                        cnt++;
+                                    }
+
+                                </table>
+
+                                <div class="inside_main_Cart">
+                                    @*<div style="width:65%;float:left;">
+                            <br>
+                            <b>Shipping Address</b>
+                            <br />
+                            <br />
+                            <small>
+                                <b>
+                                    {{Name}}<br>
+                                    {{ContactNo}}<br>
+                                    {{Address}}<br>
+                                    {{CityName}} - {{StateName}}
+                                </b>
+                            </small>
+                        </div>*@
+                                    <div style="width:30%; float:right;">
+                                        <label id="total"><b>TOTAL PRICE(RM):</b></label>
+                                        &nbsp;&nbsp;&nbsp;
+                                        <label id="total"><b>@Model.OrderTotal</b></label>
+                                        <br>
+                                    </div>
+                                    <div style="clear:both;"> </div>
+                                    <br>
+                                </div>
+                            </div>
+                        </form>
+                    }
+                </div>
+            </div>
+        </div>
+        <div class="clear"></div>
+    </div>
+</div>
+
+@*<script src="~/Areas/FrontTaps/app/controllers/OrderSummary/OrderSummary.js"></script>*@
+<script src="~/Areas/FrontTaps/app/controllers/Filter/Filter.js"></script>
+<script src="~/Areas/FrontTaps/app/controllers/CategoryMgmt/FilterCategory.js"></script>
+
+<style>
+    .tableCart1 {
+        font-size: 13px;
+        font-weight: bold;
+        width: 100%;
+        padding: 0;
+    }
+
+    .tableCart1 {
+        border-collapse: collapse;
+    }
+
+        .tableCart1 tr {
+            border-bottom: 1px solid #000;
+        }
+
+        .tableCart1 th {
+            border-right: 1px solid #000;
+            background-color: #84b99d;
+            width: 190px;
+        }
+
+        .tableCart1 td, .tableCart1 th {
+            padding: 15px 5px;
+        }
+
+    .test {
+        font-size: 13px !important;
+        font-weight: bold !important;
+    }
+</style>

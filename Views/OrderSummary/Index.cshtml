@@ -1,0 +1,355 @@
+﻿@{
+    ViewBag.Title = "Index";
+    Layout = "~/Views/Shared/_OnlyLayout.cshtml";
+}
+
+<script type="text/javascript">
+    $(document).ready(function () {
+        $(document).on('click', '.col-exp.close', function () {
+            $(this).attr('src', '/Areas/FrontTaps/Img/left.png');
+            sval = $('.form').serialize();
+            $(this).addClass('open');
+            $(this).removeClass('close');
+            $(this).parent('li').find('ul:first').show();
+        })
+
+        $(document).on('click', '.col-exp.open', function () {
+            sval = $('.form').serialize();
+            $(this).attr('src', '/Areas/FrontTaps/Img/left.png');
+            $(this).addClass('close');
+            $(this).removeClass('open');
+            $(this).parent('li').find('ul:first').hide();
+        })
+
+    });
+</script>
+
+<style type="text/css">
+    #nav a.active {
+        background-color: #ee1c25;
+        color: #fff;
+    }
+
+    .open {
+        background: none;
+        -webkit-transform: rotate(90deg);
+    }
+
+    li {
+        list-style: none;
+    }
+</style>
+
+<div>
+    <div class="body-part">
+        <div class="part-right-Only">
+            <div class="sub-menu">
+                <ul>
+                    <li><a href="/Parts/Parts">Select Parts</a></li>
+                    <li><a href="/Cart/ShoppingCart">Shopping Cart</a></li>
+                    <li><a href="/Address/DeliveryAddress">Delivery option</a></li>
+                    <li id="nav"><a href="/OrderSummary/Index" class="active">Summary</a></li>
+                    <li><a href="#">Payment</a></li>
+                </ul>
+            </div>
+
+            <div>
+                <div ng-controller="OrderSummaryCtrl">
+                    <!--iPay88 Payment Gateway-->
+                    <form ng-if="model.PaymentMethod == 'iPay88'" method="post" id="formiPay88Payment" name="formiPay88Payment" action="https://www.mobile88.com/ePayment/entry.asp">
+                        <div class="clear"></div>
+                        <div class="condition">
+
+                            <input type="hidden" ng-model="MerchantCode" value="{{MerchantCode}}" name="MerchantCode">
+                            <input type="hidden" ng-model="PaymentId" value="{{PaymentId}}" name="PaymentId">
+                            <input type="hidden" ng-model="RefNo" value="{{RefNo}}" name="RefNo">
+                            <input type="hidden" ng-model="Amount" value="{{Amount}}" name="Amount">
+                            <input type="hidden" ng-model="Currency" value="{{Currency}}" name="Currency">
+                            <input type="hidden" ng-model="ProdDesc" value="{{ProdDesc}}" name="ProdDesc">
+                            <input type="hidden" ng-model="UserName" value="{{UserName}}" name="UserName">
+                            <input type="hidden" ng-model="UserEmail" value="{{UserEmail}}" name="UserEmail">
+                            <input type="hidden" ng-model="UserContact" value="{{UserContact}}" name="UserContact">
+                            <input type="hidden" ng-model="Remark" value="{{Remark}}" name="Remark">
+                            <input type="hidden" ng-model="Lang" value="UTF-8" name="Lang">
+                            <input type="hidden" ng-model="Signature" value="{{Signature}}" name="Signature">
+                            <input type="hidden" ng-model="ResponseURL" value="{{ResponseURL}}" name="ResponseURL">
+                            <input type="hidden" ng-model="BackgroundURL" value="{{BackgroundURL}}" name="BackendURL">
+                            <table class="tableCart" align="center">
+                                <tr>
+                                    <th style="width:5%">No.</th>
+                                    <th style="width:30%"> Parts Info. </th>
+                                    <th style="width:9%"> Condition </th>
+                                    <th style="width:12%"> Warranty Period </th>
+                                    <th style="width:9%"> Quantity </th>
+                                    <th style="width:12%"> Each Unit Price(RM) </th>
+                                    <th style="width:13%"> Price(RM) </th>
+                                </tr>
+                                <tr ng-repeat="o in lstOrderSummary">
+                                    <td>{{$index + 1}}</td>
+                                    <td>
+                                        {{o.Name}} <br />
+                                        {{o.Description}}
+                                    </td>
+                                    <td> {{o.Condition}} </td>
+                                    <td ng-if="o.Warranty == null">
+                                        Nil
+                                    </td>
+                                    <td ng-if="o.Warranty != null">
+                                        {{o.Warranty}} month(s)
+                                    </td>
+                                    <td>
+                                        {{o.StockQty}}
+                                    </td>
+                                    <td> {{o.SalePrice | number:2}} </td>
+                                    <td> {{o.StockQty * o.SalePrice | number:2}} </td>
+                                </tr>
+                            </table>
+                            <div class="inside_main_Cart">
+                                <div style="width:65%;float:left;">
+                                    <br>
+                                    <b>Shipping Address</b>
+                                    <br />
+                                    <br />
+                                    <small ng-if="idAddress != null">
+                                        <b>
+                                            {{Name}}<br>
+                                            {{ContactNo}}<br>
+                                            {{Address}}<br>
+                                            {{CityName}} - {{StateName}}
+                                        </b>
+                                    </small>
+                                    <small ng-if="idAddress == null">
+                                        <b>
+                                            {{Name}}<br>
+                                            {{Address}}<br>
+                                        </b>
+                                    </small>
+                                </div>
+                                <div style="width:30%; float:right;">
+                                    <label id="total"><b>TOTAL PRICE(RM):</b></label>
+                                    &nbsp;&nbsp;&nbsp;
+                                    <label id="total"><b>{{model.Total | number:2}}</b></label>
+                                    <br>
+                                </div>
+                                <div style="clear:both;"> </div>
+                                <br>
+                            </div>
+                        </div>
+
+                        <div class="price-tag">
+                            <input type="button" ng-click="PlaceOrder(model)" id="btnSubmit" class="tfbutton right" value="Place Order" style="width:150px;">
+
+                            @*<input type="submit" id="btnSubmit" class="tfbutton right" value="Place Order" style="width:150px;">*@
+                            <br>
+                        </div>
+                    </form>
+                    <!--End of iPay88 Payment Gateway-->
+                    <!--revPay Payment Gateway-->
+                    <!--https://uatpgw.revenue.com.my/revpay/epayment.php-->
+                    <form ng-if="model.PaymentMethod == 'revPay'" method="post" id="formrevPayPayment" name="formrevPayPayment" action="https://www.revpay.com.my/epayment.php">
+                        <div class="clear"></div>
+                        <div class="condition">
+
+                            <input type="hidden" ng-model="MerchantCode" name="MerchantId" value="{{MerchantCode}}" />
+                            <input type="hidden" ng-model="TxnModel" name="TxnModel" value="{{TxnModel}}" />
+                            <input type="hidden" ng-model="RefNo" name="RefNo" value="{{RefNo}}" />
+                            <input type="hidden" ng-model="Currency" name="TxnCur" value="{{Currency}}" />
+                            <input type="hidden" ng-model="Amount" name="TxnAmt" value="{{Amount}}" />
+                            <input type="hidden" ng-model="ProdDesc" name="TxnDesc" value="{{ProdDesc}}" />
+                            <input type="hidden" ng-model="UserName" name="CustName" value="{{UserName}}" />
+                            <input type="hidden" ng-model="UserEmail" name="CustEmail" value="{{UserEmail}}" />
+                            <input type="hidden" ng-model="UserContact" name="CustContact" value="{{UserContact}}" />
+                            <input type="hidden" ng-model="Lang" name="Lang" value="UTF-8" />
+                            <input type="hidden" name="Version" value="1.00" />
+                            <input type="hidden" ng-model="Signature" name="Signature" value="{{Signature}}" />
+                            <input type="hidden" ng-model="ResponseURL" name="ResponseURL" value="{{ResponseURL}}" />
+                            <input type="hidden" ng-model="BackgroundURL" value="{{BackgroundURL}}" name="BackendURL">
+
+                            <table class="tableCart" align="center">
+                                <tr>
+                                    <th style="width:5%">No.</th>
+                                    <th style="width:30%"> Parts Info. </th>
+                                    <th style="width:9%"> Condition </th>
+                                    <th style="width:12%"> Warranty Period </th>
+                                    <th style="width:9%"> Quantity </th>
+                                    <th style="width:12%"> Each Unit Price(RM) </th>
+                                    <th style="width:13%"> Price(RM) </th>
+                                </tr>
+                                <tr ng-repeat="o in lstOrderSummary">
+                                    <td>{{$index + 1}}</td>
+                                    <td>
+                                        {{o.Name}} <br />
+                                        {{o.Description}}
+                                    </td>
+                                    <td> {{o.Condition}} </td>
+                                    <td ng-if="o.Warranty == null">
+                                        Nil
+                                    </td>
+                                    <td ng-if="o.Warranty != null">
+                                        {{o.Warranty}} month(s)
+                                    </td>
+                                    <td>
+                                        {{o.StockQty}}
+                                    </td>
+                                    <td> {{o.SalePrice | number:2}} </td>
+                                    <td> {{o.StockQty * o.SalePrice | number:2}} </td>
+                                </tr>
+                            </table>
+                            <div class="inside_main_Cart">
+                                <div style="width:65%;float:left;">
+                                    <br>
+                                    <b>Shipping Address</b>
+                                    <br />
+                                    <br />
+                                    <small ng-if="idAddress != null">
+                                        <b>
+                                            {{Name}}<br>
+                                            {{ContactNo}}<br>
+                                            {{Address}}<br>
+                                            {{CityName}} - {{StateName}}
+                                        </b>
+                                    </small>
+                                    <small ng-if="idAddress == null">
+                                        <b>
+                                            {{Name}}<br>
+                                            {{Address}}<br>
+                                        </b>
+                                    </small>
+                                </div>
+                                <div style="width:30%; float:right;">
+                                    <label id="total"><b>TOTAL PRICE(RM):</b></label>
+                                    &nbsp;&nbsp;&nbsp;
+                                    <label id="total"><b>{{model.Total | number:2}}</b></label>
+                                    <br>
+                                </div>
+                                <div style="clear:both;"> </div>
+                                <br>
+                            </div>
+                        </div>
+
+                        <div class="price-tag">
+
+                            <input type="button" ng-click="PlaceOrder(model)" id="btnSubmit" class="tfbutton right" value="Place Order" style="width:150px;">
+                            @*<input type="submit" id="btnSubmit" class="tfbutton right" value="Place Order" style="width:150px;">*@
+                            <br>
+                        </div>
+                    </form>
+                    <!--End of revPay Payment Gateway-->
+
+
+                    <form name="payFormCcard" method="post" action="https://www.paydollar.com/b2c2/eng/payment/payForm.jsp" ng-if="model.PaymentMethod == 'paydollar'" id="formpaydollar">
+
+                        <div class="clear"></div>
+                        <div class="condition">
+
+                            <table class="tableCart" align="center">
+                                <tr>
+                                    <th style="width:5%">No.</th>
+                                    <th style="width:30%"> Parts Info. </th>
+                                    <th style="width:9%"> Condition </th>
+                                    <th style="width:12%"> Warranty Period </th>
+                                    <th style="width:9%"> Quantity </th>
+                                    <th style="width:12%"> Each Unit Price(RM) </th>
+                                    <th style="width:13%"> Price(RM) </th>
+                                </tr>
+                                <tr ng-repeat="o in lstOrderSummary">
+                                    <td>{{$index + 1}}</td>
+                                    <td>
+                                        {{o.Name}} <br />
+                                        {{o.Description}}
+                                    </td>
+                                    <td> {{o.Condition}} </td>
+                                    <td ng-if="o.Warranty == null">
+                                        Nil
+                                    </td>
+                                    <td ng-if="o.Warranty != null">
+                                        {{o.Warranty}} month(s)
+                                    </td>
+                                    <td>
+                                        {{o.StockQty}}
+                                    </td>
+                                    <td> {{o.SalePrice | number:2}} </td>
+                                    <td> {{o.StockQty * o.SalePrice | number:2}} </td>
+                                </tr>
+                            </table>
+                            <div class="inside_main_Cart">
+                                <div style="width:65%;float:left;">
+                                    <br>
+                                    <b>Shipping Address</b>
+                                    <br />
+                                    <br />
+                                    <small ng-if="idAddress != null">
+                                        <b>
+                                            {{Name}}<br>
+                                            {{ContactNo}}<br>
+                                            {{Address}}<br>
+                                            {{CityName}} - {{StateName}}
+                                        </b>
+                                    </small>
+                                    <small ng-if="idAddress == null">
+                                        <b>
+                                            {{Name}}<br>
+                                            {{Address}}<br>
+                                        </b>
+                                    </small>
+                                </div>
+                                <div style="width:30%; float:right;">
+                                    <label id="total"><b>TOTAL PRICE(RM):</b></label>
+                                    &nbsp;&nbsp;&nbsp;
+                                    <label id="total"><b>{{model.Total | number:2}}</b></label>
+                                    <br>
+                                </div>
+                                <div style="clear:both;"> </div>
+                                <br>
+                            </div>
+                        </div>
+                        <input type="hidden" name="merchantId" value="{{MerchantCode}}">
+                        <input type="hidden" name="amount" value="{{Amount}}">
+                        <input type="hidden" name="orderRef" value="{{RefNo}}">
+                        <input type="hidden" name="currCode" value="458">
+                        <input type="hidden" name="mpsMode" value="NIL">
+                        <input type="hidden" name="successUrl" value="{{ResponseURL}}">
+                        <input type="hidden" name="failUrl" value="{{BackgroundURL}}">
+                        <input type="hidden" name="cancelUrl" value="{{BackgroundURL}}">
+                        <input type="hidden" name="payType" value="N">
+                        <input type="hidden" name="lang" value="E">
+                        <input type="hidden" name="payMethod" value="ALL">
+                        <input type="hidden" name="secureHash" value="{{Signature}}">
+                        
+                        <div class="price-tag">
+
+                            <input type="button" ng-click="PlaceOrder(model)" id="btnSubmit" class="tfbutton right" value="Place Order" style="width:150px;">
+                            @*<input type="submit" id="btnSubmit" class="tfbutton right" value="Place Order" style="width:150px;">*@
+                            <br>
+                        </div>
+                    </form>
+
+
+                </div>
+            </div>
+        </div>
+    </div>
+
+
+    @*<form method="post" name="ePayment" action="https://www.mobile88.com/ePayment/entry.asp">
+            <input type="hidden" name="MerchantCode" value="M00003">
+            <input type="hidden" name="PaymentId" value="">
+            <input type="hidden" name="RefNo" value="A00000001">
+            <input type="hidden" name="Amount" value="1.00">
+            <input type="hidden" name="Currency" value="MYR">
+            <input type="hidden" name="ProdDesc" value="Photo Print">
+            <input type="hidden" name="UserName" value="John Tan">
+            <input type="hidden" name="UserEmail" value="john@hotmail.com">
+            <input type="hidden" name="UserContact" value="0126500100">
+            <input type="hidden" name="Remark" value="">
+            <input type="hidden" name="Lang" value="UTF-8">
+            <input type="hidden" name="Signature" value="84dNMbfgjLMS42IqSTPqQ99cUGA=">
+            <input type="hidden" name="ResponseURL" value="http://www.YourResponseURL.com/payment/response.asp">
+            <input type="hidden" name="BackendURL" value="http://www.YourBackendURL.com/payment/backend_response.asp">
+            <input type="submit" value="Proceed with Payment" name="Submit">
+        </form>*@
+</div>
+
+<script src="~/Areas/FrontTaps/app/controllers/OrderSummary/OrderSummary.js"></script>
+<script src="~/Areas/FrontTaps/app/controllers/Filter/Filter.js"></script>
+<script src="~/Areas/FrontTaps/app/controllers/CategoryMgmt/FilterCategory.js"></script>

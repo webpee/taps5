@@ -1,0 +1,964 @@
+﻿@{
+    ViewBag.Title = "Index";
+    Layout = "~/Areas/TapsAdmin/Views/Shared/_AddItemLayout.cshtml";
+}
+
+<script src="https://www.google.com/recaptcha/api.js" async defer></script>
+
+<style>
+    .dropdown-components {
+        height: 14px;
+        width: 10px;
+        margin: 0px 0px 0px 17px;
+        -moz-margin-start: 8px;
+    }
+</style>
+
+<div class="content_inner" id="step-4" ng-controller="AddItemCtrl">
+
+    <form role="form"
+          id="form"
+          name="form"
+          class="form-horizontal"
+          novalidate
+          ng-submit="formSubmit()">
+        <div class="selectcar-top-part">
+            <div class="selectcar-first">
+
+                <div class="list" style="display: block; margin: 20px auto 7px 10px;">
+                    <div class="filter-left">
+                        <div class="btn-group">
+                            <p class="selceted-part-title" style=" margin-bottom 2px; margin-left 2px;"> Product Name:</p>
+                            <input type="text" ng-required="true" ng-model="model.ProductName" size="21" maxlength="120" class="sel-search" style="height: 19px; width: 155px; border: 2px solid #000;">
+                        </div>
+                    </div>
+                </div>
+
+                <div class="list" id="selectpart-frst" style="display: block; margin: 20px auto 7px 10px;">
+                    <div class="filter-left">
+                        <div class="btn-group">
+                            <button class="sel-components" style="border: solid 2px #000; background-color: #FFF;">
+                                <i style="font-size: 13px; font-style:normal">
+                                    Components &nbsp;
+                                </i>
+                                <img ng-src="~/assets/img/arrow_drop_down.png" class="dropdown-components" />
+                            </button>
+                        </div>
+                    </div>
+                </div>
+                @*<a class="select-part-btn" id="selectpart-frst"></a>*@
+
+                <p class="selceted-part-title">Selected Component:</p>
+                <div class="selected-part-display" ng-show="Component != ''">
+                    <p> {{Component}}</p>
+                    <a class="btn-x" href="#" ng-click="ClearComponent()"></a>
+                </div>
+                <div class="add-btn-part">
+                    <a class="add-btn" id="add-btn" href="#">Add</a>
+                    <div class="clear"></div>
+                    <div class="rec-newpart">
+                        <p class="rec-title">RECOMMEND NEW PART</p>
+                        <input name="" type="text" class="rec-input" placeholder="COMPONENT" ng-model="model.RecommendComponent">
+                        <textarea name="" cols="" rows="" class="rec-textarea" placeholder="REMARK" ng-model="model.ComponentRemark"></textarea>
+                        <button type="button" class="send-btn" ng-click="SendComponent()" ng-disabled="Componentmodel.RecommendComponent ==''">SEND</button>
+                    </div>
+                </div>
+                <div class="selectpart-box">
+                    <div class="selectpart-box-inner">
+                        <div class="selectpart-coloum">
+                            <h4>Body Group</h4>
+                            <div class="selectpart-scroll-box">
+                                <ul style="padding:0px" class="selectpart-item">
+                                    <li id="li{{data.id}}" ng-repeat="data in list1" ng-if="data.idParent==null && data.idCategory==15">
+                                        <input type="radio" ng-model="model.Component" id="Check{{data.id}}" value="{{data.id}}-{{data.Name}}" ng-change="FillComponent()" />
+                                        <img src="~/Areas/TapsAdmin/Img/icon-item.png" class=" col-exp close" ng-show="ParentList1(data.id)">
+                                        <b>{{data.Name}}</b>
+                                        <ul style="display: none;" ng-show="ParentList1(data.id)">
+                                            <li ng-repeat="data1 in list1" ng-if="data.id==data1.idParent">
+                                                <input type="radio" ng-model="model.Component" id="Check{{data1.id}}" value="{{data1.id}}-{{data1.Name}}" ng-change="FillComponent()" />
+                                                <img src="~/Areas/TapsAdmin/Img/icon-item.png" class="col-exp close" ng-show="ParentList1(data1.id)">
+                                                <b>{{data1.Name}}</b>
+                                                <ul style="display: none;" ng-show="ParentList1(data1.id)">
+                                                    <li ng-repeat="data2 in list1" ng-if="data1.id==data2.idParent">
+                                                        <input type="radio" ng-model="model.Component" id="Check{{data2.id}}" value="{{data2.id}}-{{data2.Name}}" ng-change="FillComponent()" />
+                                                        <img src="~/Areas/TapsAdmin/Img/icon-item.png" class="col-exp close" ng-show="ParentList1(data2.id)">
+                                                        <b>{{data2.Name}}</b>
+                                                        <ul style="display: none;" ng-show="ParentList1(data2.id)">
+                                                            <li ng-repeat="data3 in list1" ng-if="data2.id==data3.idParent">
+                                                                <input type="radio" ng-model="model.Component" id="Check{{data3.id}}" value="{{data3.id}}-{{data3.Name}}" ng-change="FillComponent()" />
+                                                                <b>{{data3.Name}}</b>
+                                                            </li>
+                                                        </ul>
+                                                    </li>
+                                                </ul>
+                                            </li>
+                                        </ul>
+                                    </li>
+                                </ul>
+                            </div>
+                        </div>
+                        <div class="selectpart-coloum">
+                            <h4>Electical Group</h4>
+                            <div class="selectpart-scroll-box">
+                                <ul style="padding:0px" class="selectpart-item">
+                                    <li id="li{{data.id}}" ng-repeat="data in list2" ng-if="data.idParent==null && data.idCategory==16">
+                                        <input type="radio" ng-model="model.Component" id="Check{{data.id}}" value="{{data.id}}-{{data.Name}}" ng-change="FillComponent()" />
+                                        <img src="~/Areas/TapsAdmin/Img/icon-item.png" class=" col-exp close" ng-show="ParentList2(data.id)">
+                                        <b>{{data.Name}}</b>
+                                        <ul style="display: none;" ng-show="ParentList2(data.id)">
+                                            <li ng-repeat="data1 in list2" ng-if="data.id==data1.idParent">
+                                                <input type="radio" ng-model="model.Component" id="Check{{data1.id}}" value="{{data1.id}}-{{data1.Name}}" ng-change="FillComponent()" />
+                                                <img src="~/Areas/TapsAdmin/Img/icon-item.png" class="col-exp close" ng-show="ParentList2(data1.id)">
+                                                <b>{{data1.Name}}</b>
+                                                <ul style="display: none;" ng-show="ParentList2(data1.id)">
+                                                    <li ng-repeat="data2 in list2" ng-if="data1.id==data2.idParent">
+                                                        <input type="radio" ng-model="model.Component" id="Check{{data2.id}}" value="{{data2.id}}-{{data2.Name}}" ng-change="FillComponent()" />
+                                                        <img src="~/Areas/TapsAdmin/Img/icon-item.png" class="col-exp close" ng-show="ParentList2(data2.id)">
+                                                        <b>{{data2.Name}}</b>
+                                                        <ul style="display: none;" ng-show="ParentList2(data2.id)">
+                                                            <li ng-repeat="data3 in list2" ng-if="data2.id==data3.idParent">
+                                                                <input type="radio" ng-model="model.Component" id="Check{{data3.id}}" value="{{data3.id}}-{{data3.Name}}" ng-change="FillComponent()" />
+                                                                <b>{{data3.Name}}</b>
+                                                            </li>
+                                                        </ul>
+                                                    </li>
+                                                </ul>
+                                            </li>
+                                        </ul>
+                                    </li>
+                                </ul>
+                            </div>
+                        </div>
+                        <div class="selectpart-coloum">
+                            <h4>Engine,Fuel Group</h4>
+                            <div class="selectpart-scroll-box">
+                                <ul style="padding:0px" class="selectpart-item">
+                                    <li id="li{{data.id}}" ng-repeat="data in list3" ng-if="data.idParent==null && data.idCategory==17">
+                                        <input type="radio" ng-model="model.Component" id="Check{{data.id}}" value="{{data.id}}-{{data.Name}}" ng-change="FillComponent()" />
+                                        <img src="~/Areas/TapsAdmin/Img/icon-item.png" class=" col-exp close" ng-show="ParentList3(data.id)">
+                                        <b>{{data.Name}}</b>
+                                        <ul style="display: none;" ng-show="ParentList3(data.id)">
+                                            <li ng-repeat="data1 in list3" ng-if="data.id==data1.idParent">
+                                                <input type="radio" ng-model="model.Component" id="Check{{data1.id}}" value="{{data1.id}}-{{data1.Name}}" ng-change="FillComponent()" />
+                                                <img src="~/Areas/TapsAdmin/Img/icon-item.png" class="col-exp close" ng-show="ParentList3(data1.id)">
+                                                <b>{{data1.Name}}</b>
+                                                <ul style="display: none;" ng-show="ParentList3(data1.id)">
+                                                    <li ng-repeat="data2 in list3" ng-if="data1.id==data2.idParent">
+                                                        <input type="radio" ng-model="model.Component" id="Check{{data2.id}}" value="{{data2.id}}-{{data2.Name}}" ng-change="FillComponent()" />
+                                                        <img src="~/Areas/TapsAdmin/Img/icon-item.png" class="col-exp close" ng-show="ParentList3(data2.id)">
+                                                        <b>{{data2.Name}}</b>
+                                                        <ul style="display: none;" ng-show="ParentList3(data2.id)">
+                                                            <li ng-repeat="data3 in list3" ng-if="data2.id==data3.idParent">
+                                                                <input type="radio" ng-model="model.Component" id="Check{{data3.id}}" value="{{data3.id}}-{{data3.Name}}" ng-change="FillComponent()" />
+                                                                <b>{{data3.Name}}</b>
+                                                            </li>
+                                                        </ul>
+                                                    </li>
+                                                </ul>
+                                            </li>
+                                        </ul>
+                                    </li>
+                                </ul>
+                            </div>
+                        </div>
+                        <div class="selectpart-coloum">
+                            <h4>Power Train, Chassis Group</h4>
+                            <div class="selectpart-scroll-box">
+                                <ul style="padding:0px" class="selectpart-item">
+                                    <li id="li{{data.id}}" ng-repeat="data in list4" ng-if="data.idParent==null && data.idCategory==18">
+                                        <input type="radio" ng-model="model.Component" id="Check{{data.id}}" value="{{data.id}}-{{data.Name}}" ng-change="FillComponent()" />
+                                        <img src="~/Areas/TapsAdmin/Img/icon-item.png" class=" col-exp close" ng-show="ParentList4(data.id)">
+                                        <b>{{data.Name}}</b>
+                                        <ul style="display: none;" ng-show="ParentList4(data.id)">
+                                            <li ng-repeat="data1 in list4" ng-if="data.id==data1.idParent">
+                                                <input type="radio" ng-model="model.Component" id="Check{{data1.id}}" value="{{data1.id}}-{{data1.Name}}" ng-change="FillComponent()" />
+                                                <img src="~/Areas/TapsAdmin/Img/icon-item.png" class="col-exp close" ng-show="ParentList4(data1.id)">
+                                                <b>{{data1.Name}}</b>
+                                                <ul style="display: none;" ng-show="ParentList4(data1.id)">
+                                                    <li ng-repeat="data2 in list4" ng-if="data1.id==data2.idParent">
+                                                        <input type="radio" ng-model="model.Component" id="Check{{data2.id}}" value="{{data2.id}}-{{data2.Name}}" ng-change="FillComponent()" />
+                                                        <img src="~/Areas/TapsAdmin/Img/icon-item.png" class="col-exp close" ng-show="ParentList4(data2.id)">
+                                                        <b>{{data2.Name}}</b>
+                                                        <ul style="display: none;" ng-show="ParentList4(data2.id)">
+                                                            <li ng-repeat="data3 in list4" ng-if="data2.id==data3.idParent">
+                                                                <input type="radio" ng-model="model.Component" id="Check{{data3.id}}" value="{{data3.id}}-{{data3.Name}}" ng-change="FillComponent()" />
+                                                                <b>{{data3.Name}}</b>
+                                                            </li>
+                                                        </ul>
+                                                    </li>
+                                                </ul>
+                                            </li>
+                                        </ul>
+                                    </li>
+                                </ul>
+                            </div>
+                        </div>
+                        <div class="clear"></div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="selectcar-two">
+                <div class="combo-outter">
+                    <div class="combo-left-part" style="min-width: 175px !important;">
+                        <div class="combo-box-outter">
+                            <select name="dd_any_make" ng-model="model.Make" ng-change="FillModelData(model.Make)" ng-required="true" style="width: 85px !important; margin-right: 2px !important;">
+                                !important; ">
+                                <option value="">-Make-</option>
+                                <option ng-repeat="o in lstGetAllMake | orderBy : 'Make'" value="{{o.id}}">{{o.Make}}</option>
+                            </select>
+                        </div>
+                        <div class="combo-box-outter">
+                            <select id="Model" ng-model="model.Model" ng-change="GetVehicles()" ng-disabled="model.Make==0" style="width: 83px !important; margin-right: 2px !important; ">
+                                <option value="">-Model-</option>
+                                <option ng-repeat="o in lstGetModel" ng-selected="model.Model == o.id" value="{{o.id}}">{{o.Name}}</option>
+                            </select>
+                        </div>
+                        @*<div class="combo-box-outter sec">
+                                <select name="dd_any_model" ng-model="model.Model" ng-change="GetAllTrimByModelId(model.Model)" ng-required="true" ng-disabled="model.Make==0">
+                                    <option value="">-Model-</option>
+                                    <option ng-repeat="o in lstGetModel | orderBy : 'Name'" value="{{o.id}}">{{o.Name}}</option>
+                                </select>
+                            </div>*@
+                    </div>
+                    <div class="combo-right-part">
+                        <div class="combo-year">
+                            <select id="VehicleDetails" ng-model="model.VehicleDetails" ng-change="showFilter()" style="width: 89px; margin-right: 2px !important; ">
+                                <option value="">Your Vehicle(s)</option>
+                                <option ng-repeat="vl in lstVehicle" ng-selected="model.VehicleDetails == vl.id" value="{{vl.id}}">{{vl.Make}}{{" "}}{{" "}}({{vl.ModelName}}){{" "}}{{vl.TrimName}}{{" "}}{{vl.EngineName}}(cc){{" "}}{{vl.TransmissionName}}</option>
+                            </select>
+                            @*<select name="dd_year1" ng-model="model.YearFrom" ng-required="true">
+                                    <option value="">-AnyYear-</option>
+                                    <option ng-repeat="o in lstYearData | orderBy : 'Year'" value="{{o.Year}}">{{o.Year}}</option>
+                                </select>*@
+                        </div>
+                        @*<p class="combo-divider">to</p>*@
+                        <div class="combo-year">
+                            <select id="year" ng-model="model.Year" ng-change="SetYear(model.Year)" style="width: 80px !important; margin-right: 2px !important; ">
+                                <option value="">-AnyYear-</option>
+                                <option ng-repeat="o in lstYearData" ng-selected="model.Year == o.idYear" value="{{o.idYear}}">{{o.Year}}</option>
+                            </select>
+                            @*<select name="dd_year2" ng-model="model.YearTo" ng-required="true" ng-change="FilterVehicleList()">
+                                    <option value="">-AnyYear-</option>
+                                    <option ng-repeat="o in lstYearData | orderBy : 'Year'" value=" {{o.Year}}">{{o.Year}}</option>
+                                </select>*@
+                        </div>
+                        <div class="clear"></div>
+                    </div>
+                    <div class="clear"></div>
+                </div>
+                <div class="combo-outter-secrow">
+                    @*<div class="combo-box-outter">
+                            <select name="dd_any_trim" ng-model="model.Trim" ng-change="FilterVehicleList()" ng-disabled="model.Model==0 || model.YearFrom ==0 || model.YearTo ==0" ng-required="true">
+                                <option value="">-AnyTrim-</option>
+                                <option ng-repeat="o in lstTrimData" value="{{o.id}}">{{o.Trim}}</option>
+                            </select>
+                        </div>*@
+                    @*<div class="save-vehicle-combo">
+
+                            <select name="dd_saved_vehicle" style="background-color:#FAEE31;" ng-model="model.SelectedVehicle" ng-change="SelectedVehicle(model.SelectedVehicle)" ng-required="true">
+                                <option value="">YOUR VEHICLE(S)</option>
+                                <option ng-repeat="o in FilterVehicle" value="{{o.id}}">{{o.Make}} {{o.ModelName}} {{o.TrimName}} {{o.EngineName}} {{o.TransmissionName}} {{o.Year}}</option>
+                            </select>
+                        </div>*@
+                    <button class="add-vehicle-btn">Add Vehicle</button>
+                    <div class="clear"></div>
+                </div>
+                <div class="selected-item-row">
+                    <p class="selected-title">Selected Vehicles(s)</p>
+                    <div class="selected-display" ng-show="model.YearName != ''" style="height: auto;">
+                        @*<p>{{SelectedVehicleList}}</p>*@
+                        <p ng-repeat="vl in lstVehicle" style="color: black !important;font-size: 10px;" ng-show="model.VehicleDetails == {{vl.id}} && model.Year != ''"><i>{{vl.Make}}{{" "}}{{" "}}({{vl.ModelName}}){{" "}}{{vl.TrimName}}{{" "}}{{vl.EngineName}}(cc){{" "}}{{vl.TransmissionName}}{{" "}}{{model.YearName}}</i></p>
+                        <a class="btn-x" href="#" ng-click="ClearModelFilter()"></a>
+                        <div class="clear"></div>
+                    </div>
+                    <div class="clear"></div>
+                </div>
+                <div class="add-btn-part" style="margin-top: -10px;">
+                    <a class="add-btn" id="add-btn1" href="#">Add</a>
+                    <div class="clear"></div>
+                    <div class="rec-newpart sec">
+                        <p class="rec-title">RECOMMEND NEW MAKE & MODEL</p>
+                        <div class="rec-input-row">
+                            <div class="make-detail-left">
+                                <input name="" type="text" class="make-input-left" placeholder="MAKE" ng-model="modelVehicle.Make">
+                                <input name="" type="text" class="make-input-right" placeholder="MODEL" ng-model="modelVehicle.Model">
+                            </div>
+                            <div class="make-detail-right">
+                                <input name="" type="text" class="year-input-left" placeholder="YEAR" ng-model="modelVehicle.FromYear">
+                                <p class="make-input-saprate">to</p>
+                                <input name="" type="text" class="year-input-right" placeholder="YEAR" ng-model="modelVehicle.ToYear">
+                            </div>
+                            <div class="clear"></div>
+                        </div>
+                        <div class="rec-textarea-row">
+                            <input name="" type="text" class="make-input-left" placeholder="TRIM" ng-model="modelVehicle.Trim">
+                            <textarea name="" cols="" class="make-textarea-right" rows="" placeholder="REMARK" ng-model="modelVehicle.Remark"></textarea>
+                            <div class="clear"></div>
+                        </div>
+                        <button type="button" ng-click="SendRecommendVehicle(modelVehicle)" class="send-btn">SEND</button>
+                    </div>
+                </div>
+            </div>
+
+            <div class="selectcar-third">
+                <div class="combo-condition">
+                    <div class="condition-combo">
+                        <select name="dd_cond_parts" ng-model="model.Condition" ng-required="true">
+                            <option value="">QUALITY OF PARTS</option>
+                            <option value="REMAN">Remanufactured Parts (REMAN)</option>
+                            <option value="GQUP">Good Quality Used Parts (GQUP)</option>
+                            <optgroup label="New Part (NP)">
+                                <option value="NP-Ori">Original (NP-Ori)</option>
+                                <option value="NP-Non-Ori">Non-Original (NP-Non-Ori)</option>
+                            </optgroup>
+                        </select>
+                    </div>
+                    <div class="warranty-combo">
+                        <select name="dd_warranty_period" ng-model="model.Warranty" ng-required="true">
+                            <option value="">WARRANTY PERIOD</option>
+                            <option value="6">6</option>
+                            <option value="12">12</option>
+                            <option value="18">18</option>
+                            <option value="24">24</option>
+                        </select>
+                    </div>
+                </div>
+                <div class="add-btn-part">
+                    <a class="add-btn" id="add-btn2" href="#">Apply QUP</a>
+                    <div class="clear"></div>
+
+                    <div class="rec-newpart thrd">
+                        <p class="rec-title">APPLY TO QUALITY USED PART</p>
+                        <div class="wh-box-part">
+                            @*<p>To obtain the permission to sell QUP, you will be required to be present in TAPS centre in person; you will then be guided by our senior officers the process of your application.</p>
+                                <label class="checkbox"><input type="checkbox" name="" value="">I want to be contacted by TAPS regarding this issue.</label>
+                                <div class="captcha-box"><img src="~/Areas/TapsAdmin/Img/captcha.png" /></div>*@
+                            <div class="wh-box-part">
+                                <p>To obtain the permission to sell QUP, you will be required to be present in TAPS centre in person; you will then be guided by our senior officers the process of your application.</p>
+                                <label class="checkbox"><input type="checkbox" name="" value="" ng-model="checked">I want to be contacted by TAPS regarding this issue.</label>
+                                <div class="g-recaptcha" data-sitekey="6LcXwQcTAAAAANGO2BejlqY_yyIRpYpHqMqvNY4l"></div>
+                                <br />
+                                <button type="button" id="submitIt" ng-click="VerifyCaptcha()" ng-disabled="!checked" class="send-btn">SEND</button>
+                            </div>
+                        </div>
+                        @*<button type="submit" class="send-btn">SEND</button>*@
+                    </div>
+                </div>
+            </div>
+
+            <div class="selectcar-four">
+                <div class="item-part">
+                    <div class="item-row">
+                        <p class="item-label">SUPPLY PRICE:</p>
+                        <div class="item-combo">
+                            <select name="">
+                                <option>RM</option>
+                            </select>
+                            <input id="" class="selcre-input" money type="text" ng-model="model.ItemPrice" value="" name="" ng-required="true">
+                        </div>
+                        <div class="clear"></div>
+                    </div>
+                    <div class="item-row2">
+                        <p class="item-label">DELIVERY PRICE:</p>
+                        <div class="item-combo">
+                            <select name="">
+                                <option>RM</option>
+                            </select>
+                            <input id="" class="selcre-input" type="text" money ng-model="model.DeliveryPrice" value="" name="" ng-required="true">
+                        </div>
+                        <div class="clear"></div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="selectcar-five">
+                <div class="criterion-part">
+                    <div class="criterion-select">
+                        <select name="dd_sel_riterion" ng-model="model.Criterion" ng-change="model.SelectedCriterion = ''" ng-required="true">
+                            <option value="">SELECT CRITERION</option>
+                            <option value="Quantity">Quantity</option>
+                            <option value="ProductNo">Product No</option>
+                            <option value="ItemAge">Item Age</option>
+                        </select>
+                    </div>
+                    <div class="criterion-input">
+                        <input name="" type="text" ng-model="model.SelectedCriterion" ng-disabled="model.Criterion==''">
+                    </div>
+                    <button class="add-btn-re" ng-click="FilterCriterion()" ng-disabled="model.SelectedCriterion == ''">Add</button>
+                    <div class="clear"></div>
+                </div>
+                <div class="cirterion-selected-part">
+                    <div class="criterion-select-space">
+                        <p class="selceted-cirterion">Selected Criterion:</p>
+                        <div class="cirterion-quantity" ng-show="model.Quantity != ''">
+                            <p>{{model.Quantity}}</p>
+                            <a class="btn-x" href="#" ng-click="ClearFilterQauntity()"></a>
+                        </div>
+                        <div class="cirterion-quantity2" ng-show="model.ProductNo != ''">
+                            <p>{{model.ProductNo}}</p>
+                            <a class="btn-x" href="#" ng-click="ClearFilterProductNo()"></a>
+                        </div>
+                        <div class="cirterion-quantity3" ng-show="model.ItemAge != ''">
+                            <p>{{model.ItemAge}}</p>
+                            <a class="btn-x" href="#" ng-click="ClearItemAge()"></a>
+                        </div>
+                        <div class="clear"></div>
+                    </div>
+                    <div class="criterion-slider-space">
+                        <div class="content-slider-bg">
+                            <div id="content-slider" class="contentSlider rsDefault">
+                                <div class="rsContent">
+                                    <div class="slider-img" ng-show="model.ImageUrl != ''">
+                                        <img ng-model="model.ImageUrl" ng-src="/Areas/TapsAdmin/VendorMediaUploads/{{model.ImageUrl}}" style="height:75px;width:75px" />
+                                        <a ng-click="RemoveFile(model.ImageUrl)" class="close-image">X</a>
+                                    </div>
+                                    <div class="slider-img" ng-show="model.ImageUrl == ''">
+                                        <button class="add-vehicle-btn" id="someelement" data-toggle="modal" data-target="#gridSystemModal">Add Image</button>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="clear"></div>
+                </div>
+            </div>
+
+            <div class="clear"></div>
+        </div>
+        <div class="sec-row">
+            <div>
+
+
+            </div>
+            <div class="sec-row-inner">
+                <span style="float:left;margin:15px 15px 0px 0px; color:#09743b">
+                    @{
+                        if (TempData["error"] != null && TempData["error"].ToString().Equals("1"))
+                        {
+                            <div id="AlertSuccessMessage" class="alert alert-danger">
+                                @TempData["message"]
+                            </div>
+                        }
+                        else if (TempData["success"] != null && TempData["success"].ToString().Equals("2"))
+                        {
+                            <div id="AlertSuccessMessage" class="alert alert-success">
+                                @TempData["message"]
+                            </div>
+                        }
+                    }
+                </span>
+                <a class="save-process-btn" data-toggle="modal" data-target="#Import" style="margin-right:15px">Import From Excel</a>
+                <a class="save-process-btn" ng-disabled="!form.$valid" ng-click="SaveProcess(model,false,form)" style="margin-right:15px">Save &amp; Duplicate Process</a>
+                <a class="post-item-btn" ng-disabled="!form.$valid" ng-click="SaveProcess(model,true,form)">Post Item</a>
+                <div class="clear"></div>
+            </div>
+            <div class="clear"></div>
+        </div>
+
+    </form>
+
+    <div class="thrd-row">
+        <h3 class="thrd-title">SAVED &amp; DUPLICATED PROCESS</h3>
+    </div>
+    <div ng-repeat="item in lstSaveProcessList">
+        <ng-form name="{{ 'innerForm' + item.idProduct }}">
+            <div class="fourth-row">
+                <div class="selectcar-first">
+                    <a class="select-part-btn" id="selectpart-frst-{{$index}}" ng-click="openComponent($index)"></a>
+                    <p class="selceted-part-title">Selected Part:</p>
+                    <div class="selected-part-display" ng-show="item.ComponentName != ''">
+                        <p>{{item.ComponentName}}</p>
+                        <a class="btn-x" href="#" ng-click="ClearSelection(item.ComponentName = '',item.Component = '',item.idComponent = '')"></a>
+                    </div>
+                    <div class="selectpart-box sec">
+                        <div class="selectpart-box-inner">
+                            <div class="selectpart-coloum">
+                                <h4>Body Group</h4>
+                                <div class="selectpart-scroll-box">
+                                    <ul style="padding:0px" class="selectpart-item">
+                                        <li id="li{{data.id}}" ng-repeat="data in list1" ng-if="data.idParent==null && data.idCategory==15">
+                                            <input type="radio" ng-model="item.Component" ng-checked="{{data.id}} == {{item.idComponent}}" id="Checklst{{data.id}}" value="{{data.id}}-{{data.Name}}" ng-change="FilterComponentId(item.idComponent = item.Component.substr(0, item.Component.lastIndexOf('-')),item.ComponentName= item.Component.substr(item.Component.lastIndexOf('-') + 1, item.Component.length))" />
+                                            <img src="~/Areas/TapsAdmin/Img/icon-item.png" class=" col-exp close" ng-show="ParentList1(data.id)">
+                                            <b>{{data.Name}}</b>
+                                            <ul style="display: none;" ng-show="ParentList1(data.id)">
+                                                <li ng-repeat="data1 in list1" ng-if="data.id==data1.idParent">
+                                                    <input type="radio" ng-model="item.Component" id="Checklst{{data1.id}}" ng-checked="{{data1.id}} == {{item.idComponent}}" value="{{data1.id}}-{{data1.Name}}" ng-change="FilterComponentId(item.idComponent = item.Component.substr(0, item.Component.lastIndexOf('-')),item.ComponentName= item.Component.substr(item.Component.lastIndexOf('-') + 1, item.Component.length))" />
+                                                    <img src="~/Areas/TapsAdmin/Img/icon-item.png" class="col-exp close" ng-show="ParentList1(data1.id)">
+                                                    <b>{{data1.Name}}</b>
+                                                    <ul style="display: none;" ng-show="ParentList1(data1.id)">
+                                                        <li ng-repeat="data2 in list1" ng-if="data1.id==data2.idParent">
+                                                            <input type="radio" ng-model="item.Component" id="Checklst{{data2.id}}" ng-checked="{{data2.id}} == {{item.idComponent}}" value="{{data2.id}}-{{data2.Name}}" ng-change="FilterComponentId(item.idComponent = item.Component.substr(0, item.Component.lastIndexOf('-')),item.ComponentName= item.Component.substr(item.Component.lastIndexOf('-') + 1, item.Component.length))" />
+                                                            <img src="~/Areas/TapsAdmin/Img/icon-item.png" class="col-exp close" ng-show="ParentList1(data2.id)">
+                                                            <b>{{data2.Name}}</b>
+                                                            <ul style="display: none;" ng-show="ParentList1(data2.id)">
+                                                                <li ng-repeat="data3 in list1" ng-if="data2.id==data3.idParent">
+                                                                    <input type="radio" ng-model="item.Component" id="Checklst{{data3.id}}" ng-checked="{{data3.id}} == {{item.idComponent}}" value="{{data3.id}}-{{data3.Name}}" ng-change="FilterComponentId(item.idComponent = item.Component.substr(0, item.Component.lastIndexOf('-')),item.ComponentName= item.Component.substr(item.Component.lastIndexOf('-') + 1, item.Component.length))" />
+                                                                    <b>{{data3.Name}}</b>
+                                                                </li>
+                                                            </ul>
+                                                        </li>
+                                                    </ul>
+                                                </li>
+                                            </ul>
+                                        </li>
+                                    </ul>
+                                </div>
+                            </div>
+                            <div class="selectpart-coloum">
+                                <h4>Electical Group</h4>
+                                <div class="selectpart-scroll-box">
+                                    <ul style="padding:0px" class="selectpart-item">
+                                        <li id="li{{data.id}}" ng-repeat="data in list2" ng-if="data.idParent==null && data.idCategory==16">
+                                            <input type="radio" ng-model="item.Component" id="Checklst{{data.id}}" value="{{data.id}}-{{data.Name}}" ng-checked="{{data.id}} == {{item.idComponent}}" ng-change="FilterComponentId(item.idComponent = item.Component.substr(0, item.Component.lastIndexOf('-')),item.ComponentName= item.Component.substr(item.Component.lastIndexOf('-') + 1, item.Component.length))" />
+                                            <img src="~/Areas/TapsAdmin/Img/icon-item.png" class=" col-exp close" ng-show="ParentList2(data.id)">
+                                            <b>{{data.Name}}</b>
+                                            <ul style="display: none;" ng-show="ParentList2(data.id)">
+                                                <li ng-repeat="data1 in list2" ng-if="data.id==data1.idParent">
+                                                    <input type="radio" ng-model="item.Component" id="Checklst{{data1.id}}" ng-checked="{{data1.id}} == {{item.idComponent}}" value="{{data1.id}}-{{data1.Name}}" ng-change="FilterComponentId(item.idComponent = item.Component.substr(0, item.Component.lastIndexOf('-')),item.ComponentName= item.Component.substr(item.Component.lastIndexOf('-') + 1, item.Component.length))" />
+                                                    <img src="~/Areas/TapsAdmin/Img/icon-item.png" class="col-exp close" ng-show="ParentList2(data1.id)">
+                                                    <b>{{data1.Name}}</b>
+                                                    <ul style="display: none;" ng-show="ParentList2(data1.id)">
+                                                        <li ng-repeat="data2 in list2" ng-if="data1.id==data2.idParent">
+                                                            <input type="radio" ng-model="item.Component" id="Checklst{{data2.id}}" ng-checked="{{data2.id}} == {{item.idComponent}}" value="{{data2.id}}-{{data2.Name}}" ng-change="FilterComponentId(item.idComponent = item.Component.substr(0, item.Component.lastIndexOf('-')),item.ComponentName= item.Component.substr(item.Component.lastIndexOf('-') + 1, item.Component.length))" />
+                                                            <img src="~/Areas/TapsAdmin/Img/icon-item.png" class="col-exp close" ng-show="ParentList2(data2.id)">
+                                                            <b>{{data2.Name}}</b>
+                                                            <ul style="display: none;" ng-show="ParentList2(data2.id)">
+                                                                <li ng-repeat="data3 in list2" ng-if="data2.id==data3.idParent">
+                                                                    <input type="radio" ng-model="item.Component" id="Checklst{{data3.id}}" ng-checked="{{data3.id}} == {{item.idComponent}}" value="{{data3.id}}-{{data3.Name}}" ng-change="FilterComponentId(item.idComponent = item.Component.substr(0, item.Component.lastIndexOf('-')),item.ComponentName= item.Component.substr(item.Component.lastIndexOf('-') + 1, item.Component.length))" />
+                                                                    <b>{{data3.Name}}</b>
+                                                                </li>
+                                                            </ul>
+                                                        </li>
+                                                    </ul>
+                                                </li>
+                                            </ul>
+                                        </li>
+                                    </ul>
+                                </div>
+                            </div>
+                            <div class="selectpart-coloum">
+                                <h4>Engine,Fuel Group</h4>
+                                <div class="selectpart-scroll-box">
+                                    <ul style="padding:0px" class="selectpart-item">
+                                        <li id="li{{data.id}}" ng-repeat="data in list3" ng-if="data.idParent==null && data.idCategory==17">
+                                            <input type="radio" ng-model="item.Component" id="Checklst{{data.id}}" ng-checked="{{data.id}} == {{item.idComponent}}" value="{{data.id}}-{{data.Name}}" ng-change="FilterComponentId(item.idComponent = item.Component.substr(0, item.Component.lastIndexOf('-')),item.ComponentName= item.Component.substr(item.Component.lastIndexOf('-') + 1, item.Component.length))" />
+                                            <img src="~/Areas/TapsAdmin/Img/icon-item.png" class=" col-exp close" ng-show="ParentList3(data.id)">
+                                            <b>{{data.Name}}</b>
+                                            <ul style="display: none;" ng-show="ParentList3(data.id)">
+                                                <li ng-repeat="data1 in list3" ng-if="data.id==data1.idParent">
+                                                    <input type="radio" ng-model="item.Component" id="Checklst{{data1.id}}" ng-checked="{{data1.id}} == {{item.idComponent}}" value="{{data1.id}}-{{data1.Name}}" ng-change="FilterComponentId(item.idComponent = item.Component.substr(0, item.Component.lastIndexOf('-')),item.ComponentName= item.Component.substr(item.Component.lastIndexOf('-') + 1, item.Component.length))" />
+                                                    <img src="~/Areas/TapsAdmin/Img/icon-item.png" class="col-exp close" ng-show="ParentList3(data1.id)">
+                                                    <b>{{data1.Name}}</b>
+                                                    <ul style="display: none;" ng-show="ParentList3(data1.id)">
+                                                        <li ng-repeat="data2 in list3" ng-if="data1.id==data2.idParent">
+                                                            <input type="radio" ng-model="item.Component" id="Checklst{{data2.id}}" ng-checked="{{data2.id}} == {{item.idComponent}}" value="{{data2.id}}-{{data2.Name}}" ng-change="FilterComponentId(item.idComponent = item.Component.substr(0, item.Component.lastIndexOf('-')),item.ComponentName= item.Component.substr(item.Component.lastIndexOf('-') + 1, item.Component.length))" />
+                                                            <img src="~/Areas/TapsAdmin/Img/icon-item.png" class="col-exp close" ng-show="ParentList3(data2.id)">
+                                                            <b>{{data2.Name}}</b>
+                                                            <ul style="display: none;" ng-show="ParentList3(data2.id)">
+                                                                <li ng-repeat="data3 in list3" ng-if="data2.id==data3.idParent">
+                                                                    <input type="radio" ng-model="item.Component" id="Checklst{{data3.id}}" ng-checked="{{data3.id}} == {{item.idComponent}}" value="{{data3.id}}-{{data3.Name}}" ng-change="FilterComponentId(item.idComponent = item.Component.substr(0, item.Component.lastIndexOf('-')),item.ComponentName= item.Component.substr(item.Component.lastIndexOf('-') + 1, item.Component.length))" />
+                                                                    <b>{{data3.Name}}</b>
+                                                                </li>
+                                                            </ul>
+                                                        </li>
+                                                    </ul>
+                                                </li>
+                                            </ul>
+                                        </li>
+                                    </ul>
+                                </div>
+                            </div>
+                            <div class="selectpart-coloum">
+                                <h4>Power Train, Chassis Group</h4>
+                                <div class="selectpart-scroll-box">
+                                    <ul style="padding:0px" class="selectpart-item">
+                                        <li id="li{{data.id}}" ng-repeat="data in list4" ng-if="data.idParent==null && data.idCategory==18">
+                                            <input type="radio" ng-model="item.Component" id="Checklst{{data.id}}" ng-checked="{{data.id}} == {{item.idComponent}}" value="{{data.id}}-{{data.Name}}" ng-change="FilterComponentId(item.idComponent = item.Component.substr(0, item.Component.lastIndexOf('-')),item.ComponentName= item.Component.substr(item.Component.lastIndexOf('-') + 1, item.Component.length))" />
+                                            <img src="~/Areas/TapsAdmin/Img/icon-item.png" class=" col-exp close" ng-show="ParentList4(data.id)">
+                                            <b>{{data.Name}}</b>
+                                            <ul style="display: none;" ng-show="ParentList4(data.id)">
+                                                <li ng-repeat="data1 in list4" ng-if="data.id==data1.idParent">
+                                                    <input type="radio" ng-model="item.Component" id="Checklst{{data1.id}}" ng-checked="{{data1.id}} == {{item.idComponent}}" value="{{data1.id}}-{{data1.Name}}" ng-change="FilterComponentId(item.idComponent = item.Component.substr(0, item.Component.lastIndexOf('-')),item.ComponentName= item.Component.substr(item.Component.lastIndexOf('-') + 1, item.Component.length))" />
+                                                    <img src="~/Areas/TapsAdmin/Img/icon-item.png" class="col-exp close" ng-show="ParentList4(data1.id)">
+                                                    <b>{{data1.Name}}</b>
+                                                    <ul style="display: none;" ng-show="ParentList4(data1.id)">
+                                                        <li ng-repeat="data2 in list4" ng-if="data1.id==data2.idParent">
+                                                            <input type="radio" ng-model="item.Component" id="Checklst{{data2.id}}" ng-checked="{{data2.id}} == {{item.idComponent}}" value="{{data2.id}}-{{data2.Name}}" ng-change="FilterComponentId(item.idComponent = item.Component.substr(0, item.Component.lastIndexOf('-')),item.ComponentName= item.Component.substr(item.Component.lastIndexOf('-') + 1, item.Component.length))" />
+                                                            <img src="~/Areas/TapsAdmin/Img/icon-item.png" class="col-exp close" ng-show="ParentList4(data2.id)">
+                                                            <b>{{data2.Name}}</b>
+                                                            <ul style="display: none;" ng-show="ParentList4(data2.id)">
+                                                                <li ng-repeat="data3 in list4" ng-if="data2.id==data3.idParent">
+                                                                    <input type="radio" ng-model="item.Component" id="Checklst{{data3.id}}" ng-checked="{{data3.id}} == {{item.idComponent}}" value="{{data3.id}}-{{data3.Name}}" ng-change="FilterComponentId(item.idComponent = item.Component.substr(0, item.Component.lastIndexOf('-')),item.ComponentName= item.Component.substr(item.Component.lastIndexOf('-') + 1, item.Component.length))" />
+                                                                    <b>{{data3.Name}}</b>
+                                                                </li>
+                                                            </ul>
+                                                        </li>
+                                                    </ul>
+                                                </li>
+                                            </ul>
+                                        </li>
+                                    </ul>
+                                </div>
+                            </div>
+                            <div class="clear"></div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="selectcar-two">
+                    <div class="combo-outter">
+                        <div class="combo-left-part">
+                            <div class="combo-box-outter">
+                                <select name="dd_any_make" ng-model="item.Make" ng-change="FillModelDataByMake(item,item.Make,item.Model = '',item.Trim = '')" ng-required="true">
+                                    <option value="">-Make-</option>
+                                    <option ng-repeat="o in item.lstGetAllMake | orderBy : 'Make'" ng-selected="item.Make == o.id" value="{{o.id}}">{{o.Make}}</option>
+                                </select>
+                            </div>
+                            <div class="combo-box-outter sec">
+                                <select name="dd_any_model" ng-model="item.Model" ng-change="GetAllTrimByModelIdList(item,item.Model,item.Trim = '',item.YearFrom = '',item.YearTo = '')" ng-disabled="item.Make==0" ng-required="true">
+                                    <option value="">-Model-</option>
+                                    <option ng-repeat="o in item.lstGetModel | orderBy : 'Model'" ng-selected="item.Model == o.id" value="{{o.id}}">{{o.Name}}</option>
+                                </select>
+                            </div>
+                        </div>
+                        <div class="combo-right-part">
+                            <div class="combo-year">
+                                <select name="dd_year1" ng-model="item.YearFrom" ng-required="true">
+                                    <option value="">-AnyYear-</option>
+                                    <option ng-repeat="o in item.lstYearData | orderBy : 'Year'" ng-selected="item.YearFrom == o.Year" value="{{o.Year}}">{{o.Year}}</option>
+                                </select>
+                            </div>
+                            <p class="combo-divider">to</p>
+                            <div class="combo-year">
+                                <select name="dd_year2" ng-model="item.YearTo" ng-required="true" ng-change="FilterVehicleListForVendor(item,item.Model,item.YearFrom,item.YearTo,item.Trim,item.SelectedVehicle ='',item.idModelTrimTransmission = '')" ng-disabled="item.Model=='' || item.YearFrom ==''">
+                                    <option value="">-AnyYear-</option>
+                                    <option ng-repeat="o in item.lstYearData | orderBy : 'Year'" ng-selected="item.YearTo == o.Year" value=" {{o.Year}} ">{{o.Year}}</option>
+                                </select>
+                            </div>
+                            <div class="clear"></div>
+                        </div>
+                        <div class="clear"></div>
+                    </div>
+                    <div class="combo-outter-secrow">
+                        @*<div class="combo-box-outter">
+                                <select name="dd_any_trim" ng-model="item.Trim"  ng-disabled="item.Model==0 || item.YearFrom ==0 || item.YearTo ==0">
+                                    <option value="">-AnyTrim-</option>
+                                    <option ng-repeat="o in item.lstTrimData" ng-selected="item.Trim == o.id" value="{{o.id}}">{{o.Trim}}</option>
+                                </select>
+                            </div>*@
+                        <div class="save-vehicle-combo">
+                            <select name="dd_saved_vehicle" style="background-color:#FAEE31;" ng-model="item.idModelTrimTransmission" ng-change="SelectedVehicleName(item,item.idModelTrimTransmission)" ng-required="true">
+                                <option value="">YOUR VEHICLE(S)</option>
+                                <option ng-repeat="o in item.FilterVehicle" ng-selected="item.Vehicle == o.id" value="{{o.id}}">{{o.Make}} {{o.ModelName}} {{o.TrimName}} {{item.YearFrom}} - {{item.YearTo}}</option>
+                            </select>
+                        </div>
+                        <button class="add-vehicle-btn">Add Vehicle</button>
+                        <div class="clear"></div>
+                    </div>
+                    <div class="selected-item-row">
+                        <p class="selected-title">Selected Vehicles(s)</p>
+                        <div class="selected-display" ng-show="item.VehicleName != ''">
+                            <p>{{item.VehicleName}}</p>
+                            <a class="btn-x" href="#" ng-click="ClearFilterOnVehicle(item.Make = '',item.Model = '',item.Trim = '',item.SelectedVehicle = '',item.YearFrom = '',item.VehicleName = '' ,item.YearTo = '',item.FilterVehicle = '')"></a>
+                            <div class="clear"></div>
+                        </div>
+                        <div class="clear"></div>
+                    </div>
+                </div>
+
+                <div class="selectcar-third">
+                    <div class="combo-condition">
+                        <div class="condition-combo">
+                            <select name="dd_cond_parts" ng-model="item.Condition" ng-required="true">
+                                <option value="">QUALITY OF PARTS</option>
+                                <option value="REMAN">Remanufactured Parts (REMAN)</option>
+                                <option value="GQUP">Good Quality Used Parts (GQUP)</option>
+                                <optgroup label="New Part (NP)">
+                                    <option value="NP-Ori">Original (NP-Ori)</option>
+                                    <option value="NP-Non-Ori">Non-Original (NP-Non-Ori)</option>
+                                </optgroup>
+                            </select>
+                        </div>
+                        <div class="warranty-combo">
+                            <select name="dd_warranty_period" ng-model="item.Warranty" ng-required="true">
+                                <option value="">WARRANTY PERIOD</option>
+                                <option value="6">6</option>
+                                <option value="12">12</option>
+                                <option value="18">18</option>
+                                <option value="24">24</option>
+                            </select>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="selectcar-four">
+                    <div class="item-part">
+                        <div class="item-row">
+                            <p class="item-label">ITEM PRICE:</p>
+                            <div class="item-combo">
+                                <select name="">
+                                    <option>RM</option>
+                                </select>
+                                <input id="" class="selcre-input" money type="text" ng-model="item.ItemPrice" value="" name="" ng-required="true">
+                            </div>
+                            <div class="clear"></div>
+                        </div>
+                        <div class="item-row2">
+                            <p class="item-label">DELIVERY PRICE:</p>
+                            <div class="item-combo">
+                                <select name="">
+                                    <option>RM</option>
+                                </select>
+                                <input id="" class="selcre-input" type="text" money ng-model="item.DeliveryPrice" value="" name="" ng-required="true">
+                            </div>
+                            <div class="clear"></div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="selectcar-five">
+                    <div class="criterion-part">
+                        <div class="criterion-select">
+                            <select name="dd_sel_riterion" ng-model="item.Criterion" ng-change="item.CriterionValue = ''">
+                                <option value="">SELECT CRITERION</option>
+                                <option value="Quantity">Quantity</option>
+                                <option value="ProductNo">Product No</option>
+                                <option value="ItemAge">Item Age</option>
+                            </select>
+                        </div>
+                        <div class="criterion-input">
+                            <input name="" ng-model="item.CriterionValue" type="text">
+                        </div>
+                        <button class="add-btn-re" ng-disabled="item.CriterionValue == ''" ng-click="ChaneEgg(item)">Add</button>
+                        <div class="clear"></div>
+                        <label class="checkbox"><input type="checkbox" name="task-bookmarked" value="yep">Show quantity in front end</label>
+                    </div>
+                    <div class="cirterion-selected-part">
+                        <div class="criterion-select-space">
+                            <p class="selceted-cirterion">Selected Criterion:</p>
+                            <div class="cirterion-quantity" ng-show="item.Quantity != ''">
+                                <p>Quantity: {{item.Quantity}}</p>
+                                <a class="btn-x" href="#" ng-click="item.Quantity = ''"></a>
+                            </div>
+                            <div class="cirterion-quantity2" ng-repeat="data in item.ProductMetaMgmt" ng-if="data.MetaKey == 'ItemAge'">
+                                <p>{{data.MetaKey}} : {{data.MetaValue}}</p>
+                                <a class="btn-x" href="#" ng-click="ClearFilterCriterion(data.MetaKey = '',data.MetaValue = '')"></a>
+                            </div>
+                            <div class="cirterion-quantity3" ng-repeat="data in item.ProductMetaMgmt" ng-if="data.MetaKey == 'ProductNo'">
+                                <p>{{data.MetaKey}} : {{data.MetaValue}}</p>
+                                <a class="btn-x" href="#" ng-click="ClearFilterCriterion(data.MetaKey = '',data.MetaValue = '')"></a>
+                            </div>
+                            <div class="clear"></div>
+                        </div>
+                        <div class="criterion-slider-space">
+                            <div class="content-slider-bg">
+                                <div id="content-slider" class="contentSlider rsDefault">
+                                    <div class="rsContent">
+                                        <div class="slider-img" ng-show="item.ImageUrl != ''">
+                                            <img ng-model="item.ImageUrl" ng-src="/Areas/TapsAdmin/VendorMediaUploads/{{item.ImageUrl}}" style="height:75px;width:75px" />
+                                            <a ng-click="RemoveFileItem(item)" class="close-image">X</a>
+                                        </div>
+                                        <div class="slider-img" ng-show="item.ImageUrl == ''">
+                                            <button class="add-vehicle-btn" id="someelement" data-toggle="modal" data-target="#ImageData" ng-click="AddImage(item)">Add Image</button>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="clear"></div>
+                    </div>
+                </div>
+
+                <div class="clear"></div>
+            </div>
+
+            <div class="five-row-part">
+                <div class="fiv-inner-part">
+
+                    <a class="sm-save-process-btn" ng-disabled="!innerForm{{item.idProduct}}.$valid" ng-click="SaveProcessUpdate(item,false)">Save Process</a>
+                    <a class="sm-post-item-btn" ng-disabled="!innerForm{{item.idProduct}}.$valid" ng-click="SaveProcessUpdate(item,true)">Post Item</a>
+                    <div class="clear"></div>
+                </div>
+                <div class="clear"></div>
+            </div>
+        </ng-form>
+
+
+    </div>
+
+    <div class='body-part_order'>
+
+    </div>
+    <div class="clear">
+
+
+    </div>
+
+    <script type="text/javascript">
+        $(document).ready(function () {
+            //	$('.col-exp.close').on('click', function(){
+            $(document).on('click', '.col-exp.close', function () {
+                $(this).attr('src', '/Areas/TapsAdmin/Img/icon-item.png');
+                //		sval = $(this).parent('li').find('input[type="checkbox"]:first').val();
+                sval = $('.form').serialize();
+                //alert(sval);
+                $(this).addClass('openlist');
+                $(this).removeClass('close');
+                $(this).parent('li').find('ul:first').show();
+            })
+
+            //	$('.col-exp.open').on('click', function(){
+            $(document).on('click', '.col-exp.openlist', function () {
+                sval = $('.form').serialize();
+                //	alert(sval);
+                $(this).attr('src', '/Areas/TapsAdmin/Img/icon-item.png');
+                $(this).addClass('close');
+                $(this).removeClass('openlist');
+                $(this).parent('li').find('ul:first').hide();
+            })
+        });
+    </script>
+
+    <style type="text/css">
+        ul {
+            padding-left: 1em;
+            list-style-type: none;
+        }
+
+            ul li {
+                margin-bottom: 0;
+                padding-left: 0.5em;
+            }
+
+        .closed {
+            background: url('/Areas/TapsAdmin/Img/icon-item.png') no-repeat 0 0 penlist;
+
+        {
+            ckground: u l('/Areas/TapsAdmin/Img/icon-item.png') n-repeat 0 0 penlist, . losed;
+
+        {
+            ckground: n ne;
+            ansform: r tate(90deg);
+            selected link */;
+    </style>
+
+    <div class="modal fade" id="gridSystemModal" role="dialog" aria-labelledby="gridSystemModalLabel" aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header" style="background-color:#09743b !important">
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;X</span></button>
+                    <h4 class="modal-title" id="gridSystemModalLabel">Modal title</h4>
+                </div>
+                <div class="modal-body">
+
+                    <div class="form-group">
+                        <label class="control-label">File Upload</label>
+                        <div class="controls">
+                            <div id="dropzone">
+                                <form action="UploadFile" class="dropzone" id="dropzoneForm">
+                                    <div class="fallback">
+                                        <input name="file" class="Xyz" type="file" />
+                                    </div>
+                                </form>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" data-dismiss="modal" class="btn btn-default">Close</button>
+                </div>
+            </div><!-- /.modal-content -->
+        </div><!-- /.modal-dialog -->
+    </div><!-- /.modal -->
+
+    <div class="modal fade" id="ImageData" role="dialog" aria-labelledby="gridSystemModalLabel" aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;X</span></button>
+                    <h4 class="modal-title" id="gridSystemModalLabel">Modal title</h4>
+                </div>
+                <div class="modal-body">
+
+                    <div class="form-group">
+                        <label class="control-label">File Upload</label>
+                        <div class="controls">
+                            <div id="dropzone">
+                                <form action="UploadFile" class="dropzone" id="dropzoneForm1">
+                                    <div class="fallback">
+                                        <input name="file" class="Xyz" type="file" />
+                                    </div>
+                                </form>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" data-dismiss="modal" class="btn btn-default">Close</button>
+                </div>
+            </div><!-- /.modal-content -->
+        </div><!-- /.modal-dialog -->
+    </div>
+
+    <div class="modal fade" id="Import" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+        <div class="modal-dialog modal-lg">
+            <div class="modal-content">
+                <div class="modal-header" style="background: #09743b">
+                    <button type="button" class="close" data-dismiss="modal"><span aria-hidden="true">&times;</span><span class="sr-only" style="color: #fff">X</span></button>
+                    <h4 class="modal-title" style="color:white">Import Excel File</h4>
+                </div>
+                <div class="modal-body">
+                    @*@{
+                            if (TempData["error"] != null && TempData["error"].ToString().Equals("1"))
+                            {
+                                <div class="alert alert-danger">
+                                    @TempData["message"]
+                                </div>
+                            }
+                            else if (TempData["success"] != null && TempData["success"].ToString().Equals("2"))
+                            {
+                                <div class="alert alert-success">
+                                    @TempData["message"]
+                                </div>
+                            }
+                        }*@
+                    @using (Html.BeginForm("ImportExcel", "Vendor", FormMethod.Post, new { enctype = "multipart/form-data" }))
+                    {
+                        @*<div class="form-group">
+                                <label class="control-label">Sheet Name :-</label>
+                                <div class="input-group col-sm-4">
+                                    <input type="text" name="Sheet" />
+                                </div>
+                            </div>*@
+                        @*<div class="form-group">
+                                <label class="control-label">Row Number :-</label>
+                                <div class="input-group col-sm-4">
+                                    <input type="text" id="RowNumber" ng-model="model.RowNumber" numbers-only name="RowNumber" />
+                                </div>
+                            </div>*@
+                        <div class="form-group">
+                            <label class="control-label">Import Excel :-</label>
+                            <div class="input-group col-sm-4">
+                                <input type="file" name="file" />
+                            </div>
+                        </div>
+                        <br />
+                        <div class="form-actions">
+                            <input type="submit" value="Import" class="btn btn-primary" style="background:#09743b" />
+                        </div>
+                    }
+                </div>
+            </div>
+        </div>
+    </div>
+
+
+</div>
+<script src="~/Areas/TapsAdmin/app/controllers/Vendor/AddItem.js"></script>
+
+
+
+
+
+

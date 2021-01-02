@@ -1,0 +1,14 @@
+﻿.nav, .pagination, .carousel a { cursor: pointer; }
+
+.redStar {
+    color: #FF0000;
+    padding: 0 0 0 4px;
+}
+
+.control-label {
+    white-space: nowrap;
+}
+
+div.error {
+
+}

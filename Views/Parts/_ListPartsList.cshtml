@@ -1,0 +1,74 @@
+﻿
+
+@*<div class="row">
+    <div class="col-lg-4">
+        <h3>Result: {{ currentPage }}</h3>
+    </div>
+    <div class="col-lg-4">
+        <label for="search">Display per page:</label>
+        <input type="number" min="1" max="100" class="form-control" ng-model="pageSize">
+    </div>
+    <div class="col-lg-4">
+        <label for="search"></label>
+        <select id="Vehicle" class="form-control">
+            <option value="">Sort By</option>
+        </select>
+    </div>
+
+</div>
+<table class="table table-striped table-bordered table-condensed bootstrap-datatable datatable">
+    <tbody ng-repeat="o in lstParts | startFrom:(currentPage-1)*entryLimit | limitTo:entryLimit">
+        <tr>
+            <td style="width: 10%; text-align: center;" rowspan="5">
+                <button ng-click="YourCookie()">Hello</button>
+                <input type="hidden" value="{{model.id}}" ng-model="model.id" />
+                <img ng-src="~/MediaUploads/{{o.ImageUrl}}" err-src="~/assets/img/no_image.jpg" class="img-polaroid" ng-model="model.ImageUrl" style="height:150px;width:150px;" alt="No Image" />
+            </td>
+            <td style="width: 70%; font-size:large" colspan="2">
+                <b> {{o.Name}}</b>
+            </td>
+
+            <td style="width: 5%; text-align: center;">
+                @if (User.Identity.Name != string.Empty)
+                {
+                    <button class="btn btn-success" ng-click="AddtoCart(o)">
+                        Add to Cart
+                    </button>
+                }
+                else
+                {
+                    <button class="btn btn-success" ng-click="AddtoCookie(o)">
+                        Add to Cart
+                    </button>
+                }
+            </td>
+        </tr>
+        <tr>
+            <td style="width: 10%;" colspan="2">
+                {{o.Description}}
+            </td>
+            <td style="width: 5%; text-align: center;">
+                <button class="btn btn-success" ng-click="AddtoWishList(o.id)">
+                    Add to WishList
+                </button>
+            </td>
+        </tr>
+        <tr><td style="width: 20%;"><b>Condition :</b></td><td>{{o.Condition}}</td><td></td></tr>
+        <tr><td style="width: 20%;"><b>Warranty Period :</b></td><td>{{o.Warranty}}</td><td></td></tr>
+        <tr><td style="width: 20%;"><b>Price :</b></td><td>{{o.SalePrice}}</td><td></td></tr>
+    </tbody>
+</table>
+<div class="row show-hide-animation">
+    <div class="col-md-12">
+        @*<div data-pagination
+             data-on-select-page="vm.pageChanged(page)"
+             data-total-items="vm.totalRecords"
+             data-page="vm.currentPage"
+             data-items-per-page="vm.pageSize"
+             data-boundary-links="true"
+             class="pagination-sm"></div>
+        <pagination page="currentPage" class="pull-right" max-size="noOfPages" total-items="totalItems" items-per-page="entryLimit"></pagination>
+    </div>
+</div>*@
+
+

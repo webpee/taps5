@@ -1,0 +1,169 @@
+﻿@{
+    ViewBag.Title = "WorkShopOrder";
+    Layout = "~/Areas/TapsAdmin/Views/Shared/_OrderLayout.cshtml";
+}
+@*<tr>
+    <td colspan="9" class="green-row"></td>
+</tr>*@
+<div ng-controller="WorkshopOrderCtrl">
+    <div id="tab-container" class='tab-container yellow'>
+        <ul class='etabs'>
+            <li class='tab'><a href="#order">ORDER ({{model.TotalOrder}})</a></li>
+            <li class='tab'><a href="#warranty">WARRANTY REGISTRATION</a></li>
+        </ul>
+        <div class='panel-container'>
+            <div id="order">
+                <div class="body-part_order">
+                    <div class="orderDetail">
+                        <div class="right-action">
+                            <ul>
+                                <li><a href="#" class="export">Export<br />Orders</a></li>
+                                <li><a href="#" class="print">Print<br />Orders</a></li>
+                            </ul>
+                        </div>
+                        <div class="clear"></div>
+                    </div>
+                    <table class="tableOrder order-det yellow" align="center">
+                        <tr>
+                            <th width="10%">Date & Time of Order</th>
+                            <th width="17%"> Product Name</th>
+                            <th width="10%"> <a href="#"><img src="~/Areas/TapsAdmin/Img/i.png" /></a> Condition</th>
+                            <th width="15%"> Customer Name</th>
+                            <th width="12%"> Product Number</th>
+                            <th width="8%"> Quantity</th>
+                            <th width="10%"> Price</th>
+                            <th width="8%"> Order Id</th>
+                            <th width="65%"></th>
+                        </tr>
+                        <tr ng-repeat="o in lstOrders">
+                            <td>{{o.OrderDateTime}}</td>
+                            <td>{{o.ProductName}}</td>
+                            <td>{{o.Condition}}</td>
+                            <td>{{o.CustomerName}}</td>
+                            <td>{{o.ProductId}}</td>
+                            <td>{{o.Quantity}}</td>
+                            <td>RM {{o.UnitPriceInclTax}}</td>
+                            <td>{{o.OrderId}}</td>
+                            <td></td>
+                        </tr>
+                    </table>
+                    <div class="pagenation">
+                        <ul>
+                            <li><a href="#">&lt;&lt;</a></li>
+                            <li><a href="#">&lt;</a></li>
+                            <li><a href="#">1</a></li>
+                            <li><a href="#">2</a></li>
+                            <li><a href="#">3</a></li>
+                            <li><a href="#">4</a></li>
+                            <li><a href="#">&gt;</a></li>
+                            <li><a href="#">&gt;&gt;</a></li>
+                        </ul>
+                    </div>
+                    <div class="clear"></div>
+                </div>
+            </div>
+            <div id="warranty">
+                <div class="body-part_order">
+                    <div class="orderDetail">
+                        <div class="order-open">
+                            <ul>
+                                <li>Order ID  </li>
+                                <li><input type="text" /></li>
+                                <li><input type="submit" value="OPEN" /></li>
+                            </ul>
+                        </div>
+                    </div>
+                    <div class="owner-reg">
+                        <table>
+                            <tr>
+                                <td>Car Owner's Name</td>
+                                <td><input type="text" /></td>
+                                <td rowspan="2"><input type="submit" value="REGISTER" /></td>
+                            </tr>
+                            <tr>
+                                <td>Car Registration No.</td>
+                                <td><input type="text" /></td>
+                            </tr>
+                        </table>
+                        <p class="order-id">Order ID : 6190</p>
+                    </div>
+                    <table class="tableOrder yellow warr-act" align="center">
+                        <tr>
+                            <th width="4%">
+                                <label id="n2"> No.</label>
+                                <br>
+                                <input type="checkbox" id="chkFirst">
+                            </th>
+                            <th width="17%">Product Name</th>
+                            <th width="12%"><a href="#"><img src="~/Areas/TapsAdmin/Img/i.png" /></a> Condition</th>
+                            <th width="11%">Product Number</th>
+                            <th width="14%">Serial Number</th>
+                            <th width="13%">Warranty Status</th>
+                            <th width="14%">Date of receipt by TAPS Authorised Workshop</th>
+                            <th width="15%">Date of warranty Registration</th>
+                        </tr>
+                        <tr>
+                            <td>
+                                <label id="n2">1</label>
+                                <br>
+                                <input type="checkbox" id="chkFirst">
+                            </td>
+                            <td>Perodua Myvi 1.5 SE (Auto) 2012<br />1500 c.c.<br />Intake manifold gasket LPG (Liquefied Petroleum gas) system assembly</td>
+                            <td>QUP Remanufactured 12 months</td>
+                            <td>2432549NAS</td>
+                            <td>879503-40003AHJ</td>
+                            <td>Registered to Tan Hock Soon WFG2569</td>
+                            <td>10/09/2014</td>
+                            <td>17/09/2014</td>
+                        </tr>
+                        <tr>
+                            <td>
+                                <label id="n2">2</label>
+                                <br>
+                                <input type="checkbox" id="chkSecond">
+                            </td>
+                            <td>Perodua Myvi 1.5 SE (Auto) 2012<br />1500 c.c.<br />Intake manifold gasket LPG (Liquefied Petroleum gas) system assembly</td>
+                            <td>QUP Remanufactured 12 months</td>
+                            <td>2432549NAS</td>
+                            <td>879503-40003AHJ</td>
+                            <td>Not-Registered</td>
+                            <td>10/09/2014<br /><small>Please register warranty before: 24/09/2014</small></td>
+                            <td></td>
+                        </tr>
+                        <tr>
+                            <td>
+                                <label id="n2">3</label>
+                                <br>
+                                <input type="checkbox" id="chkThird">
+                            </td>
+                            <td>Perodua Myvi 1.5 SE (Auto) 2012<br />1500 c.c.<br />Spare Wheel Carrier</td>
+                            <td>UP Reconditioned 2 months</td>
+                            <td>2432549NAS</td>
+                            <td>879503-40003AHJ</td>
+                            <td>Not-Registered</td>
+                            <td>10/09/2014<br /><small>Please register warranty before: 24/09/2014</small></td>
+                            <td></td>
+                        </tr>
+                    </table>
+                    <div class="pagenation">
+                        <ul>
+                            <li><a href="#">&lt;&lt;</a></li>
+                            <li><a href="#">&lt;</a></li>
+                            <li><a href="#">1</a></li>
+                            <li><a href="#">2</a></li>
+                            <li><a href="#">3</a></li>
+                            <li><a href="#">4</a></li>
+                            <li><a href="#">&gt;</a></li>
+                            <li><a href="#">&gt;&gt;</a></li>
+                        </ul>
+                    </div>
+                    <div class="clear"></div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script src="~/Areas/TapsAdmin/app/controllers/Workshop/Orders.js"></script>
+
+

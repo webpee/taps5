@@ -1,0 +1,225 @@
+﻿@{
+    ViewBag.Title = "BannerMgmt";
+    Layout = "~/Areas/FrontTaps/Views/Shared/_Layout.cshtml";
+}
+
+<div ng-controller="BannerMgmtCtrl">
+    <div class="row">
+        <div class="col-lg-12">
+            <div class="box">
+                <div class="box-header">
+                    <h2><i class="fa fa-edit"></i>Banner Management</h2>
+                    <div class="box-icon">
+                        <a href="form-elements.html#" class="btn-minimize"><i class="fa fa-chevron-up"></i></a>
+                    </div>
+                </div>
+                <div class="box-content">
+                    <form role="form"
+                          id="form"
+                          name="form"
+                          class="form-horizontal"
+                          novalidate
+                          ng-submit="formSubmit()">
+                        <input type="hidden" value="{{model.id}}" ng-model="model.id" />
+
+                        <div class="form-group">
+                            <div class="row">
+                                <div class="col-lg-2 col-sm-2">
+                                    <label class="control-label">Banner Name :-</label>
+                                </div>
+                                <div class="col-lg-3 col-sm-3">
+                                    <select id="BannerId" name="BannerId" ng-model="model.BannerId" class="form-control">
+                                        <option value="">-- Select Banner --</option>
+                                        <option ng-repeat="o in BannerList1" value="{{o.id}}">{{o.Name}}</option>
+                                    </select>
+                                </div>
+                                <div class="col-lg-2 col-sm-2">
+                                    <label class="control-label">Image URL :-</label>
+                                </div>
+                                <div class="col-lg-3 col-sm-3">
+                                    <div class="input-group col-sm-4" ng-hide="model.ImageUrl == ''">
+                                        <img ng-if="model.ImageUrl != ''" ng-src="~/MediaUploads/{{model.ImageUrl}}" class="img-thumbnail" ng-required="true" ng-model="model.ImageUrl" height="100px" width="100px" style="border: 2px solid #36a9e1" />
+                                    </div>
+                                    <br ng-hide="model.ImageUrl == ''" />
+                                    <div class="input-group col-sm-4">
+                                        <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#Banner" ng-click="FetchMedia()">Select Image</button>
+                                    </div>
+                                </div>
+                                
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <div class="row">
+                                <div class="col-lg-2 col-sm-2">
+                                    <label class="control-label">Alt :-</label>
+                                </div>
+                                <div class="col-lg-3 col-sm-3">                                   
+                                        <input id="alt" type="text" class="form-control" ng-required="true" ng-model="model.alt">                                    
+                                </div>
+                                <div class="col-lg-2 col-sm-2">
+                                    <label class="control-label">URl Link:-</label>
+                                </div>
+                                <div class="col-lg-3 col-sm-3">                                    
+                                        <input id="UrlLink" type="text" class="form-control" ng-required="true" ng-model="model.UrlLink">                                    
+                                </div>
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <div class="row">
+                                <div class="col-lg-2 col-sm-2">
+                                    <label class="control-label">Description :-</label>
+                                </div>
+                                <div class="col-lg-3 col-sm-3">                                   
+                                        <input id="Description" type="text" class="form-control" ng-model="model.Description">                                  
+                                </div>
+                            </div>
+                        </div>
+                        <br />
+                        <div class="form-actions">
+                            <button type="button" class="btn btn-primary" ng-disabled="!form.$valid" ng-click="CreateBannerMgmt(model)">Save</button>
+                            <button type="reset" class="btn" ng-click="Reset()">Cancel</button>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+        <div class="col-lg-12">
+            <div class="box">
+                <div class="box-header" data-original-title>
+                    <h2><i class="fa fa-user"></i><span class="break"></span>Banner Meta List</h2>
+                    <div class="box-icon">
+                        <a href="table.html#" class="btn-minimize"><i class="fa fa-chevron-up"></i></a>
+                    </div>
+                </div>
+                <div class="box-content">
+                    <div class="box-content">
+                        @{ Html.RenderPartial("_ListBannerMetaMgmtList"); }
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="col-lg-12">
+            <div class="box">
+                <div class="box-header" data-original-title>
+                    <h2><i class="fa fa-user"></i><span class="break"></span>Banner Management List</h2>
+                    <div class="box-icon">
+                        <a href="table.html#" class="btn-minimize"><i class="fa fa-chevron-up"></i></a>
+                    </div>
+                </div>
+                <div class="box-content">
+                    <div class="col-lg-8">
+                    </div>
+                    <div class="col-lg-1">
+                        <h4>Search :</h4>
+                    </div>
+                    <div class="col-lg-3">
+                        <input id="Search" type="text" maxlength="50" class="form-control" ng-model="model.SearchText5" ng-change="BlankSearch(model.SearchText5)" ng-enter="filter(model.SearchText5)" ng-focus="filter(SearchText5)" ng-blur="filter(model.SearchText5)">
+                    </div>
+                    <br /><br />
+                    @{ Html.RenderPartial("_ListBannerMgmtList"); }
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="modal fade" id="Banner" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+        <div class="modal-dialog modal-lg">
+            <div class="modal-content">
+                <div class="modal-header" style="background: #36a9e1">
+                    <button type="button" class="close" data-dismiss="modal"><span aria-hidden="true">&times;</span><span class="sr-only">Close</span></button>
+                    <h4 class="modal-title" style="color:white">Select Image</h4>
+                </div>
+                <div class="modal-body">
+                    <div class="box-content">
+                        <form role="form"
+                              id="form"
+                              name="form"
+                              class="form-horizontal"
+                              novalidate
+                              ng-submit="formSubmit()">
+                            <div class="form-group">
+                                <div class="row">
+                                    <div class="col-lg-1">
+                                        <h4>Search</h4>
+                                    </div>
+                                    <div class="col-lg-3">
+                                        <input id="Search" type="text" maxlength="50" class="form-control" ng-model="model.SearchText2" ng-change="CheckSearch()" ng-enter="FetchMedia(1)">
+                                    </div>
+                                    <div class="col-lg-8">
+                                        <pagination class="pull-right" data-boundary-links="true" page="pager.PageNum"
+                                                    total-items="pager.Total"
+                                                    items-per-page="pager.PageSize"
+                                                    max-size="10"
+                                                    on-select-page="FetchMedia(page)"></pagination>
+                                    </div>
+                                    <br /><br />
+                                </div>
+                                <div class="row">
+                                    <table class="table table-striped table-bordered table-condensed bootstrap-datatable datatable">
+                                        <thead>
+                                            <tr>
+                                                <th>No</th>
+                                                <th>Image</th>
+                                                <th>File Name</th>
+                                                <th>Action</th>
+                                            </tr>
+                                        </thead>
+                                        <tbody>
+                                            <tr ng-repeat="o in ImageList">
+                                                <td>
+                                                    {{$index + 1}}
+                                                </td>
+                                                <td>
+                                                    <img ng-src="~/MediaUploads/{{o.FileName}}" height="50px" width="50px">
+                                                </td>
+                                                <td>
+                                                    {{o.Name}}
+                                                </td>
+                                                <td class="center">
+                                                    <button type="button" class="btn btn-primary" ng-click="SelectImage(o.FileName)" ng-model="model.ImageName" data-dismiss="modal">Select</button>
+                                                </td>
+                                            </tr>
+                                        </tbody>
+                                    </table>
+                                </div>
+                            </div>
+                            <br />
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+
+    @*<div class="modal fade" id="Banner" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header" style="background: #36a9e1">
+                    <button type="button" class="close" data-dismiss="modal"><span aria-hidden="true">&times;</span><span class="sr-only">Close</span></button>
+                    <h4 class="modal-title" style="color:white">Select Image</h4>
+                </div>
+                <div class="modal-body">
+                    <form role="form"
+                          id="form"
+                          name="form"
+                          class="form-horizontal"
+                          novalidate
+                          ng-submit="formSubmit()">
+                        <div class="form-group">
+                            <div class="row">
+                                <div style="margin-bottom:30px" class="col-sm-2 col-xs-6" ng-repeat="image in ImageList">
+                                    <a href="javascript:void(0)" ng-click="SelectImage(image.FileName)" ng-model="model.ImageName" data-dismiss="modal">
+                                        <img class="img-thumbnail" ng-src="~/MediaUploads/{{image.FileName}}" alt="Sample Image">
+                                    </a>
+                                </div>
+                            </div>
+                        </div>
+                        <br />
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>*@
+</div>
+<script src="~/app/controllers/BannerMgmt/BannerMgmt.js"></script>

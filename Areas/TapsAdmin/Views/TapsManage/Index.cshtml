@@ -1,0 +1,59 @@
+﻿@model Taps5.Areas.TapsAdmin.Models.LoginModel
+@{
+    ViewBag.Title = "Index";
+}
+
+<div class="main-body">
+    <div class="body-padding-login">
+        <div id="tab-container" class='tab-container yellow'>
+            <div class="login-box">
+                <form action="/TapsAdmin/TapsManage/Index" class="sign-form ng-dirty ng-valid ng-valid-required" id="form" method="post" name="form" novalidate="novalidate">
+                    <div class="signup">
+                        <a href="">Login</a>
+                    </div>
+                    <div class="loginerror">
+                        <span class="control-label" style="color: red; font-family: serif; font-weight: 700;">
+                            @Html.ValidationMessage("CustomError")
+                        </span>
+                    </div>
+                    <div class="mail">
+                        <div class="password">
+                            <span>User Name</span>
+                            <div id="tfnewsearch">
+                                @Html.TextBoxFor(x => x.UserName, new { @class = "email-coman" })
+                                <br /><span class="control-label" style="color: red; font-family: serif; font-weight: 700;">@Html.ValidationMessageFor(x => x.UserName)</span>
+                            </div>
+                        </div>
+                        <div class="retype">
+                            <span>Password</span>
+                            <div id="tfnewsearch">
+                                @Html.PasswordFor(x => x.Password, new { @class = "email-coman" })
+                                <br /><span class="control-label" style="color: red; font-family: serif; font-weight: 700;">@Html.ValidationMessageFor(x => x.Password)</span>
+                            </div>
+                        </div>
+                        <div class="clear"></div>
+                    </div>                    
+                    <div class="sign-last">
+                        <div class="have-account">
+
+                        </div>
+                        <br>
+                        <div class="clear"></div>
+                        <div class="have-account">
+                            <span><a href="/TapsAdmin/TapsManage/ForgotPassword">Forgot Password ?</a></span>
+                        </div>
+                        <div class="signup-btn">
+                            <input type="submit" class="login-btn" name="Login" value="Login">
+                        </div>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+
+@section Scripts
+{
+    @Scripts.Render("~/bundles/jqueryval")
+}
+<link href="~/Areas/TapsAdmin/Css/style.css" rel="stylesheet" />

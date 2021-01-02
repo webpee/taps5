@@ -1,0 +1,222 @@
+﻿@{
+    ViewBag.Title = "DeliveryAddress";
+    Layout = "~/Views/Shared/_OnlyLayout.cshtml";
+}
+
+<style>
+    #map-canvas {
+        height: 97%;
+        margin: 0px;
+        padding: 5px;
+        width: 100%;
+    }
+
+    .content {
+        padding: 0 !important;
+        position: absolute !important;
+        top: 40px !important;
+        right: 0 !important;
+        left: 0 !important;
+        height: 200px !important;
+    }
+
+    .controls {
+        margin-top: 16px;
+        border: 1px solid transparent;
+        border-radius: 2px 0 0 2px;
+        box-sizing: border-box;
+        -moz-box-sizing: border-box;
+        height: 32px;
+        outline: none;
+        box-shadow: 0 2px 6px rgba(0, 0, 0, 0.3);
+    }
+
+    #pac-input {
+        background-color: #fff;
+        padding: 0 11px 0 13px;
+        width: 400px;
+        font-family: Roboto;
+        font-size: 15px;
+        font-weight: 300;
+        text-overflow: ellipsis;
+    }
+
+        #pac-input:focus {
+            border-color: #4d90fe;
+            margin-left: -1px;
+            padding-left: 14px; /* Regular padding-left + 1. */
+            width: 401px;
+        }
+
+    .pac-container {
+        font-family: Roboto;
+    }
+
+    #type-selector {
+        color: #fff;
+        background-color: #4d90fe;
+        padding: 5px 11px 0px 11px;
+    }
+
+        #type-selector label {
+            font-family: Roboto;
+            font-size: 13px;
+            font-weight: 300;
+        }
+</style>
+
+<style>
+    #target {
+        width: 720px;
+    }
+
+    #nav a.active {
+        background-color: #ee1c25;
+        color: #fff;
+    }
+</style>
+
+
+<div ng-controller="DeliverAddressCtrl">
+    <div class="main-body" id="body">
+        <div class="body-padding">
+            <div class="body-part">
+                <div class="part-left">
+                </div>
+                <div class="part-right">
+                    <div class="sub-menu">
+                        <ul>
+                            <li><a href="/Parts/Parts">Select Parts</a></li>
+                            <li><a href="/Cart/ShoppingCart">Shopping Cart</a></li>
+                            <li id="nav"><a href="/Address/DeliveryAddress" class="active">Delivery option</a></li>
+                            <li><a href="/OrderSummary/Index">Summary</a></li>
+                            <li><a href="#">Payment</a></li>
+                        </ul>
+                    </div>
+                </div>
+                <div class="clear"></div>
+                <div class="row">
+                    <div class="green-box">
+                        <div class="title-block"><h3>DELIVERY OPTION</h3></div>
+                        <div class="detail-block">
+                            <p>Select delivery option :</p>
+                            <select class="del-opt" ng-model="model.form" ng-change="initialize()" id="deliveryId">
+                                <option value="Individual">Individual</option>
+                                <option value="Workshop">TAPS Authorised Workshop</option>
+                            </select>
+                            <p style="color:red">'IMPORTANT: Please take note that the warranty will only be valid if the relevant Remanufactured Part(s), Good Quality Used Part(s) and New Part(s) are delivered to TAPS Authorised Workshops.'</p>
+                            <input type="hidden" value="{{model.id}}" ng-model="model.id" />
+                            <div class="address-wrap" ng-show="model.form == 'Individual'">
+                                @{ Html.RenderPartial("_ListDeliveryAddressList"); }
+                                <div class="clear"></div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="green-box" ng-show="model.form == 'Individual'">
+                        <div class="title-block"><h3>ADD NEW DELIVERY ADDRESS</h3></div>
+                        <div class="detail-block">
+                            <form id="form1" name="form1" class="adress-form">
+                                <fieldset class="half left">
+                                    <label>NAME</label>
+                                    <input type="text" id="Name" maxlength="255" ng-required="true" ng-model="model.Name" />
+                                </fieldset>
+                                <fieldset class="half right">
+                                    <label>CONTACT NO.</label>
+                                    <input type="text" name="contact_no" maxlength="255" ng-required="true" ng-model="model.ContactNo" />
+                                </fieldset>
+                                <div class="clear"></div>
+                                <fieldset class="full">
+                                    <label>ADDRESS</label>
+                                    <input type="text" name="address1" id="address1" ng-required="true" ng-model="model.Address" />
+                                    <input type="text" name="address2" id="address2" ng-model="model.Address1" />
+                                </fieldset>
+                                <fieldset class="half left">
+                                    <label>STATE/PROVINCE</label>
+                                    <select id="idState" ng-model="model.idState" class="form-control" ng-required="true" ng-change="GetCityByStateId(model.idState)">
+                                        <option value="">State/Province</option>
+                                        <option ng-repeat="o in lstState" value="{{o.id}}">{{o.Name}}</option>
+                                    </select>
+                                </fieldset>
+                                <fieldset class="half right">
+                                    <label>CITY/TOWN</label>
+                                    <select id="idCity" ng-model="model.idCity" class="form-control" ng-required="true" ng-disabled="model.idState ==''">
+                                        <option value="">City/Town</option>
+                                        <option ng-repeat="o in lstCity" ng-selected="model.idCity == o.id" value="{{o.id}}">{{o.Name}}</option>
+                                    </select>
+                                </fieldset>
+                                <div class="clear"></div>
+                                <fieldset class="full center">
+                                    <input type="submit" name="add" id="add" value="ADD" ng-disabled="!form1.$valid" ng-click="CreateAddress(model)" />
+                                </fieldset>
+                            </form>
+                            <br />
+                        </div>
+                    </div>
+                    <div class="clear"></div>
+                    <div class="green-box" ng-show="model.form == 'Workshop'" id="WorkshopLoad">
+                        <div class="map" style="height: 300px; padding-left: 10px; width: 99.15%;" id="map">
+                            <input id="pac-input" class="controls" type="text" placeholder="Search Box">
+                            <div id="map-canvas"></div>
+                        </div>
+                        <div class="title-block"><h3>TAPS AUTHORISED WORKSHOP SEARCH</h3></div>
+                        <div class="detail-block">                            
+                            <input type="text" name="name" id="Selection" ng-model="model.SearchWorkshope" placeholder="Search TAPS Authorised Workshop" class="search-text" ng-enter="GetAllWorkshopsByName()">
+                            <input type="submit" name="add" id="add" ng-click="GetAllWorkshopsByName()" value="SEARCH!" class="search-btn">
+                            <form class="filter-form">
+                                <select id="idCountry" ng-model="model.idCountry" disabled class="country">
+                                    <option value="">-Select Country-</option>
+                                    <option ng-repeat="o in lstCountry" ng-selected="o.id==10" value="{{o.id}}">{{o.Country}}</option>
+                                </select>
+                                <select id="idState" ng-model="model.State" class="state" ng-required="true" ng-change="GetCityByStateId(model.State)">
+                                    <option value="">State/Province</option>
+                                    <option ng-repeat="o in lstState" ng-selected="o.id == model.State" ng-show="o.idCountry==10" value="{{o.id}}">{{o.Name}}</option>
+                                </select>
+                                <select id="idCity" ng-model="model.City" class="city" ng-required="true" ng-disabled="model.State ==''" ng-change="FilterWorkshopeList(model.City,model.State)">
+                                    <option value="">City/Town</option>
+                                    <option ng-repeat="o in lstCity" ng-selected="o.id == model.City" value="{{o.id}}">{{o.Name}}</option>
+                                </select>
+                                <select id="idWorkshope" ng-model="model.idWorkshope" class="name" ng-change="FetchWorkshopById(model.idWorkshope)">
+                                    <option value="">TAPS Authorised Workshop</option>
+                                    <option ng-repeat="o in workshopdata" ng-selected="o.id == model.idWorkshope" value="{{o.id}}">{{o.Name}}</option>
+                                </select>
+                                <div class="clear"></div>
+                            </form>
+                            <div class="shop-wrap" ng-repeat="o in WorkshopDataList">
+                                <div class="shop-img">
+                                    <img ng-src="~/MediaUploads/{{o.ImageUrl}}" err-src="~/assets/img/no_image.jpg" />
+                                </div>
+                                <div class="shop-detail">
+                                    <h4 class="name">{{o.Name}}</h4>
+                                    <p class="address">Address :{{o.Address}}</p>
+                                    <a href="#" class="confirm" ng-click="SearchWorkshopeById(o.id)">CONFIRM SELECTED WORKSHOP</a>
+                                </div>                                
+                                <div class="clear"></div>
+                            </div>
+                        </div>
+                        <div class="green-box" ng-show="model.form == 'Workshop'">
+                            <div class="title-block"><h3>Confirmed TAPS Authorised Workshop</h3></div>
+                            <div class="detail-block" ng-model="model.AddWorkshop" ng-show="model.AddWorkshop==true" ng-repeat="o in lstWorkshopData">
+                                <div class="select-shop">
+                                    <a href="#" class="tag" ng-click="Reset()">{{o.Name}} &nbsp;&nbsp;X</a>
+                                    <p class="address">Address : {{o.Address}}</p>
+                                    <div class="clear"></div>
+                                </div>
+                                <div class="nav">
+                                    <a href="/Cart/ShoppingCart" class="back-black left" ng-click="GoToCart()">BACK</a>
+                                    <a href="#" class="back-black right" ng-click="SetSummaryValue(o.id)">NEXT</a>
+                                    <div class="clear"></div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>                   
+                </div>
+            </div>
+
+        </div>
+    </div>
+</div>
+<script src="~/Areas/FrontTaps/app/controllers/DeliveryAddress/DeliveryAddress.js"></script>
+<script src="https://maps.googleapis.com/maps/api/js?v=3.exp&signed_in=true&libraries=places"></script>
+
+
+

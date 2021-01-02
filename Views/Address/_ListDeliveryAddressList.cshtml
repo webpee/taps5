@@ -1,0 +1,18 @@
+﻿<div class="address-block" ng-repeat="o in list1" style="height: 215px; position: relative;">
+    <ul class="action">
+        <li class="drop-down">
+            <a href="#">
+                <img src="~/Areas/FrontTaps/Img/drop-erow.png" />
+            </a>
+            <ul class="drop-down-menu">
+                <li><a href="#" ng-click="FetchDeliveryAddressById(o)">Edit</a></li>
+                <li><a href="#" ng-click="DeleteDeliveryAddress(o)">Delete</a></li>
+                @*<li><a href="#" ng-really-message="Are you sure to Delete this Address ?" ng-really-click="DeleteDeliveryAddress(o)">Delete</a></li>*@
+            </ul>
+        </li>
+    </ul>
+    <div class="clear"></div>
+    <h3 class="add-title">{{o.Name}}</h3>
+    <p class="address">{{o.Address}}<br />{{o.CityName}}<span>, </span>{{o.StateName}}<span>.</span><br />{{o.ContactNo}}</p>
+    <a href="#" class="use-btn" style="position:absolute; bottom: 0px; width:80%;" ng-click="BuyProduct(o.id)">Use this Address</a>
+</div>

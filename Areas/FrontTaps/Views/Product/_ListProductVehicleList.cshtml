@@ -1,0 +1,41 @@
+﻿
+<table class="table table-striped table-bordered table-condensed bootstrap-datatable datatable">
+    <thead>
+        <tr>
+            <th style="width:5%">No</th>
+            <th style="width:20%">Product Name</th>
+            <th style="width:12%">Make</th>
+            <th style="width:12%">Make Model</th>
+            <th style="width:19%">Trim / Engine / Transmission </th>
+            <th style="width:15%">Model Year</th>
+            <th style="width:10%">Action</th>
+        </tr>
+    </thead>
+    <tbody>
+        <tr ng-repeat="o in list1">
+            <td>   {{$index+1}} </td>
+            <td>   {{o.ProductName}}  </td>
+            <td>{{o.MakeName}} </td>
+            <td> {{o.ModelName}}</td>
+            <td> {{o.TrimName}} / {{o.EngineName}} / {{o.TransmissionName}}</td>
+            <td> {{o.Year}}</td>
+            <td class="center">
+                <a href="#" class="btn btn-info" ng-click="FetchProductVehicleById(o)" ng-show="!o.LockStatus" title="Edit" data-rel="tooltip">
+                    <i class="fa fa-edit"></i>
+                </a>
+                <a href="#" class="btn btn-danger" ng-really-message="Are you sure to Delete this Record ?" ng-really-click="DeleteProductVehicle(o)" title="Delete" data-rel="tooltip">
+                    <i class="fa fa-trash-o"></i>
+                </a>
+            </td>
+        </tr>
+    </tbody>
+</table>
+<div class="row show-hide-animation">
+    <div class="col-md-12">
+        <pagination class="pull-right" data-boundary-links="true" page="pager.PageNum"
+                    total-items="pager.Total"
+                    items-per-page="pager.PageSize"
+                    max-size="10"
+                    on-select-page="GetAllProductVehicle(page)"></pagination>
+    </div>
+</div>

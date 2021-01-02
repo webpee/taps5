@@ -1,0 +1,366 @@
+﻿@{
+    ViewBag.Title = "MenuMgmt";
+    Layout = "~/Areas/FrontTaps/Views/Shared/_Layout.cshtml";
+}
+
+<div ng-controller="MenuMgmtCtrl">
+    <div class="row">
+        <div class="col-lg-12">
+            <div class="box">
+                <div class="box-header">
+                    <h2><i class="fa fa-edit"></i>Menu Management</h2>
+                    <div class="box-icon">
+                        <a href="form-elements.html#" class="btn-minimize"><i class="fa fa-chevron-up"></i></a>
+                    </div>
+                </div>
+                <div class="box-content">
+                    <form role="form"
+                          id="form"
+                          name="form"
+                          class="form-horizontal"
+                          novalidate
+                          ng-submit="formSubmit()">
+                        <input type="hidden" value="{{model.id}}" ng-model="model.id" />
+                        <div class="form-group">
+                            <div class="row">
+                                <div class="col-lg-2 col-sm-2">
+                                    <label>
+                                        <label class="control-label">Menu Label :-</label>
+                                    </label>
+                                </div>
+                                <div class="col-lg-3 col-sm-3">
+                                    <select id="MenuLabel" name="MenuLabel" ng-required="true" ng-model="model.idMenu" class="form-control" ng-change="SelectMenuStructure()">
+                                        <option value="">-- Select Menu --</option>
+                                        <option ng-repeat="o in list1" value="{{o.id}}">{{o.MenuLabel}}</option>
+                                    </select>
+                                </div>
+                                <div class="col-lg-3 col-sm-3">
+                                    OR &nbsp; &nbsp;  <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#CreateMenu">Create Menu</button>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="form-actions">
+                            <div class="row">
+                                <div class="col-lg-2 col-sm-2">
+                                    <label>
+                                        <label class="control-label"></label>
+                                    </label>
+                                </div>
+                                <div class="col-lg-3 col-sm-3">
+                                    <button type="button" class="btn btn-danger" ng-really-message="Are you sure, you want to Delete this Record ?" ng-really-click="DeleteMenu()" ng-hide="model.idMenu == '' || model.idMenu == undefined">Delete Menu</button>
+                                </div>
+                            </div>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="row">
+        <div class="col-sm-2 col-lg-2 col-patch">
+            <div class="box">
+                <div class="box-header">
+                    <h2><i class="fa fa-check"></i>Pages</h2>
+                </div>
+                <div class="box-content clearfix">
+                    <div class="form-group">
+                        <div style="height:200px;overflow-y: scroll; border: solid; border-color: #dfdfdf;padding-left:10px; ">
+                            <div class="checkbox" ng-repeat="o in Pagelist">
+                                <label class="checkbox">
+                                    <input type="checkbox" id="{{o.id}}" checklist-model="model.Pageids" checklist-value="o" ng-click="AddMenuStructure(o)">{{o.Title}}
+                                </label>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="col-sm-10 col-lg-10 col-patch">
+            <div class="box">
+                <div class="box-header">
+                    <h2><i class="fa fa-check"></i>Menu Structure</h2>
+                </div>
+                <div class="box-content clearfix">
+                    <div class="box-content clearfix">
+                        <ol class="sortable ui-sortable">
+                            <li id="list_{{data.item_id}}" class="mjs-nestedsortable-branch mjs-nestedsortable-expanded" ng-repeat="data in FinalData" ng-if="data.parent_id==0">
+                                <div class="dd-handle">
+                                    <span class="disclose"><span></span></span>{{data.title}}
+                                </div>
+                                <ol>
+                                    <li id="list_{{data1.item_id}}" class="mjs-nestedsortable-branch mjs-nestedsortable-expanded" ng-repeat="data1 in FinalData" ng-if="data1.parent_id==data.item_id">
+                                        <div class="dd-handle">
+                                            <span class="disclose"><span></span></span>{{data1.title}}
+                                        </div>
+                                        <ol>
+                                            <li id="list_{{data2.item_id}}" class="mjs-nestedsortable-branch mjs-nestedsortable-expanded" ng-repeat="data2 in FinalData" ng-if="data2.parent_id==data1.item_id">
+                                                <div class="dd-handle">
+                                                    <span class="disclose"><span></span></span>{{data2.title}}
+                                                </div>
+                                                <ol>
+                                                    <li id="list_{{data3.item_id}}" class="mjs-nestedsortable-branch mjs-nestedsortable-expanded" ng-repeat="data3 in FinalData" ng-if="data3.parent_id==data2.item_id">
+                                                        <div class="dd-handle">
+                                                            <span class="disclose"><span></span></span>{{data3.title}}
+                                                        </div>
+                                                        <ol>
+                                                            <li id="list_{{data4.item_id}}" class="mjs-nestedsortable-branch mjs-nestedsortable-expanded" ng-repeat="data4 in FinalData" ng-if="data4.parent_id==data3.item_id">
+                                                                <div class="dd-handle">
+                                                                    <span class="disclose"><span></span></span>{{data4.title}}
+                                                                </div>
+                                                            </li>
+                                                        </ol>
+                                                    </li>
+                                                </ol>
+                                            </li>
+
+                                        </ol>
+                                    </li>
+                                </ol>
+                            </li>
+                        </ol>
+
+                        <div class="col-lg-3 col-sm-3">
+                            <button type="button" class="btn btn-primary" id="toArray" ng-click="CreateMenuStructure(model)">Save Menu Structure</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="row">
+        <div class="col-lg-12">
+            <div class="box">
+                <div class="box-header">
+                    <h2><i class="fa fa-edit"></i>Menu Meta Management</h2>
+                    <div class="box-icon">
+                        <a href="form-elements.html#" class="btn-minimize"><i class="fa fa-chevron-up"></i></a>
+                    </div>
+                </div>
+                <div class="box-content">
+                    @{ Html.RenderPartial("_ListMenuMetaMgmtList"); }
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="row">
+        <div class="col-lg-12">
+            <div class="box">
+                <div class="box-header">
+                    <h2><i class="fa fa-edit"></i>Menu Management</h2>
+                    <div class="box-icon">
+                        <a href="form-elements.html#" class="btn-minimize"><i class="fa fa-chevron-up"></i></a>
+                    </div>
+                </div>
+                <div class="box-content">
+                    @{ Html.RenderPartial("_ListMenuMgmtList"); }
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="modal fade" id="CreateMenu" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header" style="background: #36a9e1">
+                    <button type="button" class="close" data-dismiss="modal"><span aria-hidden="true">&times;</span><span class="sr-only">Close</span></button>
+                    <h4 class="modal-title" style="color:white">Select Image</h4>
+                </div>
+                <div class="modal-body">
+                    <div class="box-content">
+                        <form role="form"
+                              id="form"
+                              name="form"
+                              class="form-horizontal"
+                              novalidate
+                              ng-submit="formSubmit()">
+                            <div class="form-group">
+                                <div class="form-group">
+                                    <div class="row">
+                                        <div class="col-lg-3 col-sm-3">
+                                            <label>
+                                                <label class="control-label">Menu Label :-</label>
+                                            </label>
+                                        </div>
+                                        <div class="col-lg-6 col-sm-6">
+                                            <input id="Name" type="text" maxlength="255" class="form-control" ng-required="true" ng-model="model.MenuLabel">
+                                        </div>
+                                        <div class="col-lg-2 col-sm-2">
+                                            <button type="button" class="btn btn-primary" ng-disabled="!form.$valid" ng-click="CreateMenu(model)">Save</button>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <br />
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script>
+
+    $(document).ready(function () {
+
+        $('ol.sortable').nestedSortable({
+            forcePlaceholderSize: true,
+            handle: 'div',
+            helper: 'clone',
+            items: 'li',
+            opacity: .6,
+            placeholder: 'placeholder',
+            revert: 250,
+            tabSize: 25,
+            tolerance: 'pointer',
+            toleranceElement: '> div',
+            maxLevels: 5,
+            expandOnHover: 700,
+            startCollapsed: true,
+
+            branchClass: 'mjs-nestedSortable-branch',
+            collapsedClass: 'mjs-nestedSortable-collapsed',
+            disableNestingClass: 'mjs-nestedSortable-no-nesting',
+            errorClass: 'mjs-nestedSortable-error',
+            expandedClass: 'mjs-nestedSortable-expanded',
+            hoveringClass: 'mjs-nestedSortable-hovering',
+            leafClass: 'mjs-nestedSortable-leaf'
+        });
+
+        $('.disclose').on('click', function () {
+            $(this).closest('li').toggleClass('mjs-nestedSortable-collapsed').toggleClass('mjs-nestedSortable-expanded');
+        })
+
+    });
+
+
+</script>
+
+<style>
+    .mjs-nestedSortable-error {
+        background: #fbe3e4;
+        border-color: transparent;
+    }
+
+    ol {
+        margin: 0;
+        padding: 0;
+        padding-left: 30px;
+    }
+
+        ol.sortable, ol.sortable ol {
+            margin: 0 0 0 25px;
+            padding: 0;
+            list-style-type: none;
+        }
+
+        ol.sortable {
+            margin: 1em 0;
+        }
+
+    .sortable li {
+        margin: 5px 0 0 0;
+        padding: 0;
+    }
+
+        .sortable li div {
+            border: 1px solid #d4d4d4;
+            -webkit-border-radius: 3px;
+            -moz-border-radius: 3px;
+            border-radius: 3px;
+            border-color: #D4D4D4 #D4D4D4 #BCBCBC;
+            padding: 6px;
+            margin: 0;
+            cursor: move;
+            background: #f6f6f6;
+            background: -moz-linear-gradient(top, #ffffff 0%, #f6f6f6 47%, #ededed 100%);
+            background: -webkit-gradient(linear, left top, left bottom, color-stop(0%,#ffffff), color-stop(47%,#f6f6f6), color-stop(100%,#ededed));
+            background: -webkit-linear-gradient(top, #ffffff 0%,#f6f6f6 47%,#ededed 100%);
+            background: -o-linear-gradient(top, #ffffff 0%,#f6f6f6 47%,#ededed 100%);
+            background: -ms-linear-gradient(top, #ffffff 0%,#f6f6f6 47%,#ededed 100%);
+            background: linear-gradient(to bottom, #ffffff 0%,#f6f6f6 47%,#ededed 100%);
+            filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#ffffff', endColorstr='#ededed',GradientType=0 );
+        }
+
+        .sortable li.mjs-nestedSortable-branch div {
+            background: -moz-linear-gradient(top, #ffffff 0%, #f6f6f6 47%, #f0ece9 100%);
+            background: -webkit-linear-gradient(top, #ffffff 0%,#f6f6f6 47%,#f0ece9 100%);
+        }
+
+        .sortable li.mjs-nestedSortable-leaf div {
+            background: -moz-linear-gradient(top, #ffffff 0%, #f6f6f6 47%, #bcccbc 100%);
+            background: -webkit-linear-gradient(top, #ffffff 0%,#f6f6f6 47%,#bcccbc 100%);
+        }
+
+    li.mjs-nestedSortable-collapsed.mjs-nestedSortable-hovering div {
+        border-color: #999;
+        background: #fafafa;
+    }
+
+    .span disclose {
+        cursor: pointer;
+        width: 10px;
+        display: none;
+    }
+
+    .sortable li.mjs-nestedSortable-collapsed > ol {
+        display: none;
+    }
+
+    .sortable li.mjs-nestedSortable-branch > div > .disclose {
+        display: inline-block;
+    }
+
+    .sortable li.mjs-nestedSortable-collapsed > div > .disclose > span:before {
+        content: '+ ';
+    }
+
+    .sortable li.mjs-nestedSortable-expanded > div > .disclose > span:before {
+        content: '- ';
+    }
+
+    h1 {
+        font-size: 2em;
+        margin-bottom: 0;
+    }
+
+    h2 {
+        font-size: 1.2em;
+        font-weight: normal;
+        font-style: italic;
+        margin-top: .2em;
+        margin-bottom: 1.5em;
+    }
+
+    h3 {
+        font-size: 1em;
+        margin: 1em 0 .3em;
+    }
+
+    p, ol, ul, pre, form {
+        margin-top: 0;
+        margin-bottom: 1em;
+    }
+
+    dl {
+        margin: 0;
+    }
+
+    dd {
+        margin: 0;
+        padding: 0 0 0 1.5em;
+    }
+
+    code {
+        background: #e5e5e5;
+    }
+
+    input {
+        vertical-align: text-bottom;
+    }
+
+    .notice {
+        color: #c33;
+    }
+</style>
+
+<script src="~/app/controllers/MenuMgmt/MenuMgmt.js"></script>

@@ -1,0 +1,35 @@
+﻿<table class="table table-striped table-bordered table-condensed bootstrap-datatable datatable">
+    <thead>
+        <tr>
+            <th style="width:10%">No</th>
+            <th style="width:70%">Engine Name</th>
+            <th style="width:20%">Action</th>
+        </tr>
+    </thead>
+    <tbody>
+        <tr ng-repeat="o in filtered = (list1| filter:searchFilter1:strict) | startFrom:(currentPage-1)*entryLimit | limitTo:entryLimit">
+            <td>
+                {{$index+1}}
+            </td>
+            <td>
+                {{o.Name}}
+            </td>
+            <td class="center">
+                <a href="#" class="btn btn-info" ng-click="FetchEngineById(o)" ng-show="!o.LockStatus" title="Edit" data-rel="tooltip">
+                    <i class="fa fa-edit"></i>
+                </a>
+                <a href="#" class="btn btn-danger" ng-really-message="Are you sure to Remove this Engine Data ?" ng-really-click="DeleteEngineData(o.id)" title="Delete" data-rel="tooltip">
+                    <i class="fa fa-trash-o"></i>
+                </a>
+            </td>
+        </tr>
+    </tbody>
+</table>
+<div class="row show-hide-animation">
+    <div class="col-md-12">
+        <pagination page="currentPage" class="pull-right" max-size="noOfPages" total-items="totalItems" items-per-page="entryLimit" data-boundary-links="true"></pagination>
+    </div>
+</div>
+
+
+

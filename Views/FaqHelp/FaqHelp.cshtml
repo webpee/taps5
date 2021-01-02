@@ -1,0 +1,77 @@
+﻿@{
+    ViewBag.Title = "Faq & Help";
+    Layout = "~/Views/Shared/_OnlyLayout.cshtml";
+}
+<link href="~/assets/css/CustomBootStap.css" rel="stylesheet" />
+<style>
+    .pointer {
+        cursor: pointer;
+    }
+</style>
+
+<div ng-controller="FaqHelpCtrl">
+    <div class="main-body">
+        <div class="body-padding">
+            <div class="body-part">
+                <div class="clear"></div>
+                <div class="row pt15">
+                    <div class="green-box">
+                        <div class="title-block"><h3>Faq & Help</h3></div>
+                        <form class="form">
+                            <div class="detail-block">
+                                <div class="wishlist-wrap">
+                                    @*<accordion close-others="oneAtATime" id="accordion">
+                                            <accordion-group heading="{{o.Type}}" data-toggle="collapse" data-parent="#accordion">
+
+                                            </accordion-group>
+                                        </accordion>*@
+                                    <div class="panel-group" id="accordion">
+                                        <div class="panel panel-info" ng-repeat="o in list1" style="cursor:pointer"> 
+                                            <div class="panel-heading" data-toggle="collapse" data-parent="#accordion" data-target="#collapse{{$index}}">
+                                                <h4 class="panel-title accordion-toggle">
+                                                    {{o.Type}}
+                                                </h4>
+                                            </div>
+                                            <div id="collapse{{$index}}" class="panel-collapse collapse">
+                                                <div class="panel-body">
+                                                    <p ng-bind-html="o.Description"></p>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<script src="~/Areas/FrontTaps/app/controllers/FaqHelp/FaqHelp.js"></script>
+<style>
+    .collapse.in {
+        float: left;
+        margin-left: 0px !important;
+        margin-top: 5px;
+    }
+
+    .green-box .detail-block {
+        background-color: #0B743B !important;
+        padding: 10px;
+    }
+
+    .body-padding {
+        padding: 0 36px 0 10px !important;
+    }
+
+    .panel-info > .panel-heading + .panel-collapse .panel-body {
+        border-top-color: #000 !important;
+    }
+
+    .panel-info > .panel-heading {
+        color: #000;
+        background-color: #cfe3d8;
+        border-color: #000;
+    }
+</style>
